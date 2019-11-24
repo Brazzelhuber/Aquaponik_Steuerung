@@ -49,6 +49,7 @@ class Kontrollpanel(object):
  
     #----------------------------------------------------------------------
     def __init__(self, parent,  bg_Farbe, control_array):
+        pygame.init()                   # initiert die pygame-Bibliothek
 
         
         """Constructor"""
@@ -696,17 +697,17 @@ class Kontrollpanel(object):
 ##            print(result)
 
         def welche_Daten(ee, Datei):
-            
-            datepick = Dp.MyDatePicker(widget = ee)
-            print("eeget = " + ee.get())
-            print("Widgetget = " + datepick.widget.get())
-            #datepick.destroy_frames()
-           
 
+            datepick = Dp.MyDatePicker(widget = ee)
+           
+             
+        def print_it(mydate):
+            print(mydate.get())
+        
             
         def Daten_loeschen(Datei):
 
-            
+            mydate = Tk.StringVar()
             Datumsfenster = Tk.Toplevel()
             Datumsfenster.geometry ("250x100")
             Datumsfenster.title("Datum zum Löschen")
@@ -715,17 +716,14 @@ class Kontrollpanel(object):
             ed = Tk.Label(Datumsfenster,text = "Grenzdatum: ")
             ed.grid(row = 0, column = 0, padx = 5, pady = 5 ,ipady= 3, ipadx = 5, sticky = Tk.W)
 
-            ee = Tk.Entry(Datumsfenster)
+            ee = Tk.Entry(Datumsfenster, textvariable = mydate)
             ee.grid(row = 0, column =1, padx = 5, pady = 5 )
             ee.config(width =9)
-            ee.bind("<Button-1>",  lambda event: welche_Daten(ee, Datei))
+            mydate.trace("w", lambda name, index, mode, mydate=mydate: print_it(mydate))
+            ee.bind("<Button-1>", lambda event: welche_Daten(ee, Datei))
             
     
-
-
-            
         
-           
 
         center(Kindfenster)         
         Frame1 = Tk.Frame(Kindfenster)
@@ -832,7 +830,7 @@ class Kontrollpanel(object):
         
         os.environ['SDL_VIDEO_CENTERED'] = "1"     # zentriert das Grafikfenster auf dem Bildschirm
 
-        pygame.init()                   # initiert die pygame-Bibliothek
+##        pygame.init()                   # initiert die pygame-Bibliothek
         Grafikfenster = pygame.display.set_mode( (B , H ), 0, 32)
 
         Grafikfenster.fill(WHITE)
