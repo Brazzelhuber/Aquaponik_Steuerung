@@ -1,0 +1,308 @@
+#!/usr/bin/python3.5
+#coding=utf-8
+# Check_Center.py
+# Version 1.0
+
+########################################
+# ContrrollCenter checkt, ob aufgrund der
+
+# Zeitschaltung,
+
+# der Sensordaten
+
+# definierter Bedingungen
+
+# oder eines Button-Drucks am Bildschirm
+
+# etwas zu tun ist
+
+#############################################
+
+
+import re
+import datetime as dt
+import sunrise as sr
+from tkinter import messagebox
+
+# folgende beiden Arrasy werden vom Hauptprogramm als Parameter übergeben
+
+##wa          = {"T_Luft_oben" : 0,      # der Werte-Array beinhaltet die ausgelesenen Sensordaten
+##               "T_Luft_unten" : 0,
+##               "T_Wasser1": 0,
+##               "T_Wasser2:": 0,
+##               "T_aussen":, 0     
+##               "Luxwert_1" : 0 ,
+##               "Luxwert_2" : 0,
+##               "Ph-Wert": 0 ,
+##               "Sauerstoff" : 0,
+##               "Ampere"  :0 ,
+##               "Wasserstand" : 0,
+##               "Sonnenaufgang": 0,
+##               "Sonnenuntergang": 0
+##                }
+##
+##ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
+##               "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
+##               "Kühlung mit Bewässerung":  [0,0,0],  
+##               "Kühlung mit Verieselung":  [0,0,0],
+##               "Brunnenwasser als Heizung":[0,0,0],  # Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
+##               "Wasser auffüllen":         [0,0,0],  # Wasserverlust muss ausgeglichen werden
+##               "Wasser ablassen":          [0,0,0],  # zuviel Wasser im System
+##               "Hauptpumpe":               [0,0,0],
+##               "Screen_schreiben":         [0,1,0],  # Sensorwerte auf Screen schreiben, kann im Dauerbetrieb abgestellt werden
+##               "Heizung":                  [0,0,0],  # wenn es im Winter zu kalt wird
+##               "Es ist Tag"      :         [0,0],    # kommt aus den Sonnendaten, Luxwerte werden nur tagsüber geschrieben
+##               "Alarm"            :        [0,0],    # wenn was schiefgeht wird EMail geschrieben
+##               "Fütterung"  :              [0,0,0],  # Fütterungsautomat einschalten?
+##               "Logeintrag":               [0,0],
+##               "WQ to FT":                 [0,0,0],  # die Wasserventile einzel
+##               "WQ to VR":                 [0,0,0],
+##               "ST to VR":                 [0,0,0],   
+##               "ST to FT":                 [0,0,0],
+##               "ST to HB":                 [0,0,0],
+##               "LU to HP":                 [0,0,0],  # Luftventile
+##               "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpumpo
+
+
+##############################################################################################################
+# das sind Devices, die bei komplexen Zustandsänderungen simultan geändert werden:
+
+devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende gesteuert
+           "ST to FT",      #
+           "ST to HB",      #
+           "ST to VR",
+           "Hauptpumpe",
+           "LU to HP",
+           "LO to HP"]
+# in Configur_Zustaende wird durch devices und Zustände durchgegangen und die Sollwerte verändert
+# 0 ist geschlossen, 1 ist offen, bzw. bei Hauptpumpe an und aus
+
+Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
+            "warmer CHOP-Circle":                [0,1,0,0,1,0,1],   # CHOP (ST -> FT -> GB -> ST) wobei LO to HP on
+            "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
+            "Kühlung mit Verieselung":           [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
+            "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
+            "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf
+
+# Zunächst eine Routine, die weitere Zustandsänderungen auslöst, wenn ein komplexer Vorgang auslöst wurde
+
+def Config_Zustaende(Zustand, _array):
+    
+    for i  in range(0,7):
+        
+        if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
+##        print("i = " +str(i) +  " - Zustaende[Zustand][i] = "+ str(Zustaende[Zustand][i]))
+##        print("devices[i] = " + devices[i])
+
+#########################################################################################################        
+# prüft, ob manuell, am Bildschirm etwas ausgelöst wurde (kann man, auch wenn es den Bedingungen für den
+# Sensorcheck widerspricht)
+
+def Manualoverride(co):
+    
+    if co["normaler CHOP-Circle"][2] == 1 or co["warmer CHOP-Circle"][2] == 1 or\
+        co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verieselung"][2]== 1 or\
+        co["Wasser ablassen"][2] == 1:
+        return True
+
+    return False
+
+# erst man alles auschalten, bevor im nächsten loop etwas Neues eingeschaltet wird:
+def Alles_aus(myscreen, co):
+    
+    ButtonCheck(myscreen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung ausschalten")  # simulierte Buttonpress
+    ButtonCheck(myscreen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerieselung ausschalten")  # simulierte Buttonpress
+    ButtonCheck(myscreen.wlf.check_btn_CCW_an,co, "CHOP-Circle mit\nWarmluft ausschalten")  # simulierte Buttonpress
+    ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
+    ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
+        
+    
+def SensorCheck(screen, co, we):    # screen = screen_app, co = Controllarray, we = Wertearray
+    
+    zuvielErdfeuchte = False  # zu Testzwecken (später als Sensordaten)
+    
+    # bevor nicht alle Temperatursensoren installiert sind, werden T_Luft_unten und T_Luft oben ignoriert
+
+    # Bedingungen für "normaler CHOP-Circle an":    1. "normaler CHOP-Circle" ist nicht schon an 
+    #                                               2. Wasser nicht zu warm und nicht zu kalt
+    #                                               3. kein manual override
+    #                                               4. keine Fütterung
+    #                                               5. später noch Lufttemperatur
+    
+    if  co["normaler CHOP-Circle"][0] != 1 and float(we["T_Wasser1"]) <= 25 and float(we["T_Wasser1"]) > 5 and   \
+        not Manualoverride(co) and co["Fütterung"][0] == 0:
+
+        Config_Zustaende("Nichts", co)
+        Alles_aus(screen, co)
+        co["normaler CHOP-Circle"][1] = 1
+        
+        ButtonCheck(screen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle anschalten")  # simulierte Buttonpress
+        
+
+
+    
+
+    # Bedingungen für "Kühlung mit Bewässerung an":     1. "Kühlung mit Bewässerung" ist nicht schon an
+    #                                                   2. Wasser ist zu warm
+    #                                                   3. kein manual override
+    #                                                   4. keine Fütterung
+    #                                                   5. Erde nicht zu feucht
+    #                                                   
+    
+    if  co["Kühlung mit Bewässerung"][0] != 1 and float(we["T_Wasser1"]) > 25 and   \
+        not Manualoverride(co) and (zuvielErdfeuchte == False and co["Fütterung"][0] == 0):
+
+        Config_Zustaende("Nichts", co)
+        Alles_aus(screen, co)
+        co["Kühlung mit Bewässerung"][1] = 1
+        ButtonCheck(screen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung anschalten")  # simulierte Buttonpress
+
+    # Bedingungen für "Kühlung mit Verieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
+    #                                                   2. Wasser ist zu warm
+    #                                                   3. kein manual override
+    #                                                   4. keine Fütterung
+    #                                                   5. Erde ist zu feucht
+    
+    if  co["Kühlung mit Verieselung"][0] != 1 and float(we["T_Wasser1"]) > 25 and   \
+        not Manualoverride(co) and zuvielErdfeuchte == True and co["Fütterung"][0] == 0:
+
+        Config_Zustaende("Nichts", co)
+        Alles_aus(screen, co)
+        co["Kühlung mit Verieselung"][1] = 1
+        ButtonCheck(screen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerieselung anschalten")  # simulierte Buttonpress
+   
+    if we["Sauerstoff"] < 4.5 and False:        # Sauerstoff wird noch nicht gemessen
+        co["Sauerstoffpumpe"][1] = 1
+    if ((we["Ph-Wert"] < 6) or (we["Ph-Wert"] > 7)) and False:  # Ph-Wert wird noch nicht gemessen
+        co["Alarm"][1] =1
+    if we["Sonnenaufgang"] == 0:
+        s= sr.sun(lat =51.755,long =8.6)
+        we["Sonnenaufgang"] = s.sunrise(when=dt.datetime.now())
+    if we["Sonnenuntergang"] == 0:
+        s= sr.sun(lat =51.755,long =8.6)
+        we["Sonnenuntergang"] = s.sunset(when=dt.datetime.now())
+##    print("ButtonCheck: " + str(co["Kühlung mit Verieselung"][1]))
+    return (co, we)
+#########################################################################################################
+# Kontrolle, welcher Button gedrückt wurde, bzw. Buttonpress-Simulation für Sensor- oder zeitgetriggerte Aktionen sowie
+# Vorbereitung der Aktionen, durch Veränderung des Sollwertes
+
+
+############################################################################
+# überprüft Status des manual override(mo) und reagiert entsprechend indem mo auf 1 oder 0 gesetzt wird
+# gewährleistet, 1.dass nicht manuell etwas angestellt wird, während ein anderer Zustand aktiv ist
+# und dass das was manuell angeschaltet wurde, auch manuell wieder ausgeschaltet  wird (bzw. umgekehrt)
+# sonst würde der gewählte Zustand im nächsten loop evtl durch die Sensoren rückgängig gemacht
+ 
+
+def ManualCheck(ar, manov, text, i):
+    
+    
+    for key in Zustaende:
+        
+        if key != text and key != "Nichts" and ar[key][0] == 1 and manov == True and i <= 30:
+            messagebox.showinfo("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
+                                text + "\n\n" + "gestartet werden kann")
+            
+            return False
+        
+    if manov and ar[text][0] == 1 and ar[text][2] == 0: # ist durch Sensor an, soll manuell abgeschaltet werden
+        ar[text][2] = 1
+    elif manov and ar[text][0] == 0 and ar[text][2] == 0: # ist durch Sensor aus, soll manuell angeschaltet werden
+         ar[text][2] = 1
+    elif manov and ar[text][0] == 1 and ar[text][2] == 1: # ist manuell angemacht, soll manuell ausgeschaltet werden
+         ar[text][2] = 0
+    elif manov and ar[text][0] == 0 and ar[text][2] == 1: # ist manuell ausgemacht, soll manuell angeschaltet werden
+         ar[text][2] = 0
+    
+    return True
+###########################################################################################    
+def do_it(liste,ar, manov,i):
+    
+    listenkey = liste[i][1]
+  
+         
+    if ManualCheck(ar, manov, liste[i][1], i) == True:
+        
+            
+      
+        ar[listenkey][1] = liste[i][2]
+        if i < 11 :                           # 1 - 10 sind komplexe Zustände
+            if liste[i][2] == 1 :
+                Config_Zustaende(listenkey, ar)
+            else: Config_Zustaende("Nichts",ar)
+
+                                                                                 
+
+##################################################################################
+# ButtonCeck
+##################################################################################
+# die Methode bind, wird in Kontrollpanel angewandt, damit hier identifiziert werden kann, welcher Button gedrückt wurde
+# wird entweder aufgerufen, wenn ein Button gedrückt wurde, dann ist _button = None
+
+# alternativ kann aus anderen Modulen dieses Modul hier aufgerufen werden,
+# dann ist BUTTON = _button (simulierter Buttondruck)
+
+def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedrückt wurde, ar ist ca (Controlarray)
+#
+# Steuerung mit verschachtelter Liste, damit nicht endlos Code wiederholt werden muß
+
+#                    Buttontext                             ca-Key               an/aus
+#                    ##########                             ######               ######
+    b_liste =[["normalen CHOP\nCircle anschalten",      "normaler CHOP-Circle",     1],
+              ["normalen CHOP\nCircle ausschalten",     "normaler CHOP-Circle",     0],
+              ["CHOP-Circle mit\nWarmluft anschalten",  "warmer CHOP-Circle",       1],
+              ["CHOP-Circle mit\nWarmluft ausschalten", "warmer CHOP-Circle",       0],
+              ["Kühlung mit\nBewässerung anschalten",   "Kühlung mit Bewässerung",  1],
+              ["Kühlung mit\nBewässerung ausschalten",  "Kühlung mit Bewässerung",  0],
+              ["Kühlung mit\nVerieselung anschalten",   "Kühlung mit Verieselung",  1],
+              ["Kühlung mit\nVerieselung ausschalten",  "Kühlung mit Verieselung",  0],
+              ["Wasser ablassen",                       "Wasser ablassen",          1],
+              ["Wasserablass Stop",                     "Wasser ablassen",          0],
+              ["Pumpe anschalten",                      "Hauptpumpe",               1],
+              ["Pumpe ausschalten",                     "Hauptpumpe",               0],
+              ["Wasser auffüllen",                      "Wasser auffüllen",         1],
+              ["Brunnenventil schließen",               "Wasser auffüllen",         0],
+              ["WQ to VR öffnen",                       "WQ to VR",                 1],
+              ["WQ to VR schließen",                    "WQ to VR",                 0],
+              ["WQ to FT öffnen",                       "WQ to FT",                 1],
+              ["WQ to FT schließen",                    "WQ to FT",                 0],
+              ["ST to VR öffnen",                       "ST to VR",                 1],
+              ["ST to VR schließen",                    "ST to VR",                 0],
+              ["ST to FT öffnen",                       "ST to FT",                 1],
+              ["ST to FT schließen",                    "ST to FT",                 0],
+              ["ST to HB öffnen",                       "ST to HB",                 1],
+              ["ST to HB schließen",                    "ST to HB",                 0],
+              ["LO to HP öffnen",                       "LO to HP",                 1],
+              ["LO to HP schließen",                    "LO to HP",                 0],
+              ["LU to HP öffnen",                       "LU to HP",                 1],
+              ["LU to HP schließen",                    "LU to HP",                 0],
+              ["Fütterung\nanschalten",                 "Fütterung",                1],
+              ["Fütterung\nausschalten",                "Fütterung",                0],
+              ["Heizung\nanschalten",                   "Heizung",                  1],
+              ["Heizung\nausschalten",                  "Heizung",                  0],
+              ["Bildschirmwerte an",                    "Screen_schreiben",         1],
+              ["Bildschirmwerte aus",                   "Screen_schreiben",         0]]
+              
+                                      
+       
+    
+                        # manov = True = manual override (d.h. vom Bildschirm aus wird eine Aktion ausgelöst,
+                                                # die evtl. den definierten Sensorbedingungen widersprechen
+                                                
+    if _button == None:                         # butt.configure("text")[-1] gibt Buttontext
+        BUTTON = butt.configure("text")[-1]     # aus Kontrolpanel.py zurück. Dort ist _button immer None
+        manov = True
+    else:
+        BUTTON = _button                        # simuliert Buttonpress (Text des Buttons wird direkt über
+        manov = False                           # Variable _button übergeben), um Sensor- oder zeitgetriggert
+                                                # Aktion auszulösen
+                                                # manual override trifft nicht zu
+                                    
+                                                        
+    
+    for i in range(0,34):
+        if BUTTON == b_liste[i][0]: do_it(b_liste,ar,manov,i)
+    
+    
+

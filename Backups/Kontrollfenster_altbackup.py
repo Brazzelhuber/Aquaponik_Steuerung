@@ -1,0 +1,657 @@
+#!/usr/bin/python
+# coding=utf-8
+# Kontrollfenster.py
+# Aufgabe: Aufbau des Kontrollfensters
+# Version 1.2
+#######################################################################
+#
+# Das Programm baut das Kontrollfenster auf, mit dem das ganze System bedient wird
+#
+#######################################################################
+from __future__ import division, print_function
+import pygame, pygame.gfxdraw       # pygame ist eigentlich für Spieleentwicklung. \
+                                        # Aber auch geeigent um Grafikfenster zu steuern
+from pygame.locals import *
+import tkinter as Tk           # GUI-Bibliothek
+from tkinter import messagebox
+import csv, time, sys
+
+
+#####################
+# eigene Module:
+import Motorsteuerung as Ms
+import Wassersteuerung as Ws
+
+
+# Höhe und Breite des Kontrollfensters
+K_H = 900
+K_B = 1530
+
+########################################################################
+class Kontrollpanel(object):
+    """"""
+ 
+    #----------------------------------------------------------------------
+    def __init__(self, parent, tlf, mlf, slf, wlf, qlf, bg_Farbe):
+
+        #global Motor_ist_an
+        
+        """Constructor"""
+
+          #Codierung Farben:
+        
+##        WHITE = (255, 255, 255)
+##        RED   = (255,0,0)
+##        GREEN = (0,255,0)
+##        BLUE  = (0,0,255)
+##        BLACK = (0,0,0)
+##        
+        
+        self.fenster = parent
+        self.fenster.title("Aquaponik Kontrollpanel")
+        self.frame = Tk.Frame(parent)
+
+
+        tlf.grid(row = 1, column = 0, padx = 10, pady =10 ,sticky = Tk.W + Tk.N)
+        mlf.grid(row = 1, column = 1, padx = 10, pady =10, sticky = Tk.W + Tk.N)
+        slf.grid(row = 0, column = 0, padx = 10, pady =10, sticky = Tk.W + Tk.N)
+        wlf.grid(row = 0, column = 1, padx = 10, pady =10, sticky = Tk.W + Tk.N)
+        qlf.grid(row = 0, column = 2, padx = 10, pady =10, sticky = Tk.W + Tk.N)
+
+
+        self.fenster.geometry('%dx%d+%d+%d' % (K_B, K_H,0,0))
+############################################################################################
+       # Temperatur Box
+       
+        
+        
+        label_T_i =Tk.Label(tlf, text = "Temperatur West:")
+        label_T_i.configure(bg = bg_Farbe)
+        label_T_i.grid(row = 0, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        
+        label_T_a =Tk.Label(tlf, text = "Temperatur außen:")
+        label_T_a.grid(row = 1, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_T_a.configure(bg = bg_Farbe)
+
+        label_T_i =Tk.Label(tlf, text = "Temperatur Ost:")
+        label_T_i.configure(bg = bg_Farbe)
+        label_T_i.grid(row = 2, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        
+        label_T_a =Tk.Label(tlf, text = "Temperatur Wasser:")
+        label_T_a.grid(row = 3, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_T_a.configure(bg = bg_Farbe)
+
+        label1 = Tk.LabelFrame(tlf, width = 100, height = 25, bg = "white")
+        label1.grid(row=0, column = 1,  sticky = Tk.W + Tk.E)
+
+        label2 = Tk.LabelFrame(tlf, width = 100, height = 25, bg = "white")
+        label2.grid(row=1, column = 1,  sticky = Tk.W+ Tk.E)
+
+        btn_T_w_v = Tk.Button(tlf, text="Verlauf", \
+                              command= lambda: self.openFrame("T_innen_Daten"))
+        btn_T_w_v.grid(row = 0, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.E)
+
+        btn_T_w_g = Tk.Button(tlf, text="Grafik", \
+                              command= lambda: self.openFrame("T_innen_Grafik"))
+        btn_T_w_g.grid(row = 0, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+
+        btn_T_a_v = Tk.Button(tlf, text="Verlauf", \
+                              command= lambda: self.openFrame("T_aussen_Daten"))
+        btn_T_a_v.grid(row = 1, column = 2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.E)
+
+        btn_T_a_g = Tk.Button(tlf, text="Grafik", \
+                              command= lambda: self.openFrame("T_aussen_Grafik"))
+        btn_T_a_g.grid(row = 1, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+
+        btn_T_o_v = Tk.Button(tlf, text="Verlauf", \
+                              command= lambda: self.openFrame("T_Ost_Daten"))
+        btn_T_o_v.grid(row = 2, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.E)
+
+        btn_T_o_g = Tk.Button(tlf, text="Grafik", \
+                              command= lambda: self.openFrame("T_Ost_Grafik"))
+        btn_T_o_g.grid(row = 2, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+
+        btn_T_w_v = Tk.Button(tlf, text="Verlauf", \
+                              command= lambda: self.openFrame("T_Wasser_Daten"))
+        btn_T_w_v.grid(row = 3, column = 2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.E)
+
+        btn_T_w_g = Tk.Button(tlf, text="Grafik", \
+                              command= lambda: self.openFrame("T_Wasser_Grafik"))
+        btn_T_w_g.grid(row = 3, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+###########################################################################################
+
+        # Stromversorungs Box
+
+        ########## Lichtmessung
+
+        label_licht = Tk.Label(slf,text = "Lichtintensität:     " )
+        label_licht.grid(row=0, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_licht.configure(bg = bg_Farbe)
+
+        labell = Tk.LabelFrame(slf, width = 100, height = 25, bg = "white")
+        labell.grid(row=0, column = 1 , sticky = Tk.W+Tk.E)
+
+        btn_Licht_v= Tk.Button(slf, text="Verlauf", \
+                               command= lambda: self.openFrame("Licht_Daten"))
+        btn_Licht_v.grid(row = 0, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.W)
+
+        btn_Licht_g = Tk.Button(slf, text="Grafik", \
+                                command= lambda: self.openFrame("Licht_Grafik"))
+        btn_Licht_g.grid(row = 0, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+        ########### Bateriespannung
+
+        label_Batt = Tk.Label(slf,text = "Batteriespannung:  " )
+        label_Batt.grid(row=1, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_Batt.configure(bg = bg_Farbe)
+
+        labelbat = Tk.LabelFrame(slf, width = 100, height = 25, bg = "white")
+        labelbat.grid(row=1, column = 1 , sticky = Tk.W+Tk.E)
+
+        btn_V_v= Tk.Button(slf, text="Verlauf", \
+                               command= lambda: self.openFrame("Volt_Daten"))
+        btn_V_v.grid(row = 1, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.W)
+
+        btn_V_g = Tk.Button(slf, text="Grafik", \
+                                command= lambda: self.openFrame("Volt_Grafik"))
+        btn_V_g.grid(row = 1, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+         ########### Ladestrom
+
+        label_Amp = Tk.Label(slf,text = "Ladestrom:  " )
+        label_Amp.grid(row=2, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_Amp.configure(bg = bg_Farbe)
+
+        labelamp = Tk.LabelFrame(slf, width = 100, height = 25, bg = "white")
+        labelamp.grid(row=2, column = 1 , sticky = Tk.W+Tk.E)
+
+        btn_A_v= Tk.Button(slf, text="Verlauf", \
+                               command= lambda: self.openFrame("Volt_Daten"))
+        btn_A_v.grid(row = 2, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.W)
+
+        btn_A_g = Tk.Button(slf, text="Grafik", \
+                                command= lambda: self.openFrame("Volt_Grafik"))
+        btn_A_g.grid(row = 2, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+
+
+        
+
+        
+
+############################################################################################
+
+        # Motor/Rollo - Box
+
+        Motor_an_Var = Tk.IntVar()
+        Motor_Dreh_Var = Tk.IntVar()
+        
+
+
+        check_btn_M_an = Tk.Checkbutton(mlf, text = " Motor an", command =  lambda: Ms.Motor_an_aus(mlf, Motor_an_Var), \
+                            relief = "groove", width = 12, height = 2 , anchor = Tk.W, variable = Motor_an_Var)
+        check_btn_M_an.grid(row = 0, column =0, padx = 10, pady = 10 , sticky =Tk.W+ Tk.E)
+        
+
+
+        check_btn_M_links = Tk.Checkbutton(mlf, text = " Motor links", \
+                                           command = lambda:Ms.Motor_Drehrichtung(mlf, Motor_Dreh_Var),\
+                                           relief = "groove", width = 12, height = 2 , variable = Motor_Dreh_Var)
+        check_btn_M_links.grid(row = 1, column =0, padx = 10, pady = 10 , sticky =Tk.W+Tk.E)
+       
+
+        
+
+
+
+#############################################################################################
+
+        # Wasserfluß Box
+
+        Pumpe_an_Var = Tk.IntVar()
+        Ventil_Var = Tk.IntVar()
+        Ventil_Var1 = Tk.IntVar()
+        Ventil_Var2 = Tk.IntVar()
+        Ventil_Var3 = Tk.IntVar()
+        Ventil_Var4 = Tk.IntVar()
+
+        index = [0,1,2,3,4]
+        ######################################################
+        # Hauptpumpe
+        check_btn_P_an = Tk.Checkbutton(wlf, text = " Pumpe an", command =  lambda: Ws.Pumpe_an_aus(wlf, Pumpe_an_Var), \
+                            relief = "groove", width = 14, height = 2 , anchor = Tk.W, variable = Pumpe_an_Var)
+        check_btn_P_an.grid(row = 0, column =0, padx = 12, pady = 10 , sticky =Tk.W+ Tk.E)
+
+       
+        #####################################################
+        # Ventil 1 - 4
+##        Vn = 1
+        check_btn_V_an = Tk.Checkbutton(wlf, text = " Ventil 1 öffnen", \
+                                command =  lambda: Ws.V_an_aus(wlf, Ventil_Var1, 1), \
+                            relief = "groove", width = 14, height = 2 , anchor = Tk.W, variable = Ventil_Var1)
+        check_btn_V_an.grid(row = 2, column =0, padx = 12, pady = 10 , sticky =Tk.W+ Tk.E)
+
+        Vn = 2
+        check_btn_V_an = Tk.Checkbutton(wlf, text = " Ventil 2 öffnen", \
+                                command =  lambda: Ws.V_an_aus(wlf, Ventil_Var2, 2), \
+                            relief = "groove", width = 14, height = 2 , anchor = Tk.W, variable = Ventil_Var2)
+        check_btn_V_an.grid(row = 3, column =0, padx = 12, pady = 10 , sticky =Tk.W+ Tk.E)
+
+        Vn = 3
+        check_btn_V_an = Tk.Checkbutton(wlf, text = " Ventil 3 öffnen", \
+                                command =  lambda: Ws.V_an_aus(wlf, Ventil_Var3, 3), \
+                            relief = "groove", width = 14, height = 2 , anchor = Tk.W, variable = Ventil_Var3)
+        check_btn_V_an.grid(row = 4, column =0, padx = 12, pady = 10 , sticky =Tk.W+ Tk.E)
+
+        Vn = 4
+        check_btn_V_an = Tk.Checkbutton(wlf, text = " Ventil 4 öffnen", \
+                                command =  lambda: Ws.V_an_aus(wlf, Ventil_Var4, 4), \
+                            relief = "groove", width = 14, height = 2 , anchor = Tk.W, variable = Ventil_Var4)
+        check_btn_V_an.grid(row = 5, column =0, padx = 12, pady = 10 , sticky =Tk.W+ Tk.E)
+    
+# Labels, die über den Satus des Wasserdurchflusses unter dem jeweiliegn Syphon informieren:
+
+        label_Syph1 = Tk.Label(wlf,text = "Syphon 1 zu" , relief = "groove", \
+                               width = 14, height = 2 )
+        label_Syph1.grid(row=6, column = 0, padx = 12, pady = 10, sticky =Tk.W+Tk.E)
+        label_Syph1.configure(bg = bg_Farbe)
+
+        label_Syph2 = Tk.Label(wlf,text = "Syphon 2 zu" , relief = "groove", \
+                               width = 14, height = 2 )
+        label_Syph2.grid(row=6, column = 1, padx = 12, pady = 10, sticky =Tk.W+Tk.E)
+        label_Syph2.configure(bg = bg_Farbe)
+
+        label_Syph3 = Tk.Label(wlf,text = "Syphon 3 zu" , relief = "groove", \
+                               width = 14, height = 2 )
+        label_Syph3.grid(row=7, column = 0, padx = 12, pady = 10, sticky =Tk.W+Tk.E)
+        label_Syph3.configure(bg = bg_Farbe)
+
+        label_Syph4 = Tk.Label(wlf,text = "Syphon 4 zu" , relief = "groove", \
+                               width = 14, height = 2 )
+        label_Syph4.grid(row=7, column = 1, padx = 12, pady = 10, sticky =Tk.W+Tk.E)
+        label_Syph4.configure(bg = bg_Farbe)
+        
+##############################################################################################
+        #Wasserqualität
+    
+        label_Ph = Tk.Label(qlf,text = "Ph-Werte:              " )
+        label_Ph.grid(row=0, column = 0, padx = 15, pady = 15, sticky =Tk.W)
+        label_Ph.configure(bg = bg_Farbe)
+
+        labell = Tk.LabelFrame(qlf, width = 100, height = 25, bg = "white")
+        labell.grid(row=0, column = 1 , sticky = Tk.W+Tk.E)
+
+        btn_Ph_v= Tk.Button(qlf, text="Verlauf", \
+                               command= lambda: self.openFrame("Phwerte_Daten"))
+        btn_Ph_v.grid(row = 0, column =2, padx = 15, pady = 15, ipadx = 7, sticky =Tk.W)
+
+        btn_Ph_g = Tk.Button(qlf, text="Grafik", \
+                                command= lambda: self.openFrame("Phwerte_Grafik"))
+        btn_Ph_g.grid(row = 0, column =3, padx = 15, pady = 15, ipadx = 17, sticky =Tk.W)
+
+     
+
+        
+
+    
+# ein Kindfenster wird geöffnet:
+ 
+    #----------------------------------------------------------------------
+    def openFrame(self, param):                        
+        """"""                                          
+
+        ANZWERTE = 100               # wieviel werte sollen eingelesen werden
+
+        Dateiname = ""               # wird durch Parameter bestimmt
+
+         # Datenfenster wird als Kindfenster geöffnet, Grafik als Pygame-Fenster   
+
+        if "Daten" in param:
+            Kindfenster = Tk.Toplevel()
+            Kindfenster.geometry("400x1000")         # definiert Größe für Verlauffenster
+            if param == "T_aussen_Daten":
+                Kindfenster.title("Verlauf Außentemperatur") # Titel
+                t = open('Tempdatenaussen.csv', 'r')         # öffnet Datei
+            elif param == "T_innen_Daten":
+                Kindfenster.title("Verlauf Innentemperatur") # Titel
+                t = open('Tempdateninnen.csv', 'r')             # öffnet Datei
+            elif param == "Licht_Daten":
+                Kindfenster.title("Verlauf Luxwerte") # Titel
+                t = open('Lichtdaten.csv', 'r')         # öffnet Datei
+            elif param == "Ph_Daten":
+                Kindfenster.title("Verlauf Ph-Werte") # Titel
+                t = open('Phwerte_Eichen.csv', 'r')         # öffnet Datei
+            else:
+                print("kein gültiger Paramter übergeben")
+
+            scrollbar = Tk.Scrollbar(Kindfenster)        #macht es scrollable, da Liste länger als Windowhöhe
+            scrollbar.pack(side = "right", fill = "y")
+            mylist = Tk.Listbox(Kindfenster, yscrollcommand = scrollbar.set)
+
+            # liest die Daten aus der jeweiligen CSV-Datei in eine Liste
+            
+            cr =csv.reader(t)
+           
+
+            for line in cr:
+                myline = str(line)
+                datum = myline[2:12]
+                Zeit = myline[13:18]
+                Temp = myline[24:32]
+                Temp = Temp.replace("'","")
+                Temp = Temp.replace("]","")
+                
+                Wert = Temp
+                
+                mylist.insert("end",datum + "    " + Zeit+ "    "+ Wert)    # fügt die Werte in das Scrollfenster ein
+                mylist.pack( side = "left", expand = 1 ,fill = Tk.BOTH)
+                scrollbar.config( command = mylist.yview )
+ ########################################################################################
+# Grafikfenster:
+                
+        elif "Grafik" in param:
+
+            
+            #Konstanten für pygame:
+            WHITE = (255, 255, 255)
+            RED   = (255,0,0)
+            GREEN = (0,255,0)
+            BLUE  = (0,0,255)
+            BLACK = (0,0,0)
+            # Breite und Höhe des Grafikfensters:
+            # alle Werte in Pixel
+
+            (B , H) = (1000 , 600)
+            
+            # diverse KOnstanten für das Grafikfenster:
+
+            (WMIN, WMAX) = (0, 50)      # Minimal und Maximalwerte, die angezeigt werden
+                                            # ändert sich, je nach Art der Daten
+            XEIN = 100                   # Einrückung für die x-Achse vom linken Rand
+            YEIN = 200                   # Einrückung für die y-Achse vom unteren Rand
+            
+            (XOEIN , YOEIN) = (50,50)     # oben und rechts Bereiche, in denen nicht geplottet wird?
+
+
+
+            bespH = H - YEIN -YOEIN      # Höhe, die mit Diagrammlinien bespielt werden soll
+
+            YEINTEIL = 11                # Anzahl der Einteilungen auf der Y-Achse (11, weil 0-Punkt mitzählt)
+
+
+            
+            
+
+            # Grafik wird im Pygame-Fenster erzeugt
+            
+
+            if param == "T_aussen_Grafik":
+                
+                Dateiname = "Tempdatenaussen.csv"
+                
+            elif param == "T_innen_Grafik":
+                
+                Dateiname = "Tempdateninnen.csv"
+                
+            elif param == "Licht_Grafik":
+                
+                Dateiname = "Lichtdaten.csv"
+                
+            elif param == "Phwerte_Grafik":
+                
+                Dateiname = "Phwerte_Eichen.csv"
+                
+
+            else:
+                print("kein gültiger Paramter übergeben")
+
+            if "Temp" in Dateiname:             # Temperatur und Lichtwert haben unterschiedliche Skalen
+                if "innen" in Dateiname:
+                    
+                    WMAX = 50                   # im Gewächshaus hoffentlich nie unter null
+                    WMIN= 0
+                else:
+                    WMAX = 35                   # draussen kann es schon mal frieren
+                    WMIN = -15
+            elif "Licht" in Dateiname:
+                WMAX = 20000
+                WMIN = 0
+            elif "Ph" in Dateiname:
+                WMAX = 9                        # ph-Wert
+                WMIN = 4
+            elif "Volt" in Dateiname:           # Batteriespannung
+                WMAX = 14
+                WMIN = 11
+            else: print("kein gültiger Dateiname")
+
+
+
+            # pygamefenster erzeugen #########################
+
+            pygame.init()                   # initiert die pygame-Bibliothek
+            Grafikfenster = pygame.display.set_mode( (B , H ), 0, 32)
+
+            Grafikfenster.fill(WHITE)
+            
+
+            ####################################################
+
+
+            if "Temp" in Dateiname:
+              pygame.display.set_caption("Temperaturen in Grad Celsius")
+            elif "Licht" in Dateiname:
+              pygame.display.set_caption("Lichtintensität in Lux")
+            elif "Phwerte" in Dateiname:
+              pygame.display.set_caption("Ph-Werte")
+            else:
+              print("Fehler bei Lesen Dateiname")
+
+            if "Temp" in Dateiname:
+              Y_Delta = 5    # Delta von 5 Grad bei Temperaturen
+            elif "Licht" in Dateiname:
+              Y_Delta = 2000  # Delta von 200 Lux bei Lichtintensität
+            elif "Ph" in Dateiname:
+              Y_Delta = 0.5  # Delta von 0.5 bei Ph-Wert
+            else:
+              print("Fehler beim Lesen des Dateinamens")
+
+            ####################################################################################  
+            # zeichnet die beiden Achsen
+            #( bei Außentemperatur muss die Achse höher, da sie von -15 bis plus 35 Grad geht )
+
+            
+            pygame.draw.line(Grafikfenster, BLACK, (XEIN, H - YEIN) , (XEIN, YOEIN), 3)       # y - Achse 
+        
+
+            if "aussen" in Dateiname:                           # da nur bei Außentemperatur Minuswerte möglich sind
+                                                                # wird hier die x-Achse nicht unten gezeichnet
+                eypunkt   =  int(H - (3*Y_Delta/ 50) * bespH)     
+                pygame.draw.line(Grafikfenster, BLACK, (XEIN, eypunkt - YEIN), (B - XOEIN, eypunkt-YEIN), 3)
+
+            else:
+
+                
+                pygame.draw.line(Grafikfenster, BLACK, (XEIN, H - YEIN) , (B-XOEIN, H - YEIN), 3) # x - Achse
+            ############################################################################################
+
+            # Einteilungen auf y-Achse:
+
+            # Die unterschiedlichen Beschriftungen für Innen- und Außentemperatur, Licht- und Ph-Werte
+
+            Beschriftungsrange_T_innen = ["0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50"]
+            Beschriftungsrange_T_aussen = ["-15", "-10", "-5","0", "5", "10", "15", "20", "25", "30", "35"]
+            Beschriftungsrange_Licht = ["0", "2000", "4000", "6000", "8000", "10000", "12000", "14000", "16000", "18000", "20000"]
+            Beschriftungsrange_Ph_Werte = ["4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0"]
+
+
+            
+
+            for i in range (0,YEINTEIL):
+            # zieht die Orientierunglinien :
+              
+              if "Temp" in Dateiname:
+                  
+                  eypunkt   =  int(H - (i*Y_Delta/ 50) * bespH)    # holt sich die y-Werte für die Hilfslinien
+              elif "Licht" in Dateiname:
+                  
+                  eypunkt   =  int(H - (i*Y_Delta/ 20000) * bespH)    
+              elif "Ph" in Dateiname:
+
+                  eypunkt   =  int(H - (i*Y_Delta/ 5) * bespH) 
+
+              else:
+                  print("Fehler")
+
+              pygame.draw.line(Grafikfenster, BLACK, (XEIN, eypunkt - YEIN), (B - XOEIN, eypunkt-YEIN), 2)
+
+              # Beschriftung der Y-Achse:
+
+              
+              if "Temp" in Dateiname:
+                  
+
+                  if "aussen" in Dateiname:
+                      txtGrad=   (Beschriftungsrange_T_aussen[i]) + " C°"
+                  else:
+                      txtGrad=   (Beschriftungsrange_T_innen[i]) + " C°"
+                   
+
+                   # Beschriftung der Y-Achse mit Zahlenwerten in Grad C°:
+                  
+                  myfont = pygame.font.SysFont("freesans,ttf", 14)             # font für die Achsenbeschriftung
+                  textsurf= myfont.render(txtGrad.encode("latin-1"),1,(0,0,0))
+                  Grafikfenster.blit(textsurf,(XEIN -50, eypunkt-YEIN-10))
+                    
+              elif "Licht" in Dateiname:
+                    
+                   # Beschriftung der Y-Achse mit Zahlenwerten in Lux:
+                    
+                   txtLicht= (Beschriftungsrange_Licht[i]) + " Lx" 
+                   myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
+                   textsurf= myfont.render(txtLicht.encode("latin-1"),1,(0,0,0))
+                   Grafikfenster.blit(textsurf,(XEIN -60, eypunkt-YEIN-10))
+              elif "Ph" in Dateiname:
+                    
+                   # Beschriftung der Y-Achse mit Zahlenwerten in Lux:
+                    
+                   txtPh= (Beschriftungsrange_Ph_Werte[i]) 
+                   myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
+                   textsurf= myfont.render(txtPh.encode("latin-1"),1,(0,0,0))
+                   Grafikfenster.blit(textsurf,(XEIN -60, eypunkt-YEIN-10))
+                    
+              else:
+                    
+                   print("Fehler")
+
+                 
+            #######################################################################
+                   # öffnet zunächst die jeweilige Datei, um die Werte zu erhalten
+        
+                
+
+            with open(Dateiname) as csvfile:            
+     
+  
+              cr=csv.reader(csvfile, delimiter =',')
+              
+              Datenwerte=[]
+              mydate = []
+              mytime = []
+              # Schleifen über alle Zeilen der CSV-Datei: Daten in Liste einlesen
+              for line in cr:
+                try:
+                  datum = line[0][:10]      # Datum
+                  uhrzeit= line[0][11:16]   # Uhrzeit
+                  wert = line[1][0:]      # Temperatur, Lux (oder später Ph-Wert)
+                  Datenwerte.append(wert)
+                  mydate.append(datum)
+                  mytime.append(uhrzeit)
+                  
+                except:
+                  print("Syntaxfehler bei Dateiauslesen")
+
+            # begrenzet die Anzahl der gezeigten Werte (kann später dazu dienen, verschiedene Zeitäume zu zeigen
+
+            Datenwerte = Datenwerte[-ANZWERTE:]
+            mydate = mydate[-ANZWERTE:]
+            mytime = mytime[-ANZWERTE:]
+            ###################################################################################################
+            # liest die Temperaturdaten aus und zeichnet die Werte auf die Fläche:
+                  
+            x = 0
+            i = 0
+            Anzahl_Daten = len(Datenwerte)
+
+
+            for wert in Datenwerte:
+              # Zeichnet die Punkte:
+
+              t = float(wert)
+                          
+              ypunkt = int(H - (t- WMIN)  / (WMAX-WMIN) * bespH)    # definierte Y-Wert Außentemp für einzelnen Datenpunkt
+              
+              newx = x + XEIN
+              newy = ypunkt -YEIN
+              
+              pygame.gfxdraw.aacircle(Grafikfenster, newx, newy, 2, BLACK)
+              pygame.gfxdraw.filled_circle(Grafikfenster, newx, newy , 2 , BLACK)   # zeichnet Datenpunkt
+              
+                  
+            # Beschriftung der x-Achse:
+
+              if (x % 30) == 0 or x == 0:    # Beschriftung nur in bestimmten Abständen
+                txtDatum = mydate[i]
+                textsurf= myfont.render(txtDatum.encode("latin-1"),1,(0,0,0)) 
+                Grafikfenster.blit(textsurf,(x+ XEIN, H-YEIN + 30))
+                txtZeit= mytime[i]
+                textsurf= myfont.render(txtZeit.encode("latin-1"),1,(0,0,0)) 
+                Grafikfenster.blit(textsurf,(x+ XEIN, H-YEIN + 45))
+                pygame.draw.line(Grafikfenster, BLACK, (XEIN+ x, H - YEIN +10) , (XEIN + x, H - YEIN - 10), 2) # genaue Datumsmarkierung
+
+              
+
+              # zeichnet eine Linie zwischen den Punkten:                     
+              
+              if x != 0:
+                pygame.draw.line(Grafikfenster, BLACK, (oldx, oldy) , (newx, newy), 1) # Linie zwischen den Punkten
+
+
+              x = x + ((B-XEIN-XOEIN)/Anzahl_Daten)  # neue x-Position berechnet aus der Anzahl der Werte
+              x = int(x)
+              oldx = newx                   # merkt sich die vorherige Position, um beim nächsten Schritt eine Linie
+                                              # zwischen die Punkte ziehen zu können (siehe oben unter if:)
+              oldy = newy
+              i = i+1
+
+           
+
+            
+            
+            pygame.display.update()
+            while 1:                                                                # wartet auf Event
+                time.sleep(0.05)
+                event = pygame.event.wait()
+                if event.type == pygame.KEYDOWN or event.type == pygame.QUIT:
+                  pygame.quit()
+                  self.show()
+                  sys.exit()
+     
+        else:
+            print("Fehler")
+            
+#----------------------------------------------------------------------
+    def onCloseKindfenster(self, Kindfenster):          
+        """"""                                          
+        Kindfenster.destroy()
+        self.show()
+
+        #----------------------------------------------------------------------
+    def show(self):
+        """"""
+        self.fenster.update()
+        self.fenster.deiconify()
+
