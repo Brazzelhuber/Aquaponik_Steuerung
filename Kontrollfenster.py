@@ -637,39 +637,66 @@ class Kontrollpanel(object):
         
         Kindfenster = Tk.Toplevel()
         if param == "Logdatei":
-            Kindfenster.geometry("720x550")         # definiert Größe für Verlauffenster
+            Kindfenster.geometry("720x550+200+200")         # definiert Größe für Verlauffenster
             ca["Logeintrag"][1] = 0                   # setzt "Neuen Eintrag" wieder zurück
             
         else:
             #Kindfenster.geometry("270x550+825+265")         # definiert Größe für Verlauffenster
-            Kindfenster.geometry("280x550")
+            Kindfenster.geometry("280x550+200+100")
 
+##        if param == "T_außen":
+##            Kindfenster.title("Daten Außentemperatur") # Titel
+##            t = open('Tempdatenaussen.csv', 'r')         
+##        elif param == "T_Luft_unten":
+##            Kindfenster.title("Temperatur unten") # Titel
+##            t = open('Tempdateninnen_unten.csv', 'r')             
+##        elif param == "T_Luft_oben":
+##            Kindfenster.title("Temperatur oben") # Titel
+##            t = open('Tempdateninnen_oben.csv', 'r')             
+##        elif param == "T_Wasser1":
+##            Kindfenster.title("Temperatur Tank 1") # Titel
+##            t = open('Tempdaten_Wasser1.csv', 'r')             
+##        elif param == "T_Wasser2":
+##            Kindfenster.title("Temperatur Tank 2") # Titel
+##            t = open('Tempdaten_Wasser2.csv', 'r')             
+##        elif param == "Licht1":
+##            Kindfenster.title("Daten Luxwerte 1") # Titel
+##            t = open('Lichtdaten1.csv', 'r')         
+##        elif param == "Ph":
+##            Kindfenster.title("Daten Ph-Werte") # Titel
+##            t = open('Phwerte_Eichen.csv', 'r')     
+##        elif param == "Logdatei":
+##            Kindfenster.title("Logdatei") # Titel
+##            t = open('Logdatei.csv', 'r')         
+##        else:
+##            print("kein gültiger Paramter übergeben")
         if param == "T_außen":
             Kindfenster.title("Daten Außentemperatur") # Titel
-            t = open('Tempdatenaussen.csv', 'r')         # öffnet Datei
+            dat_nam =('Tempdatenaussen.csv')         
         elif param == "T_Luft_unten":
             Kindfenster.title("Temperatur unten") # Titel
-            t = open('Tempdateninnen_unten.csv', 'r')             # öffnet Datei
+            dat_nam =('Tempdateninnen_unten.csv')             
         elif param == "T_Luft_oben":
             Kindfenster.title("Temperatur oben") # Titel
-            t = open('Tempdateninnen_oben.csv', 'r')             # öffnet Datei
+            dat_nam =('Tempdateninnen_oben.csv')             
         elif param == "T_Wasser1":
             Kindfenster.title("Temperatur Tank 1") # Titel
-            t = open('Tempdaten_Wasser1.csv', 'r')             # öffnet Datei
+            dat_nam =('Tempdaten_Wasser1.csv')             
         elif param == "T_Wasser2":
             Kindfenster.title("Temperatur Tank 2") # Titel
-            t = open('Tempdaten_Wasser2.csv', 'r')             # öffnet Datei
+            dat_nam =('Tempdaten_Wasser2.csv')             
         elif param == "Licht1":
             Kindfenster.title("Daten Luxwerte 1") # Titel
-            t = open('Lichtdaten1.csv', 'r')         # öffnet Datei
+            dat_nam =('Lichtdaten1.csv')         
         elif param == "Ph":
             Kindfenster.title("Daten Ph-Werte") # Titel
-            t = open('Phwerte_Eichen.csv', 'r')         # öffnet Datei
+            dat_nam =('Phwerte_Eichen.csv')     
         elif param == "Logdatei":
             Kindfenster.title("Logdatei") # Titel
-            t = open('Logdatei.csv', 'r')         # öffnet Datei
+            dat_nam =('Logdatei.csv')         
         else:
             print("kein gültiger Paramter übergeben")
+
 
         
         def center(win):                                # zentriert das Datenfenster 
@@ -696,20 +723,39 @@ class Kontrollpanel(object):
 ##            result = messagebox.askokcancel( "Warnung",del_text)
 ##            print(result)
 
-        def welche_Daten(ee, Datei):
+        def welches_Datum(ee, Datei):
 
             datepick = Dp.MyDatePicker(widget = ee)
            
              
-        def print_it(mydate):
-            print(mydate.get())
+        def print_it(mydate, Datei, Datumsfenster):
+            
+            del_text = "Daten, älter als " + mydate.get() + " in Datei " + Datei + " wirklich löschen?"
+            result = messagebox.askokcancel( "Bitte bestätigen",del_text, parent = Datumsfenster)
+            if result == True:
+                myinput = open(dat_nam, 'r')
+                output = open('first_edit.csv', 'w')
+                writer = csv.writer(output)
+                dat_loesch = time.strptime(mydate.get(), "%d.%m.%Y")
+                for row in csv.reader(myinput):
+                    row_string =(str(row[0]))
+                    dat_string = row_string[0:10]
+                    dat_incsv = time.strptime(dat_string, "%d.%m.%Y")
+                    
+                    if dat_incsv > dat_loesch:
+                        writer.writerow(row)
+                myinput.close()
+                output.close()
+                os.remove("/home/pi/Programme/Aquaponik_Steuerung/"+Datei)
+                os.rename("/home/pi/Programme/Aquaponik_Steuerung/first_edit.csv", \
+                          "/home/pi/Programme/Aquaponik_Steuerung/"+Datei)
         
             
         def Daten_loeschen(Datei):
 
             mydate = Tk.StringVar()
             Datumsfenster = Tk.Toplevel()
-            Datumsfenster.geometry ("250x100")
+            Datumsfenster.geometry ("250x100+50+50")
             Datumsfenster.title("Datum zum Löschen")
            
 
@@ -719,13 +765,13 @@ class Kontrollpanel(object):
             ee = Tk.Entry(Datumsfenster, textvariable = mydate)
             ee.grid(row = 0, column =1, padx = 5, pady = 5 )
             ee.config(width =9)
-            mydate.trace("w", lambda name, index, mode, mydate=mydate: print_it(mydate))
-            ee.bind("<Button-1>", lambda event: welche_Daten(ee, Datei))
+            mydate.trace("w", lambda name, index, mode, mydate=mydate: print_it(mydate, dat_nam, Datumsfenster))
+            ee.bind("<Button-1>", lambda event: welches_Datum(ee, Datei))
             
     
         
 
-        center(Kindfenster)         
+        #center(Kindfenster)         
         Frame1 = Tk.Frame(Kindfenster)
 
 
@@ -760,7 +806,7 @@ class Kontrollpanel(object):
         
 
         # liest die Daten aus der jeweiligen CSV-Datei in eine Liste
-        
+        t = open (dat_nam, "r")
         cr = csv.reader(t)
        
 
