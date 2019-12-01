@@ -78,6 +78,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     if "Temp" in dateiname:
         Y_Delta = 5    # Delta von 5 Grad bei Temperaturen
         if "Wasser1" in dateiname: Titel = "Temperatur Fischtank 1"
+        elif "aussen" in dateiname: Titel = "Außentemperatur"
         
     elif "Licht" in dateiname:
         Titel ="Lichtintensität in Lux"

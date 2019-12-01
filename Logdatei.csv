@@ -1,75 +1,88 @@
-12.11.2019 17:50:28,normaler CHOP-Circle:  ein
-12.11.2019 17:50:37,normaler CHOP-Circle:  aus
-12.11.2019 18:47:46,normaler CHOP-Circle:  ein
-13.11.2019 11:57:49,normaler CHOP-Circle:  aus
-13.11.2019 12:02:05,normaler CHOP-Circle:  ein
-13.11.2019 12:03:28,normaler CHOP-Circle:  ein
-13.11.2019 12:12:56,normaler CHOP-Circle:  ein
-13.11.2019 12:13:29,normaler CHOP-Circle:  aus
-13.11.2019 12:13:46,normaler CHOP-Circle:  ein
-13.11.2019 12:24:46,normaler CHOP-Circle:  aus
-13.11.2019 12:25:00,normaler CHOP-Circle:  ein
-13.11.2019 12:25:19,normaler CHOP-Circle:  ein
-13.11.2019 12:25:27,normaler CHOP-Circle:  aus
-13.11.2019 12:25:39,normaler CHOP-Circle:  ein
-13.11.2019 12:26:21,normaler CHOP-Circle:  aus
-13.11.2019 12:30:34,normaler CHOP-Circle:  ein
-13.11.2019 12:36:35,normaler CHOP-Circle:  ein
-13.11.2019 12:36:55,normaler CHOP-Circle:  aus
-13.11.2019 12:37:06,normaler CHOP-Circle:  ein
-13.11.2019 12:37:40,normaler CHOP-Circle:  aus
-13.11.2019 12:37:48,Kühlung mit Bewässerung:  ein
-13.11.2019 12:38:03,Kühlung mit Bewässerung:  aus
-13.11.2019 12:38:08,normaler CHOP-Circle:  ein
-13.11.2019 12:40:44,Kühlung mit Bewässerung:  ein
-13.11.2019 12:40:44,normaler CHOP-Circle:  aus
-13.11.2019 12:42:32,Kühlung mit Bewässerung:  aus
-13.11.2019 12:42:32,normaler CHOP-Circle:  ein
-13.11.2019 17:24:05,normaler CHOP-Circle:  aus
-13.11.2019 17:24:26,Kühlung mit Bewässerung:  ein
-13.11.2019 17:24:43,Kühlung mit Bewässerung:  aus
-13.11.2019 17:24:58,normaler CHOP-Circle:  ein
-13.11.2019 17:25:19,Kühlung mit Bewässerung:  ein
-13.11.2019 17:25:19,normaler CHOP-Circle:  aus
-13.11.2019 17:26:53,Kühlung mit Bewässerung:  aus
-13.11.2019 17:26:53,normaler CHOP-Circle:  ein
-13.11.2019 18:31:50,normaler CHOP-Circle:  ein
-13.11.2019 19:56:19,normaler CHOP-Circle:  ein
-15.11.2019 12:41:32,normaler CHOP-Circle:  aus
-15.11.2019 12:41:46,normaler CHOP-Circle:  ein
-15.11.2019 12:49:54,normaler CHOP-Circle:  ein
-16.11.2019 17:48:04,normaler CHOP-Circle:  ein
-16.11.2019 17:59:28,normaler CHOP-Circle:  ein
-16.11.2019 18:00:48,normaler CHOP-Circle:  ein
-16.11.2019 18:09:52,normaler CHOP-Circle:  ein
-16.11.2019 18:22:22,normaler CHOP-Circle:  ein
-16.11.2019 18:23:53,normaler CHOP-Circle:  ein
-16.11.2019 18:25:51,normaler CHOP-Circle:  ein
-16.11.2019 18:26:35,normaler CHOP-Circle:  ein
-17.11.2019 09:51:33,normaler CHOP-Circle:  ein
-17.11.2019 09:54:06,normaler CHOP-Circle:  ein
-17.11.2019 09:55:54,normaler CHOP-Circle:  ein
-17.11.2019 09:56:42,normaler CHOP-Circle:  ein
-17.11.2019 11:24:33,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  22.12 ,Tw2 = 0 ,Ta =   7.44"
-17.11.2019 11:26:05,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  22.06 ,Tw2 = 0 ,Ta =   7.06"
-17.11.2019 11:27:00,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  22.12 ,Tw2 = 0 ,Ta =   6.69"
-17.11.2019 11:28:15,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  22.12 ,Tw2 = 0 ,Ta =   6.62"
-17.11.2019 15:31:13,"normaler CHOP-Circle:  aus -- To = 0, Tu = 0 ,Tw1 =  25.44 ,Tw2 = 0 ,Ta =   5.81"
-17.11.2019 15:31:13,"Kühlung mit Bewässerung:  ein -- To = 0, Tu = 0 ,Tw1 =  25.44 ,Tw2 = 0 ,Ta =   5.81"
-17.11.2019 15:31:37,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  24.94 ,Tw2 = 0 ,Ta =   5.81"
-17.11.2019 15:31:37,"Kühlung mit Bewässerung:  aus -- To = 0, Tu = 0 ,Tw1 =  24.94 ,Tw2 = 0 ,Ta =   5.81"
-17.11.2019 15:32:22,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  23.81 ,Tw2 = 0 ,Ta =   5.81"
-17.11.2019 16:27:30,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.50 ,Tw2 = 0 ,Ta =  85.00"
-17.11.2019 16:34:37,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.44 ,Tw2 = 0 ,Ta =   5.19"
-17.11.2019 16:38:34,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.12"
-17.11.2019 16:46:34,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.12"
-17.11.2019 16:47:05,"normaler CHOP-Circle:  aus -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.06"
-17.11.2019 16:47:10,"Kühlung mit Verieselung:  ein -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.12"
-17.11.2019 16:47:38,"Kühlung mit Verieselung:  aus -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.12"
-17.11.2019 16:47:44,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   5.12"
-17.11.2019 17:52:58,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.31 ,Tw2 = 0 ,Ta =   4.56"
-17.11.2019 18:15:32,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.44 ,Tw2 = 0 ,Ta =  85.00"
-17.11.2019 18:33:46,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.44 ,Tw2 = 0 ,Ta =   4.62"
-17.11.2019 18:49:20,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.38 ,Tw2 = 0 ,Ta =   4.31"
-19.11.2019 12:23:51,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  21.69 ,Tw2 = 0 ,Ta =   5.81"
-19.11.2019 12:55:08,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  22.19 ,Tw2 = 0 ,Ta =   5.50"
+01.12.2019 10:11:47,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   4.62"
+01.12.2019 10:12:21,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   4.56"
+01.12.2019 10:12:54,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   4.31"
+01.12.2019 10:13:44,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   4.19"
+01.12.2019 10:14:30,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   4.12"
+01.12.2019 10:16:03,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   3.50"
+01.12.2019 10:16:40,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   3.56"
+01.12.2019 10:18:00,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   3.50"
+01.12.2019 10:18:56,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   3.38"
+01.12.2019 10:21:18,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  19.94 ,Tw2 = 0 ,Ta =   3.25"
+01.12.2019 10:22:44,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   3.06"
+01.12.2019 10:24:56,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.88"
+01.12.2019 10:25:48,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.81"
+01.12.2019 10:28:24,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.81"
+01.12.2019 10:30:08,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.69"
+01.12.2019 10:30:49,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.69"
+01.12.2019 10:31:59,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   2.81"
+01.12.2019 10:33:34,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   3.06"
+01.12.2019 10:34:14,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   3.00"
+01.12.2019 10:37:56,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.31"
+01.12.2019 10:41:58,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.00 ,Tw2 = 0 ,Ta =   3.50"
+01.12.2019 10:43:05,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.69"
+01.12.2019 10:44:03,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.00"
+01.12.2019 10:44:51,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.31"
+01.12.2019 10:46:07,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.50"
+01.12.2019 10:47:21,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.62"
+01.12.2019 10:50:09,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.75"
+01.12.2019 10:53:38,"normaler CHOP-Circle:  aus -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.75"
+01.12.2019 10:53:47,"Kühlung mit Bewässerung:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.75"
+01.12.2019 10:53:55,"Kühlung mit Bewässerung:  aus -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.81"
+01.12.2019 10:54:01,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.81"
+01.12.2019 11:04:03,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.44"
+01.12.2019 11:04:29,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.31"
+01.12.2019 11:07:50,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.44"
+01.12.2019 11:08:20,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.31"
+01.12.2019 11:09:23,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.38"
+01.12.2019 11:13:46,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   3.31"
+01.12.2019 11:20:40,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.31"
+01.12.2019 11:22:42,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.19"
+01.12.2019 11:23:44,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.25"
+01.12.2019 11:27:59,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.69"
+01.12.2019 11:32:01,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   7.00"
+01.12.2019 11:34:46,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   9.00"
+01.12.2019 11:37:34,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   9.12"
+01.12.2019 11:38:25,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   9.25"
+01.12.2019 11:39:06,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   9.44"
+01.12.2019 11:41:47,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   9.00"
+01.12.2019 11:48:48,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   7.25"
+01.12.2019 11:51:00,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   7.00"
+01.12.2019 11:55:36,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.06"
+01.12.2019 11:58:45,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.94"
+01.12.2019 11:59:35,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.06"
+01.12.2019 12:00:43,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.12"
+01.12.2019 12:01:52,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.12"
+01.12.2019 12:05:02,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.94"
+01.12.2019 12:05:34,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:06:39,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.56"
+01.12.2019 12:07:37,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:09:10,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.81"
+01.12.2019 12:10:03,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.00"
+01.12.2019 12:10:27,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   5.00"
+01.12.2019 12:13:37,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.94"
+01.12.2019 12:15:10,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.94"
+01.12.2019 12:16:21,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.69"
+01.12.2019 12:19:31,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.69"
+01.12.2019 12:20:12,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.69"
+01.12.2019 12:23:50,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.81"
+01.12.2019 12:24:56,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:25:38,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:26:06,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.81"
+01.12.2019 12:26:30,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.88"
+01.12.2019 12:27:44,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:28:55,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.81"
+01.12.2019 12:29:18,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.81"
+01.12.2019 12:31:21,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:32:19,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.69"
+01.12.2019 12:33:15,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.75"
+01.12.2019 12:38:58,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.12"
+01.12.2019 12:40:26,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.12"
+01.12.2019 12:41:10,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.12"
+01.12.2019 12:44:09,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.06"
+01.12.2019 12:45:11,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.25"
+01.12.2019 12:47:18,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.31"
+01.12.2019 12:49:43,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.44"
+01.12.2019 12:50:31,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.56"
+01.12.2019 12:52:51,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.56"
+01.12.2019 12:53:47,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.62"
+01.12.2019 12:58:28,"normaler CHOP-Circle:  ein -- To = 0, Tu = 0 ,Tw1 =  20.06 ,Tw2 = 0 ,Ta =   4.56"

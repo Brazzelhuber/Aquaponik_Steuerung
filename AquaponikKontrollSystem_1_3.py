@@ -1,5 +1,5 @@
 #!/usr/bin/python3.5
-#coding=utf-8
+# coding=utf-8
 # Aquaponik-Kontrollsystem.py
 # Version 1.3
 # Diese Version ist gegenüber Vorgängerversion in Module aufgeteilt. Diese müssen sich im selben Ordner befinden, es ist
@@ -13,7 +13,8 @@
 ##                                           gpiopin=4      
 ##
 ##
-## für den Lichtsensor muss man in raspi-config unter Interface Options den I2C Bus aktivieren
+## für den Lichtsensor und die Hardwareclock (tiny RTC)
+## muss man in raspi-config unter Interface Options den I2C Bus aktivieren
 ##
 
 from __future__ import division, print_function  # Maßnahme um pygame mit Python 3.x kompatible zu machen

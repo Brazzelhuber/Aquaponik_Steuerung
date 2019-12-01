@@ -31,7 +31,7 @@ import Datepicker as Dp
 
 # Höhe und Breite des Kontrollfensters
 K_H = 768
-K_B = 1366
+K_B = 1360
 
 ##port = 1                # (0 for rev.1, 1 for rev 2!)
 ##bus = SMBus(port)
@@ -49,7 +49,7 @@ class Kontrollpanel(object):
  
     #----------------------------------------------------------------------
     def __init__(self, parent,  bg_Farbe, control_array):
-        pygame.init()                   # initiert die pygame-Bibliothek
+##        pygame.init()                   # initiert die pygame-Bibliothek
 
         
         """Constructor"""
@@ -58,7 +58,7 @@ class Kontrollpanel(object):
         parent.title("Aquaponik Kontrollpanel")
         parent.geometry('%dx%d+%d+%d' % (K_B, K_H,0,0))
         
-        self.tlf= Tk.LabelFrame(text = "Temperatur/Stromverbrauch", \
+        self.tlf= Tk.LabelFrame(text = "Temperatur", \
                                         bd = 5, height =350, width =480, relief = "groove")
         
         self.tlf.grid_propagate(0)   # zwingt den Labelframe die vorgegebenen Maße zu benutzen
@@ -70,7 +70,7 @@ class Kontrollpanel(object):
         self.mlf.grid_propagate(0)
 
 
-        self.slf= Tk.LabelFrame(text = "Licht", \
+        self.slf= Tk.LabelFrame(text = "Licht - Strom", \
                                         bd = 5, height =250, width =480, relief = "groove", )
         
         self.slf.grid_propagate(0)
@@ -83,25 +83,36 @@ class Kontrollpanel(object):
 
 
         self.qlf = Tk.LabelFrame(text = "Wasserqualität", \
-                                        bd = 5, height =250, width =510, relief = "groove", )
+                                        bd = 5, height =250, width =340, relief = "groove", )
         
         self.qlf.grid_propagate(0)
 
         
         self.plf = Tk.LabelFrame(text = "Ventileinzelsteuerung",\
-                                       bd = 5, height =350, width =510, relief = "groove" )
+                                       bd = 5, height =350, width =340, relief = "groove" )
        
         self.plf.grid_propagate(0)
 
+        self.xlf = Tk.LabelFrame(text = "was auch immer",\
+                                       bd = 5, height =250, width =165, relief = "groove" )
+       
+        self.xlf.grid_propagate(0)
+        
+        self.flf = Tk.LabelFrame(text = "Erdfeuchte",\
+                                       bd = 5, height =350, width =165, relief = "groove" )
+       
+        self.flf.grid_propagate(0)
 
         # positioniert die Labelframes auf dem Fenster
         
-        self.tlf.grid(row = 1, column = 0, padx = 5, pady =5 ,sticky = Tk.W + Tk.N)
-        self.mlf.grid(row = 1, column = 1, padx = 5, pady =5, sticky = Tk.W + Tk.N)
-        self.slf.grid(row = 0, column = 0, padx = 5, pady =5, sticky = Tk.W + Tk.N)
-        self.wlf.grid(row = 0, column = 1, padx = 5, pady =5, sticky = Tk.W + Tk.N)
-        self.qlf.grid(row = 0, column = 2, padx = 5, pady =5, sticky = Tk.W + Tk.N)
-        self.plf.grid(row = 1, column = 2, padx = 5, pady =5, sticky = Tk.W + Tk.N)
+        self.tlf.grid(row = 1, column = 0, padx = 3, pady =5 ,sticky = Tk.W + Tk.N)
+        self.mlf.grid(row = 1, column = 1, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.slf.grid(row = 0, column = 0, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.wlf.grid(row = 0, column = 1, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.qlf.grid(row = 0, column = 2, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.plf.grid(row = 1, column = 2, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.xlf.grid(row = 0, column = 3, padx = 3, pady =5, sticky = Tk.W + Tk.N)
+        self.flf.grid(row = 1, column = 3, padx = 3, pady =5, sticky = Tk.W + Tk.N)
 #########################################################################################
       
 
@@ -118,10 +129,12 @@ class Kontrollpanel(object):
         
         self.Abk0 = Tk.Label ( text = "  Abkürzungen:")
         self.Abk0.grid(row = 3, column = 1, sticky = Tk.E)
-        self.Abk1 = Tk.Label ( text = "WQ = Wasserquelle | FT = Fischtank | VR = Verieselung | HB = Hochbeet")
+        self.Abk1 = Tk.Label ( text = "WQ = Wasserquelle | FT = Fischtank")
         self.Abk1.grid(row = 3, column = 2, sticky = Tk.W)
-        self.Abk2 = Tk.Label ( text = "ST = Sumptank | LU = Lufteinlass unten | LO = Lufteinlass oben" )
+        self.Abk2 = Tk.Label ( text = "ST = Sumptank | VR = Verieselung | HB = Hochbeet" )
         self.Abk2.grid(row = 4, column = 2, sticky = Tk.W)
+        self.Abk3 = Tk.Label ( text = "LU = Lufteinlass unten | LO = Lufteinlass oben" )
+        self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
 ### Fischbild: lassen wir ertmal
@@ -144,36 +157,42 @@ class Kontrollpanel(object):
 ##        print("habe fertig")
 
 ############################################################################################
+##        # Erdfeuchtelabel:
+##        # Beschriftung:
+##        label_F_lo =Tk.Label(self.flf, text = "Erfeuchte 1:")
+##        label_F_lo.configure(bg = bg_Farbe)
+##        label_F_lo.grid(row = 0, column = 0, padx = 5, pady = 5, ipadx = sticky =Tk.W)
+
+############################################################################################
        # Temperatur Box
 ############################################################################################
-        # Überschrift:
         
-        label_T_U =Tk.Label(self.tlf, text = "Temperatur\n=========")
-        label_T_U.configure(bg = bg_Farbe)
-        label_T_U.grid(row = 0, column = 0, padx = 5, pady = 5, sticky =Tk.W)
         
         # Luft oben:
         ############
         
         # Beschriftung:
-        label_T_lo =Tk.Label(self.tlf, text = "Luft oben:")
+        label_T_lo =Tk.Label(self.tlf, text = "Luft oben:          ")
         label_T_lo.configure(bg = bg_Farbe)
         label_T_lo.grid(row = 1, column = 0, padx = 5, pady = 5, sticky =Tk.W)
 
         # Anzeige des Wertes:
-        self.tlf.label_lo = Tk.Label(self.tlf, width = 4, height = 1, bg = "white", relief = "sunk")
+        self.tlf.label_lo = Tk.Label(self.tlf, width = 12, height = 1, bg = "white", relief = "sunk")
         self.tlf.label_lo.grid(row=1, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
+        self.tlf.label_space =  Tk.Label(self.tlf, width = 2)
+        self.tlf.label_space.grid(row = 1, column = 2)
+##        self.frame1.grid_columnconfigure(3, minsize=40)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_lo_d = Tk.Button(self.tlf, text="Daten", \
                               command= lambda: self.Datenfenster(control_array,"T_Luft_oben"))
-        btn_T_lo_d.grid(row = 1, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
+        btn_T_lo_d.grid(row = 1, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_lo_g = Tk.Button(self.tlf, text="Grafik", \
                               command= lambda: self.Grafikfenster("T_Luft_oben"))
-        btn_T_lo_g.grid(row = 1, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
-
+        btn_T_lo_g.grid(row = 1, column = 4, padx = 5, pady = 7, ipadx = 17, sticky =Tk.W)
+        
         # Luft unten:
         #############
 
@@ -182,18 +201,18 @@ class Kontrollpanel(object):
         label_T_iu.grid(row = 2, column = 0, padx = 5, pady = 5, sticky =Tk.W)
 
          # Anzeige des Wertes:
-        self.tlf.label_lu = Tk.Label(self.tlf, width = 4, height = 1, bg = "white", relief = "sunk")
+        self.tlf.label_lu = Tk.Label(self.tlf, width = 12, height = 1, bg = "white", relief = "sunk")
         self.tlf.label_lu.grid(row=2, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_lu_d = Tk.Button(self.tlf, text="Daten", \
                               command= lambda: self.Datenfenster(control_array,"T_Luft_unten"))
-        btn_T_lu_d.grid(row = 2, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
+        btn_T_lu_d.grid(row = 2, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_lu_g = Tk.Button(self.tlf, text="Grafik", \
                               command= lambda: self.Grafikfenster("T_Luft_unten"))
-        btn_T_lu_g.grid(row = 2, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_T_lu_g.grid(row = 2, column =4, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
 
         # Wasser Tank 1:
         #############
@@ -203,18 +222,18 @@ class Kontrollpanel(object):
         label_T_w1.configure(bg = bg_Farbe)
         
          # Anzeige des Wertes:
-        self.tlf.label_w1 = Tk.Label(self.tlf, width = 4, height = 1, bg = "white", relief = "sunk")
+        self.tlf.label_w1 = Tk.Label(self.tlf, width = 12, height = 1, bg = "white", relief = "sunk")
         self.tlf.label_w1.grid(row=3, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_w1_d = Tk.Button(self.tlf, text="Daten", \
                               command= lambda: self.Datenfenster(control_array,"T_Wasser1"))
-        btn_T_w1_d.grid(row = 3, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
+        btn_T_w1_d.grid(row = 3, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_w1_g = Tk.Button(self.tlf, text="Grafik", \
                               command= lambda: self.Grafikfenster("T_Wasser1"))
-        btn_T_w1_g.grid(row = 3, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_T_w1_g.grid(row = 3, column =4, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
 
 
 
@@ -225,18 +244,18 @@ class Kontrollpanel(object):
         label_T_w2.configure(bg = bg_Farbe)
 
           # Anzeige des Wertes:
-        self.tlf.label_w2 = Tk.Label(self.tlf, width = 4, height = 1, bg = "white", relief = "sunk")
+        self.tlf.label_w2 = Tk.Label(self.tlf, width = 12, height = 1, bg = "white", relief = "sunk")
         self.tlf.label_w2.grid(row=4, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_w2_d = Tk.Button(self.tlf, text="Daten", \
                               command= lambda: self.Datenfenster(control_array,"T_Wasser2"))
-        btn_T_w2_d.grid(row = 4, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
+        btn_T_w2_d.grid(row = 4, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_w2_g = Tk.Button(self.tlf, text="Grafik", \
                               command= lambda: self.Grafikfenster("T_Wasser2"))
-        btn_T_w2_g.grid(row = 4, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_T_w2_g.grid(row = 4, column =4, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
 
         # außen:
         ############
@@ -246,99 +265,84 @@ class Kontrollpanel(object):
         label_T_a.configure(bg = bg_Farbe)
 
         # Anzeige des Wertes:
-        self.tlf.label_a = Tk.Label(self.tlf, width = 4, height = 1, bg = "white", relief = "sunk")
+        self.tlf.label_a = Tk.Label(self.tlf, width = 12, height = 1, bg = "white", relief = "sunk")
         self.tlf.label_a.grid(row=5, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_a_d = Tk.Button(self.tlf, text="Daten", \
                               command= lambda: self.Datenfenster(control_array,"T_außen"))
-        btn_T_a_d.grid(row = 5, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
+        btn_T_a_d.grid(row = 5, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_a_g = Tk.Button(self.tlf, text="Grafik", \
                               command= lambda: self.Grafikfenster("T_außen"))
-        btn_T_a_g.grid(row = 5, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
-        
-##        Bild = Tk.PhotoImage(file="loeschen.bmp", master= self.tlf)
-##        btn_T_a_l = Tk.Button(self.tlf, image = Bild)
-##        btn_T_a_l.grid(row = 5, column =4, padx = 5, pady = 5, sticky =Tk.W)
-        ### Fischbild: lassen wir ertmal
+        btn_T_a_g.grid(row = 5, column =4, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
 
-##        canvas_width = 25
-##        canvas_height = 25
-##
-##        canvas = Tk.Canvas(self.tlf, 
-##                   width=canvas_width, 
-##                   height=canvas_height)
-##        canvas.grid(row = 5, column =4, padx = 5, pady = 5, sticky =Tk.W)
-##        
-##        mysize =(canvas_width,canvas_height)
-##        img = Image.open("loeschen.bmp")
-##        img = img.resize(mysize, PIL.Image.ANTIALIAS)
-##        canvas.image = ImageTk.PhotoImage(img)
-##        blank = canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
-##        canvas.tag_bind(blank, "<Button-1>", self.Datenloeschen())
-##        
-        
-         # Überschrift:
-        
-        label_T_U =Tk.Label(self.tlf, text = "Strom\n=========")
-        label_T_U.configure(bg = bg_Farbe)
-        label_T_U.grid(row = 6, column = 0, padx = 5, pady = 5, sticky =Tk.W)
-
-         ########### Ladestrom
-
-        self.tlf.label_Amp = Tk.Label(self.tlf,text = "Ladestrom:  " )
-        self.tlf.label_Amp.grid(row=7, column = 0, padx = 5, pady = 15, sticky =Tk.W)
-        self.tlf.label_Amp.configure(bg = bg_Farbe)
-
-        self.tlf.labelamp = Tk.LabelFrame(self.tlf, width = 100, height = 25, bg = "white")
-        self.tlf.labelamp.grid(row=7, column = 1 , sticky = Tk.W+Tk.E)
-
-        btn_A_v= Tk.Button(self.tlf, text="Daten", \
-                               command= lambda: self.Datenfenster(control_array,"Volt"))
-        btn_A_v.grid(row = 7, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.W)
-
-        btn_A_g = Tk.Button(self.tlf, text="Grafik", \
-                                command= lambda: self.Grafikfenster("Volt"))
-        btn_A_g.grid(row = 7, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
 
 ###########################################################################################
         # Licht Box
 ###########################################################################################
         # Anzeige Sonnenaufgang und Untergang:
 
+        label_T_L =Tk.Label(self.slf, text = "Licht\n=========")
+        label_T_L.configure(bg = bg_Farbe)
+        label_T_L.grid(row = 0, column = 0, padx = 5, pady = 7, sticky =Tk.W)
+
         label_auf = Tk.Label(self.slf,text = "Sonnenaufgang:" )
-        label_auf.grid(row=0, column = 0, padx = 5, pady = 15, sticky =Tk.W)
+        label_auf.grid(row=1, column = 0, padx = 5, pady = 7, sticky =Tk.W)
         label_auf.configure(bg = bg_Farbe)
 
         self.slf.label_a = Tk.Label(self.slf, width = 10, height = 1, bg = "white", relief ="sunk")
-        self.slf.label_a.grid(row=0, column = 1 , ipady = 4, sticky = Tk.W+Tk.E)
+        self.slf.label_a.grid(row=1, column = 1 , ipady = 4, sticky = Tk.W+Tk.E)
 
         
         label_unter = Tk.Label(self.slf,text = "Sonnenuntergang:" )
-        label_unter.grid(row=0, column = 2, padx = 5, pady = 15, sticky =Tk.W)
+        label_unter.grid(row=1, column = 2, padx = 5, pady = 7, sticky =Tk.W)
         label_unter.configure(bg = bg_Farbe)
 
         self.slf.label_u = Tk.Label(self.slf, width = 10, height = 1, bg = "white", relief ="sunk")
-        self.slf.label_u.grid(row=0, column = 3 , ipady = 4, sticky = Tk.W+Tk.E)
+        self.slf.label_u.grid(row=1, column = 3 , ipady = 4, sticky = Tk.W+Tk.E)
 
         
         ########## Lichtmessung
         label_licht = Tk.Label(self.slf,text = "Luxwert 1:     " )
-        label_licht.grid(row=1, column = 0, padx = 5, pady = 15, sticky =Tk.W)
+        label_licht.grid(row=2, column = 0, padx = 5, pady = 7, sticky =Tk.W)
         label_licht.configure(bg = bg_Farbe)
 
-        self.slf.label_licht = Tk.Label(self.slf, width = 10, height = 1, bg = "white", relief ="sunk")
-        self.slf.label_licht.grid(row=1, column = 1 , ipady = 4, sticky = Tk.W+Tk.E)
+        self.slf.label_licht = Tk.Label(self.slf, width = 12, height = 1, bg = "white", relief ="sunk")
+        self.slf.label_licht.grid(row=2, column = 1 , ipady = 3, sticky = Tk.W)
 
         btn_Licht_v= Tk.Button(self.slf, text="Daten", \
                                command= lambda: self.Datenfenster(control_array,"Licht1"))
-        btn_Licht_v.grid(row = 1, column =2, padx = 5, pady = 15, ipadx = 7, sticky =Tk.E)
+        btn_Licht_v.grid(row = 2, column =2, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_Licht_g = Tk.Button(self.slf, text="Grafik", \
                                 command= lambda: self.Grafikfenster("Licht1"))
-        btn_Licht_g.grid(row = 1, column =3, padx = 5, pady = 15, ipadx = 17, sticky =Tk.W)
+        btn_Licht_g.grid(row = 2, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+
+        ##        
+         # Überschrift:
+        
+        label_T_U =Tk.Label(self.slf, text = "Strom\n=========")
+        label_T_U.configure(bg = bg_Farbe)
+        label_T_U.grid(row = 3, column = 0, padx = 5, pady = 7, sticky =Tk.W)
+
+         ########### Ladestrom
+
+        self.slf.label_Amp = Tk.Label(self.slf,text = "Batterie (Volt):  " )
+        self.slf.label_Amp.grid(row=4, column = 0, padx = 5, pady = 5, sticky =Tk.W)
+        self.slf.label_Amp.configure(bg = bg_Farbe)
+
+        self.slf.labelamp = Tk.Label(self.slf, width = 12, height = 1, bg = "white", relief ="sunk")
+        self.slf.labelamp.grid(row=4, column = 1 , ipady = 3, sticky = Tk.W+Tk.E)
+
+        btn_A_v= Tk.Button(self.slf, text="Daten", \
+                               command= lambda: self.Datenfenster(control_array,"Volt"))
+        btn_A_v.grid(row = 4, column =2, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
+
+        btn_A_g = Tk.Button(self.slf, text="Grafik", \
+                                command= lambda: self.Grafikfenster("Volt"))
+        btn_A_g.grid(row = 4, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
         
 
 ############################################################################################
@@ -520,16 +524,16 @@ class Kontrollpanel(object):
                                 command= lambda: self.Grafikfenster("O2"))
         btn_O_g.grid(row = 1, column =3, padx = 5, pady = 15, ipadx = 17, sticky =Tk.W)
 
-        self.qlf.check_btn_O_an = Tk.Button(self.qlf, text = "Sauerstoff\npumpe\nanschalten", \
-                            relief = "groove", width = 10, height = 3 , anchor = Tk.W)
-        self.qlf.check_btn_O_an.grid(row = 2, column =0, padx = 12, pady = 10 ,
-                            ipady= 3,sticky =Tk.W+ Tk.E)
-        self.qlf.check_btn_O_an.bind("<Button-1>", lambda event,
-                             var=control_array: Ch.ButtonCheck(self.qlf.check_btn_O_an,control_array, None))
-        self.qlf.Anzeige_O = Tk.Label(self.qlf, text = "Sauerstoff\npumpe\nist aus",  \
-                            relief = "groove", width = 10, height = 3 )
-        self.qlf.Anzeige_O.grid(row = 2, column =1, padx = 10, pady = 10 ,
-                             ipady = 7,sticky =Tk.W+ Tk.E)
+##        self.qlf.check_btn_O_an = Tk.Button(self.qlf, text = "Sauerstoff\npumpe\nanschalten", \
+##                            relief = "groove", width = 10, height = 3 , anchor = Tk.W)
+##        self.qlf.check_btn_O_an.grid(row = 2, column =0, padx = 12, pady = 10 ,
+##                            ipady= 3,sticky =Tk.W+ Tk.E)
+##        self.qlf.check_btn_O_an.bind("<Button-1>", lambda event,
+##                             var=control_array: Ch.ButtonCheck(self.qlf.check_btn_O_an,control_array, None))
+##        self.qlf.Anzeige_O = Tk.Label(self.qlf, text = "Sauerstoff\npumpe\nist aus",  \
+##                            relief = "groove", width = 10, height = 3 )
+##        self.qlf.Anzeige_O.grid(row = 2, column =1, padx = 10, pady = 10 ,
+##                             ipady = 7,sticky =Tk.W+ Tk.E)
 
         
 ###########################################################################################################
@@ -621,7 +625,70 @@ class Kontrollpanel(object):
         self.plf.Anzeige_LOHP.grid(row = 6, column =1, padx = 10, pady = 5 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
 
-    
+        ##########################################################################################
+        # Erdfeuchtelabel:
+        # Beschriftung:
+        label_F1 =Tk.Label(self.flf, text = "Erdfeuchte 1",relief = "groove", width = 12, height = 1)
+        label_F1.configure(bg = bg_Farbe)
+        label_F1.grid(row = 0, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F1 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F1.configure(bg = "blue")
+        labelA_F1.grid(row = 0, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        label_F2 =Tk.Label(self.flf, text = "Erdfeuchte 2",relief = "groove", width = 12, height = 1)
+        label_F2.configure(bg = bg_Farbe)
+        label_F2.grid(row = 1, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F2 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F2.configure(bg = "lightblue")
+        labelA_F2.grid(row = 1, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        label_F3 =Tk.Label(self.flf, text = "Erdfeuchte 3",relief = "groove", width = 12, height = 1)
+        label_F3.configure(bg = bg_Farbe)
+        label_F3.grid(row = 2, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F3 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F3.configure(bg = "green")
+        labelA_F3.grid(row = 2, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        label_F4 =Tk.Label(self.flf, text = "Erdfeuchte 4",relief = "groove", width = 12, height = 1)
+        label_F4.configure(bg = bg_Farbe)
+        label_F4.grid(row = 3, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F4 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F4.configure(bg = "green")
+        labelA_F4.grid(row = 3, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        label_F5 =Tk.Label(self.flf, text = "Erdfeuchte 5",relief = "groove", width = 12, height = 1)
+        label_F5.configure(bg = bg_Farbe)
+        label_F5.grid(row = 4, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F5 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F5.configure(bg = "PaleVioletRed2")
+        labelA_F5.grid(row = 4, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        label_F6 =Tk.Label(self.flf, text = "Erdfeuchte 6",relief = "groove", width = 12, height = 1)
+        label_F6.configure(bg = bg_Farbe)
+        label_F6.grid(row = 5, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelA_F6 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        labelA_F6.configure(bg = "red")
+        labelA_F6.grid(row = 5, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+
+        labelAE1 =Tk.Label(self.flf, text = "sehr feucht", width = 12)
+        labelAE1.configure(bg = "blue", fg = "white")
+        labelAE1.grid(row = 6, column = 0, padx = 3, pady = 1,  sticky =Tk.W)
+        labelAE2 =Tk.Label(self.flf, text = "richtig", width = 12)
+        labelAE2.configure(bg = "green", fg = "white")
+        labelAE2.grid(row = 7, column = 0, padx = 3, pady = 1,  sticky =Tk.W)
+        labelAE3 =Tk.Label(self.flf, text = "sehr trocken", width = 12)
+        labelAE3.configure(bg = "red", fg = "white")
+        labelAE3.grid(row = 8, column = 0, padx = 3, pady = 1,  sticky =Tk.W)
+
+
+        
+        
 
 ################################################################################################################
     
@@ -642,34 +709,9 @@ class Kontrollpanel(object):
             
         else:
             #Kindfenster.geometry("270x550+825+265")         # definiert Größe für Verlauffenster
-            Kindfenster.geometry("280x550+200+100")
+            Kindfenster.geometry("280x550+500+100")
 
-##        if param == "T_außen":
-##            Kindfenster.title("Daten Außentemperatur") # Titel
-##            t = open('Tempdatenaussen.csv', 'r')         
-##        elif param == "T_Luft_unten":
-##            Kindfenster.title("Temperatur unten") # Titel
-##            t = open('Tempdateninnen_unten.csv', 'r')             
-##        elif param == "T_Luft_oben":
-##            Kindfenster.title("Temperatur oben") # Titel
-##            t = open('Tempdateninnen_oben.csv', 'r')             
-##        elif param == "T_Wasser1":
-##            Kindfenster.title("Temperatur Tank 1") # Titel
-##            t = open('Tempdaten_Wasser1.csv', 'r')             
-##        elif param == "T_Wasser2":
-##            Kindfenster.title("Temperatur Tank 2") # Titel
-##            t = open('Tempdaten_Wasser2.csv', 'r')             
-##        elif param == "Licht1":
-##            Kindfenster.title("Daten Luxwerte 1") # Titel
-##            t = open('Lichtdaten1.csv', 'r')         
-##        elif param == "Ph":
-##            Kindfenster.title("Daten Ph-Werte") # Titel
-##            t = open('Phwerte_Eichen.csv', 'r')     
-##        elif param == "Logdatei":
-##            Kindfenster.title("Logdatei") # Titel
-##            t = open('Logdatei.csv', 'r')         
-##        else:
-##            print("kein gültiger Paramter übergeben")
+
         if param == "T_außen":
             Kindfenster.title("Daten Außentemperatur") # Titel
             dat_nam =('Tempdatenaussen.csv')         
@@ -710,25 +752,35 @@ class Kontrollpanel(object):
 
         def Schluss(window):
             window.destroy()
+            
+        def daten_zeigen(dat_nam, listbox):
+             # liest die Daten aus der jeweiligen CSV-Datei in eine Liste
+            t = open (dat_nam, "r")
+            cr = csv.reader(t)
+           
 
-##            
-##        def tatsaechlich_loeschen(Lwindow, Kindfen):
-##            #del_text = Lwindow.get([0] + my_list[1]+my_list[2] + "löschen?"
-##            my_list = Lwindow.get()
-##            Tag = my_list[0]
-##            Monat = my_list[1]
-##            Jahr = my_list[2]
-##            del_text = "Daten, älter als " + Tag + "." + Monat +"." + Jahr + " wirklich löschen?"
-##            Kindfen.withdraw()
-##            result = messagebox.askokcancel( "Warnung",del_text)
-##            print(result)
+            for line in cr:
+                myline = str(line)
+                datum = myline[2:12]
+                Zeit = myline[13:18]
+                Temp = myline[24:len(myline)]
+                Temp = Temp.replace("'","")
+                Temp = Temp.replace("]","")
+                
+                Wert = Temp
+                
+                listbox.insert("end",datum + "    " + Zeit + "    " + Wert)    # fügt die Werte in das Scrollfenster ein
+            listbox.yview_moveto(1.0)
+            t.close()
+
 
         def welches_Datum(ee, Datei):
 
             datepick = Dp.MyDatePicker(widget = ee)
            
-             
-        def print_it(mydate, Datei, Datumsfenster):
+# löscht Datensätze in Datei, die älter sind, als mydate:
+
+        def print_it(mydate, Datei, Datumsfenster, listbox):
             
             del_text = "Daten, älter als " + mydate.get() + " in Datei " + Datei + " wirklich löschen?"
             result = messagebox.askokcancel( "Bitte bestätigen",del_text, parent = Datumsfenster)
@@ -742,20 +794,24 @@ class Kontrollpanel(object):
                     dat_string = row_string[0:10]
                     dat_incsv = time.strptime(dat_string, "%d.%m.%Y")
                     
-                    if dat_incsv > dat_loesch:
+                    if dat_incsv >= dat_loesch:
                         writer.writerow(row)
                 myinput.close()
                 output.close()
                 os.remove("/home/pi/Programme/Aquaponik_Steuerung/"+Datei)
                 os.rename("/home/pi/Programme/Aquaponik_Steuerung/first_edit.csv", \
                           "/home/pi/Programme/Aquaponik_Steuerung/"+Datei)
-        
+                Datumsfenster.destroy()
+                listbox.delete(0,Tk.END)    # refreshed die Listbox, nach Löschung
+                daten_zeigen (Datei, listbox)
+                
+                
             
-        def Daten_loeschen(Datei):
+        def daten_loeschen(Datei, listbox):
 
             mydate = Tk.StringVar()
             Datumsfenster = Tk.Toplevel()
-            Datumsfenster.geometry ("250x100+50+50")
+            Datumsfenster.geometry ("250x50+50+50")
             Datumsfenster.title("Datum zum Löschen")
            
 
@@ -765,7 +821,7 @@ class Kontrollpanel(object):
             ee = Tk.Entry(Datumsfenster, textvariable = mydate)
             ee.grid(row = 0, column =1, padx = 5, pady = 5 )
             ee.config(width =9)
-            mydate.trace("w", lambda name, index, mode, mydate=mydate: print_it(mydate, dat_nam, Datumsfenster))
+            mydate.trace("w", lambda name, index, mode, mydate=mydate: print_it(mydate, dat_nam, Datumsfenster, listbox))
             ee.bind("<Button-1>", lambda event: welches_Datum(ee, Datei))
             
     
@@ -779,7 +835,7 @@ class Kontrollpanel(object):
         bb.grid(row = 0, column = 0, padx =13, pady = 5, ipadx = 3, ipady =3)
 
         
-        loeschen = Tk.Button(Frame1, text = "Daten löschen", command = lambda: Daten_loeschen("Test"))
+        loeschen = Tk.Button(Frame1, text = "Daten löschen", command = lambda: daten_loeschen(dat_nam, listbox))
         loeschen.grid(row = 0, column = 1, padx =13, pady = 5, ipadx = 3, ipady =3)
         Frame1.grid(sticky = Tk.W)
         
@@ -802,27 +858,11 @@ class Kontrollpanel(object):
 
         ##################################
         Frame2.grid(row = 2)
+
+        daten_zeigen (dat_nam, listbox)
          
         
 
-        # liest die Daten aus der jeweiligen CSV-Datei in eine Liste
-        t = open (dat_nam, "r")
-        cr = csv.reader(t)
-       
-
-        for line in cr:
-            myline = str(line)
-            datum = myline[2:12]
-            Zeit = myline[13:18]
-            Temp = myline[24:len(myline)]
-            Temp = Temp.replace("'","")
-            Temp = Temp.replace("]","")
-            
-            Wert = Temp
-            
-            listbox.insert("end",datum + "    " + Zeit + "    " + Wert)    # fügt die Werte in das Scrollfenster ein
-        listbox.yview_moveto(1.0)
-        t.close()
 
 ########################################################################################
 # Grafikfenster:
@@ -844,8 +884,7 @@ class Kontrollpanel(object):
         
         #(B , H) = (1200 , 800)
         (B , H) = (1000 , 600)
-        
-
+       
        
         if param == "T_außen":
             Dateiname ='Tempdatenaussen.csv'
@@ -876,10 +915,11 @@ class Kontrollpanel(object):
         
         os.environ['SDL_VIDEO_CENTERED'] = "1"     # zentriert das Grafikfenster auf dem Bildschirm
 
-##        pygame.init()                   # initiert die pygame-Bibliothek
+        pygame.init()                   # initiert die pygame-Bibliothek
         Grafikfenster = pygame.display.set_mode( (B , H ), 0, 32)
-
+        
         Grafikfenster.fill(WHITE)
+        
         
 
         ####################################################

@@ -67,7 +67,7 @@ class MyDatePicker(tk.Toplevel):
 
         self.year_str_var.set(self.year)
         self.year_lbl = tk.Label(self.frame1, textvariable=self.year_str_var,
-                                 width=3)
+                                 width=4)
         self.year_lbl.grid(row=0, column=5)
 
         self.month_str_var.set(self.month)
@@ -94,6 +94,9 @@ class MyDatePicker(tk.Toplevel):
 
     def space_between_widgets(self):
         self.frame1.grid_columnconfigure(3, minsize=40)
+        self.frame1.grid_columnconfigure(1, minsize=80)
+        self.frame1.grid_columnconfigure(5, minsize=50)
+
 
     def prev_year(self):
         self.prev_yr = int(self.year_str_var.get()) - 1
