@@ -984,12 +984,13 @@ class Kontrollpanel(object):
             ANZWERTE= 0                         # ist ein Trick, um in Werte_zeichnen DLI zu identifizieren                
             drawgrafic = True
             durch = False
-##        def TempGesamt():
-##            
+        def TempGesamt():
+            
 ##            global drawgrafic, ANZWERTE, durch
 ##            ANZWERTE= -1                         # ist ein Trick, um in Werte_zeichnen Gesamtschau zu identifizieren                
 ##            drawgrafic = True
-##            durch = False     
+##            durch = False
+            pass
             
         def Aufhoeren():
             
