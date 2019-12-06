@@ -148,58 +148,42 @@ def change_buttons(_screen , ca):
         _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist auf", bg = "lightgreen")
 
     
-##    print("change_buttons: " + str(ca["warmer CHOP-Circle"][1]))
-    
+
     
 def change_aktoren(my_array):
     
     
     import RPi.GPIO as GPIO
-
-    #------------------------------------------------------------------------------
-    # GPIO settings für Relais Steuerung 
-
     GPIO.setmode(GPIO.BCM)
-
-    Grow1_anschalt = GPIO.LOW       # Relais geht bei LOW an , daher umbenennen, um Verwirrung zu vermeiden
-    Grow1_ausschalt = GPIO.HIGH
-
     GPIO.setwarnings(False)
 
-
-    Grow1_AnAus_Relais = 27                     # BCM 27 schaltet?? an und aus
-    #######################
-    GPIO.setup(Grow1_AnAus_Relais, GPIO.OUT)
-
-
-    Grow2_anschalt = GPIO.LOW       # Relais geht bei LOW an , daher umbenennen, um Verwirrung zu vermeiden
-    Grow2_ausschalt = GPIO.HIGH
-
-    GPIO.setwarnings(False)
-
-
-    Grow2_AnAus_Relais = 22                     # BCM 22 schaltet ??  an und aus
-    #######################
-    GPIO.setup(Grow2_AnAus_Relais, GPIO.OUT)
-
-## falscher Ansatz, hier müssen die Einzelventile gesteuert werden
+    # verschachtelte Liste ordnet GPIO zu
+        
+    a_liste = [ ["Hauptpumpe", 18],
+                ["Heizung",    23],         
+                ["Fütterung",  24],             
+                ["WQ to FT",   25],             
+                ["WQ to VR",   12],             
+                ["ST to VR",   16],             
+                ["ST to FT",   26],              
+                ["ST to HB",   13],              
+                ["LU to HP",    6],              
+                ["LO to HP",    5]]
     
-##     
-##    if my_array["Kühlung mit Bewässerung"][1] == 1:
-##
-##        GPIO.output(Grow1_AnAus_Relais, Grow1_anschalt)
-##
-##    if my_array["Kühlung mit Bewässerung"][1] == 0:
-##        
-##        GPIO.output(Grow1_AnAus_Relais, Grow1_ausschalt)
-##       
-##
-##
-##    if my_array["Kühlung mit Verieselung"][1] == 1:
-##
-##        GPIO.output(Grow2_AnAus_Relais, Grow2_anschalt)
-##
-##    if my_array["Kühlung mit Verieselung"][1] == 0:
-##        
-##        GPIO.output(Grow2_AnAus_Relais, Grow2_ausschalt)
-##
+    for i in range(0, len(a_liste)):
+        
+        GPIO.setup(a_liste[i][1] , GPIO.OUT)
+
+
+    for key in my_array:
+        for i in range(0, len(a_liste)):
+            if key == a_liste[i][0]:
+                if my_array[key][1] == 1:
+                    GPIO.output(a_liste[i][1],GPIO.HIGH)
+                    
+                elif  my_array[key][1] == 0:
+                    GPIO.output(a_liste[i][1],GPIO.LOW)
+                    
+    #------------------------------------------------------------------------------
+ 
+    

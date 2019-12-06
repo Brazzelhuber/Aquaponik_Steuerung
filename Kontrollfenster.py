@@ -93,8 +93,7 @@ class Kontrollpanel(object):
        
         self.plf.grid_propagate(0)
 
-        self.xlf = Tk.LabelFrame(text = "was auch immer",\
-                                       bd = 5, height =250, width =165, relief = "groove" )
+        self.xlf = Tk.LabelFrame(bd = 5, height =250, width =165, relief = "groove" )
        
         self.xlf.grid_propagate(0)
         
@@ -137,31 +136,22 @@ class Kontrollpanel(object):
         self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
-### Fischbild: lassen wir ertmal
-##
-##        canvas_width = 510
-##        canvas_height = 290 
-##
-##        canvas = Tk.Canvas(self.plf, 
-##                   width=canvas_width, 
-##                   height=canvas_height)
-##        canvas.grid()
-##        
-##        mysize =(canvas_width,canvas_height)
-##        img = Image.open("tilapia.png")
-##        img = img.resize(mysize, PIL.Image.ANTIALIAS)
-##        canvas.image = ImageTk.PhotoImage(img)
-##        canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
-####        
-##    def Datenloeschen(event):
-##        print("habe fertig")
+# Fischbild: 
 
-############################################################################################
-##        # Erdfeuchtelabel:
-##        # Beschriftung:
-##        label_F_lo =Tk.Label(self.flf, text = "Erfeuchte 1:")
-##        label_F_lo.configure(bg = bg_Farbe)
-##        label_F_lo.grid(row = 0, column = 0, padx = 5, pady = 5, ipadx = sticky =Tk.W)
+        canvas_width = 153
+        canvas_height = 240
+
+        canvas = Tk.Canvas(self.xlf, 
+                   width=canvas_width, 
+                   height=canvas_height)
+        canvas.grid()
+        
+        mysize =(canvas_width,canvas_height)
+        img = Image.open("forelle-klein.jpg")
+        img = img.resize(mysize, PIL.Image.ANTIALIAS)
+        canvas.image = ImageTk.PhotoImage(img)
+        canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
+
 
 ############################################################################################
        # Temperatur Box
@@ -950,12 +940,13 @@ class Kontrollpanel(object):
         pos = 0         # Leseposition in der CSV-Datei
         eof = 1         # Ende of file (0 und 1, da pos, eof und bof in einer Liste von Werte_zeichnen zurück gegeben werden
         bof = 0         # begin of file
+        sync = 0        # Temperaturwerte können synchron angezeigt werden
         durch = False   # sollen Einzel- oder Durchschnittswerte gezeigt werden (Woche und mehr geht nur mit Durchschnitt)
 
 
         def Grafik_Stunde ():
             global drawgrafic, ANZWERTE,pos, durch
-            ANZWERTE =  10              # = 60/6 Minuten 
+            ANZWERTE =  10              # = 60/6 Minuten
             drawgrafic = True           # nach einem Click wird die Grafik neu gezeichnet
             durch = False
         def Grafik_Tag():
@@ -992,7 +983,13 @@ class Kontrollpanel(object):
             global drawgrafic, ANZWERTE, durch
             ANZWERTE= 0                         # ist ein Trick, um in Werte_zeichnen DLI zu identifizieren                
             drawgrafic = True
-            durch = False               
+            durch = False
+##        def TempGesamt():
+##            
+##            global drawgrafic, ANZWERTE, durch
+##            ANZWERTE= -1                         # ist ein Trick, um in Werte_zeichnen Gesamtschau zu identifizieren                
+##            drawgrafic = True
+##            durch = False     
             
         def Aufhoeren():
             
@@ -1044,6 +1041,10 @@ class Kontrollpanel(object):
                 if "Licht" in param:
                     Auswahl_Button(Grafikfenster, "Day Light Integral",           
                                    B-570,H-50,120,40,Button_Farbe,Button_Farbe2,Grafik_DLI)
+                # Zeigt Temperaturen synchron, um besser analysieren zu können
+                if "T_" in param:
+                    Auswahl_Button(Grafikfenster, "Alle Temperaturen",           
+                                   B-570,H-50,120,40,Button_Farbe,Button_Farbe2,TempGesamt)
               
                 if eof:    # wenn Leseposition bei neuesten Daten, geht es nicht weiter
                     Auswahl_Button(Grafikfenster, "Vor",10,H-50,100,40,Button_Blocked,Button_Blocked,Grafik_Vor)

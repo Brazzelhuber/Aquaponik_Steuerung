@@ -91,8 +91,6 @@ def Config_Zustaende(Zustand, _array):
     for i  in range(0,7):
         
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
-##        print("i = " +str(i) +  " - Zustaende[Zustand][i] = "+ str(Zustaende[Zustand][i]))
-##        print("devices[i] = " + devices[i])
 
 #########################################################################################################        
 # prüft, ob manuell, am Bildschirm etwas ausgelöst wurde (kann man, auch wenn es den Bedingungen für den
@@ -170,20 +168,28 @@ def SensorCheck(screen, co, we):    # screen = screen_app, co = Controllarray, w
         Alles_aus(screen, co)
         co["Kühlung mit Verieselung"][1] = 1
         ButtonCheck(screen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerieselung anschalten")  # simulierte Buttonpress
-   
+
+        
+    # Wasserqualität:
+    
     if we["Sauerstoff"] < 4.5 and False:        # Sauerstoff wird noch nicht gemessen
         co["Sauerstoffpumpe"][1] = 1
     if ((we["Ph-Wert"] < 6) or (we["Ph-Wert"] > 7)) and False:  # Ph-Wert wird noch nicht gemessen
         co["Alarm"][1] =1
+        
+    # Berechnet Sonnenauf- und -untergang:
+    
     if we["Sonnenaufgang"] == 0:
         s= sr.sun(lat =51.755,long =8.6)
         we["Sonnenaufgang"] = s.sunrise(when=dt.datetime.now())
     if we["Sonnenuntergang"] == 0:
         s= sr.sun(lat =51.755,long =8.6)
         we["Sonnenuntergang"] = s.sunset(when=dt.datetime.now())
-##    print("ButtonCheck: " + str(co["Kühlung mit Verieselung"][1]))
+
     return (co, we)
 #########################################################################################################
+# Vorbereitungen für Button-Check:
+
 # Kontrolle, welcher Button gedrückt wurde, bzw. Buttonpress-Simulation für Sensor- oder zeitgetriggerte Aktionen sowie
 # Vorbereitung der Aktionen, durch Veränderung des Sollwertes
 
@@ -201,7 +207,7 @@ def ManualCheck(ar, manov, text, i):
     for key in Zustaende:
         
         if key != text and key != "Nichts" and ar[key][0] == 1 and manov == True and i <= 30:
-            messagebox.showinfo("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
+            messagebox.showwarning("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
                                 text + "\n\n" + "gestartet werden kann")
             
             return False
@@ -227,8 +233,8 @@ def do_it(liste,ar, manov,i):
             
       
         ar[listenkey][1] = liste[i][2]
-        if i < 11 :                           # 1 - 10 sind komplexe Zustände
-            if liste[i][2] == 1 :
+        if i < 11 :                           # 1 - 10 sind komplexe Zustände, daher müssen in der Folge
+            if liste[i][2] == 1 :                   # diverse andere Veränderungen (an Ventilen) vorgnommen werden
                 Config_Zustaende(listenkey, ar)
             else: Config_Zustaende("Nichts",ar)
 
@@ -240,8 +246,8 @@ def do_it(liste,ar, manov,i):
 # die Methode bind, wird in Kontrollpanel angewandt, damit hier identifiziert werden kann, welcher Button gedrückt wurde
 # wird entweder aufgerufen, wenn ein Button gedrückt wurde, dann ist _button = None
 
-# alternativ kann aus anderen Modulen dieses Modul hier aufgerufen werden,
-# dann ist BUTTON = _button (simulierter Buttondruck)
+# alternativ kann aus anderen Modulen (Sensorgetriggert oder Zeitschaltung) dieses Modul hier aufgerufen werden,
+# dann ist BUTTON = _button (simulierter Buttondruck, der Name des Buttons wird als String übergeben)
 
 def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedrückt wurde, ar ist ca (Controlarray)
 #
@@ -292,7 +298,7 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
                                                 
     if _button == None:                         # butt.configure("text")[-1] gibt Buttontext
         BUTTON = butt.configure("text")[-1]     # aus Kontrolpanel.py zurück. Dort ist _button immer None
-        manov = True
+        manov = True                            # manov = True, da manuell ausgelöst
     else:
         BUTTON = _button                        # simuliert Buttonpress (Text des Buttons wird direkt über
         manov = False                           # Variable _button übergeben), um Sensor- oder zeitgetriggert

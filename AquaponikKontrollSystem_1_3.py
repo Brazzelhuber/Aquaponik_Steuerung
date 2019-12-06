@@ -55,19 +55,27 @@ import Aktion as Ak
 #######################################################################################################
 # Initiieren: Array mit Sensordaten und Array mit Kontrollvariablen:
 
-wa          = {"T_Luft_oben" : 0,      # der Werte-Array beinhaltet die ausgelesenen Sensordaten
-               "T_Luft_unten" : 0,
-               "T_Wasser1": 0,
-               "T_Wasser2": 0,
-               "T_aussen": 0,
-               "Luxwert_1" : 0 ,
-               "Luxwert_2" : 0,
-               "Ph-Wert": 0 ,
-               "Sauerstoff" : 0,
-               "Ampere"  :0 ,
-               "Wasserstand" : 0,
-               "Sonnenaufgang": 0,
-               "Sonnenuntergang": 0
+# der Werte-Array beinhaltet die ausgelesenen Sensordaten,
+# bzw. die errechneten Daten für Sonnenauf- und -untergang 
+
+wa          = {"T_Luft_oben" : 0,      # Lufttemperatur unterm Dach des Gewächshauses, kann zum Heizen eingesetzt werden 
+               "T_Luft_unten" : 0,     # Lufttemperatur unten
+               "T_Wasser1": 0,         # Temperatur Fischtank 1
+               "T_Wasser2": 0,          # Fischtank 2
+               "T_aussen": 0,           # Außentemeratur
+               "Luxwert_1" : 0 ,        # Luxwert
+               "Ph-Wert": 0 ,           # Ph-Wert Wasser
+               "Sauerstoff" : 0,        # O2-Gehalt Wasser
+               "Volt"  :0 ,             # Spannung der 12-Voltbatterie
+               "Wasserstand" : 0,       # Wasserstand im Sumpank (um Aktion bei zu viel oder zuwenig auszulösen)
+               "Sonnenaufgang": 0,      #  wird von sunset auf der Grundlage von GPS und Datum ausgerechnet
+               "Sonnenuntergang": 0,
+               "Erdfeuchte1" : 0,       # Erdfeuchtmessung in den Erd-Hochbeeten, wenn nich zu feucht, wird das
+               "Erdfeuchte2" : 0,       # Brunnenwasser, das zur Kühlung zugeführt wird zur Bewässerung genutzt
+               "Erdfeuchte3" : 0,       # ansonsten verrieselt
+               "Erdfeuchte4" : 0,
+               "Erdfeuchte5" : 0,
+               "Erdfeuchte6" : 0
                 }
 # Kontrollarray ca entält links die IST-, in der Mitte oder rechts  die SOLL-Zustände ([0,1] heißt: ist aus/zu soll
 # aber an/auf).
@@ -75,12 +83,14 @@ wa          = {"T_Luft_oben" : 0,      # der Werte-Array beinhaltet die ausgeles
 # if-clauses für die Sensordaten sagen: "normaler CHOP-Circle", über den Bildschirm wurde
 # aber "Kühlung mit Bewässerung" gewählt. Dann darf das nicht im nächsten Loop durch die Sensorbedingungen
 # rückgängig gemacht werden, sondern muß entgegen der definierten Bedingungen aufrechterhalten werden,
-# bis wieder eine manuelle Abschaltung erfolgt. 
+# bis wieder eine manuelle Abschaltung erfolgt.
+# Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig gesteuert werden müssen
+# Hauptpumpe funktioniert mit Luft (Geysir Pumpe).
 
 ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
                "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
-               "Kühlung mit Bewässerung":  [0,0,0],  
-               "Kühlung mit Verieselung":  [0,0,0],
+               "Kühlung mit Bewässerung":  [0,0,0],  # zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
+               "Kühlung mit Verieselung":  [0,0,0],  # dito mit Verieselung
                "Brunnenwasser als Heizung":[0,0,0],  # Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
                "Wasser auffüllen":         [0,0,0],  # Wasserverlust muss ausgeglichen werden
                "Wasser ablassen":          [0,0,0],  # zuviel Wasser im System
@@ -90,12 +100,12 @@ ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> G
                "Es ist Tag"      :         [0,0],    # kommt aus den Sonnendaten, Luxwerte werden nur tagsüber geschrieben
                "Alarm"            :        [0,0],    # wenn was schiefgeht wird EMail geschrieben
                "Fütterung"  :              [0,0,0],  # Fütterungsautomat einschalten?
-               "Logeintrag":               [0,0],
-               "WQ to FT":                 [0,0,0],  # die Wasserventile einzel
-               "WQ to VR":                 [0,0,0],
-               "ST to VR":                 [0,0,0],   
-               "ST to FT":                 [0,0,0],
-               "ST to HB":                 [0,0,0],
+               "Logeintrag":               [0,0],    # bei Zustandsänderung erfolgt ein Logeintrag
+               "WQ to FT":                 [0,0,0],  # die Wasserventile einzel: Wasserquelle (Brunnen) zu Fischtank
+               "WQ to VR":                 [0,0,0],  # Wasserquelle zu Verieselung
+               "ST to VR":                 [0,0,0],  #Sumptank zu Verieselung
+               "ST to FT":                 [0,0,0],  #Sumptank zu Fischtanks
+               "ST to HB":                 [0,0,0],  #Sumptank zu Hochbeet
                "LU to HP":                 [0,0,0],  # Luftventile
                "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpumpo
 
@@ -108,7 +118,6 @@ Ts.ds1820einlesen() #Anzahl und Bezeichnungen der vorhandenen Temperatursensoren
 #Fenster initiieren : 
 
 Hintergrund = "lightgrey"
-del_dat = ""
 fenster = Tk.Tk()
 fenster.configure(background = Hintergrund)
 
@@ -129,21 +138,7 @@ clickma = Tk.Button (fenster, text = "Beenden", command = lambda: Beenden(after_
 clickma.grid(row = 3, column = 0, padx = 10, sticky = Tk.E)
 
 #############################################################################################################
-# Definitionen für die Hardware-Uhr:
-
-##port = 1                # (0 for rev.1, 1 for rev 2!)
-##bus = SMBus(port)
-##rtcAddr = 0x68
-##
-##def bcd2str(d):         # // for integer division; % for modulo
-##    if (d <= 9):
-##        return '0' + str(d)
-##    else:
-##        return str(d // 16) + str(d % 16)
-##rd = bus.read_i2c_block_data(rtcAddr, 0, 7)
-##screen_app.Datum_Zeit = Tk.Label (text = (bcd2str(rd[4]) + '.' + bcd2str(rd[5]) + '.' + bcd2str(rd[6]) + '  '\
-##                                        + bcd2str(rd[2]) + ':' + bcd2str(rd[1]) ))
-##screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
+#Anzeige von Datum und Urzeit links unten auf dem Screen
 screen_app.Datum_Zeit = Tk.Label (text = time.strftime("%d.%m.%Y - %H:%M"))
 screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
 ################################################################################################################    
@@ -158,7 +153,7 @@ after_id = 0
 #####################################################
 def loop():
     
-    # Datum und Uhrzeit aus RTC gelesen:
+    # Datum und Uhrzeit aktualisieren:
     
     screen_app.Datum_Zeit.configure (text = time.strftime("%d.%m.%Y - %H:%M"))
     
@@ -169,13 +164,13 @@ def loop():
     
     tdiff = t2 -t1
 
-    wa = Wl.Werte_lesen(wa)                 # liest Werte aus Sensoren und schreibt sie in Array wa
+    wa = Wl.Werte_lesen(wa)                     # liest Werte aus Sensoren und schreibt sie in Array wa
 
-    ca,wa = Ch.SensorCheck(screen_app, ca, wa)          # checkt bei den Sensoren,ob etwas zu tun ist
+    ca,wa = Ch.SensorCheck(screen_app, ca, wa)  # checkt bei den Sensoren,ob etwas zu tun ist
                                                 # direkte Befehle vom Bildschirm aus werden von Modul
-                                               # "Kontrollpanel" über button-callback
-                                               # aufgerufen und in Modul "Ch.Buttoncheck" in den ca-Array
-                                               # eingetragen
+                                                # "Kontrollpanel" über button-callback
+                                                # aufgerufen und in Modul "Ch.Buttoncheck" in den ca-Array
+                                                # eingetragen
   
                                             
     # Feststellen, ob es Tag ist (nur dann werden Lichtdaten in Datei geschrieben)
@@ -194,11 +189,11 @@ def loop():
     
     if ca["Screen_schreiben"][0] == 1: Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
-    if not Si.soll_gleich_ist(ca):          # es wurde durch Sensoren, Zeitschaltung oder Button-Druck etwas verändert
+    if not Si.soll_gleich_ist(ca):          # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
         
         Ds.Werte_schreiben(wa, ca)          # schreibt Veränderung in Logdatei
 
-        Ak.change_buttons(screen_app, ca)    # Anpassung der Buttons auf dem Bildschirm
+        Ak.change_buttons(screen_app, ca)   # Anpassung der Buttons auf dem Bildschirm
              
         Ak.change_aktoren(ca)               # Aktoren werden gesteuert
         
@@ -206,7 +201,7 @@ def loop():
 
     
     if tdiff > datetime.timedelta(seconds = 360):    # schreibt Sensordaten nur einmal pro 6 Minute in Datei
-                                                   # = 10 pro Stunde, 240 pro Tag
+                                                     # = 10 pro Stunde, 240 pro Tag
         Ds.Werte_schreiben(wa, ca)
         
         if t2.day != t1.day:           # nach 24 Uhr:

@@ -16,7 +16,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     if anzahlwerte == 0:             #kleiner Trick, um DLI zu identifizieren
         dateiname = "DLI_Eichen.csv"
         anzahlwerte = 11
-        
+    
      #Konstanten für pygame:
     WHITE = (255, 255, 255)
     RED   = (255,0,0)
@@ -39,7 +39,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     bespH = hoehe - YEIN -YOEIN      # Länge der Y-Achse (bespielbare Höhe)
     bespB = breite - XEIN -XOEIN      # Länge der X-Achse (bespielbare Breite)
     YEINTEIL = 11                # Anzahl der Einteilungen auf der Y-Achse (11, weil 0-Punkt mitzählt)
-
+    
 
 
     BLACK  = (0,0,0)
@@ -244,6 +244,9 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
       
 
         Data_Anfang = pos - anzahlwerte     # die auszulesende Datenbankstrecke
+##        print ("EOF = " + str(EOF))
+##        print ("Anzahlwerte = " + str(anzahlwerte))
+               
         Data_Ende   = pos
        
         
@@ -304,14 +307,16 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
         ###################################################################################################
         # liest die Daten aus und zeichnet die Werte auf die Fläche:
               
-        x = i = ypunkt = 0
+        x = 0
+        i = 0
+        ypunkt = 0
         
         eint = 0
           
         if MINMAX:
             anzahlwerte = len(Datenwerte[0])  # kann bei Durchschnittswerten variieren
             
-         # Einteilungsstriche auf der X-Achse zeichnen:
+         # Vor Einteilungsstriche auf der X-Achse zeichnen, Sonderbehandlung für Woche:
         einteilungswerte = anzahlwerte
 
         if einteilungswerte == 240: einteilungswerte = einteilungswerte/10 # 240 Einteilungen sind zu viel
@@ -319,7 +324,8 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
         einteilung = []
         #print("einteilungswerte = " + str(einteilungswerte))
         
-        for e in range(0,einteilungswerte):
+        # Einteilungsstriche auf der X-Achse:
+        for e in range(0,einteilungswerte+1):
             
             einteilung.append(int(bespB/einteilungswerte*e))
             pygame.draw.line(grafikwindow, BLACK, (XEIN+ einteilung[e], hoehe - YEIN +10) , (XEIN + einteilung[e], hoehe - YEIN - 10), 2)
@@ -328,9 +334,10 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
         ###############################
         # Zeichnet die Punkte :
 
-        
-    
+        flipflop = 0
+##        print ("anzahlwerte = " + str(anzahlwerte))
         for i in range(0, anzahlwerte):
+        
            
             if x > bespB:
                 
@@ -389,8 +396,10 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
             else:
                 text = str(mydate[i])+"  "+str(mytime[i])
 
-            if x != 0 and eint <= 23:
-                #print("einteilung[eint] = " + str(einteilung[eint]) + "  eint = " + str(eint) + " x = " + str(x) +" modulo = " + str(modulo))
+            if x != 0 and eint <= 25:
+##                print("einteilung[eint] = " + str(einteilung[eint]) + \
+##                      "  eint = " + str(eint) + " x = " + str(x) +" modulo = " + str(modulo) +\
+##                      " i = "+ str(i))
                
                 modulo = x % einteilung[eint]
             else: modulo = 0
@@ -403,13 +412,14 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
                 eint = eint +1
                 
 ##            elif(x >= einteilung[eint]) or (modulo <= 2) or (einteilung[eint] - x) <=4 :      # muss nicht aufs Pixel genau stimmen
-            elif( (modulo <= 3 and eint <= 23) or MINMAX == True):      # muss nicht aufs Pixel genau stimmen
-
-           
+            elif( (modulo <= 3 and eint <=24) or MINMAX == True) \
+                  or (eint == 24 and einteilung[eint] - x <=3):      # die Beschriftung muss nicht aufs Pixel genau mit Einteilungsstrich 
+                                                                        # übereinstimmen
+                                                                                   
                 textsurf= myfont.render(text.encode("latin-1"),1,(0,0,0))
                 textsurf = pygame.transform.rotate(textsurf, 300)           # dreht den Beschriftungstext auf 300 Grad
                 grafikwindow.blit(textsurf,(x+ XEIN, hoehe-YEIN + 30))
-                if eint <= len(einteilung):
+                if eint <= len(einteilung)+1:
 
                     eint = eint +1
  
@@ -425,9 +435,16 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
             
             x = x + ((bespB)/anzahlwerte)  # neue x-Position berechnet aus der Anzahl der Werte
+            if anzahlwerte != 240:
+                x = round(x)            # durch die obige Formel kommt ein float-Wert raus, daher runden
+            else:
+                if flipflop == 0:       # wenn dauernd aufgrundet wird, passen die 240 Werte der 24-Stundengrafik
+                    x = round(x)        # nicht in bespB (= 850 Pixel), daher abwechselnd auf- und abrunden
+                    flipflop = 1
+                elif flipflop == 1:
+                    x = int(x) 
+                    flipflop = 0
             
-            x = round(x)
-            #print ("x = " +str(x)+ " i = "+ str(i))
             
             oldx = newx                                 # merkt sich die vorherige Position, um im nächsten Schritt eine Linie
             if MINMAX:                                  # zwischen die Punkte ziehen zu können (siehe oben unter if:)
