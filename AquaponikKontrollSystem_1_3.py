@@ -39,7 +39,7 @@ import Soll_Ist as Si
 import Aktion as Ak
 
 ##
-# remote Debugging mit Visual Studio (wenn Debugging, uncomment):
+# remote Debugging mit Visual Studio (wenn Debugging --> uncomment):
 ##
 ##ptvsd.enable_attach()
 ##ptvsd.wait_for_attach()
@@ -62,21 +62,22 @@ wa          = {"T_Luft_oben" : 0,      # Lufttemperatur unterm Dach des Gewächs
                "T_Luft_unten" : 0,     # Lufttemperatur unten
                "T_Wasser1": 0,         # Temperatur Fischtank 1
                "T_Wasser2": 0,          # Fischtank 2
-               "T_aussen": 0,           # Außentemeratur
+               "T_aussen": 0,           # Außentemperatur
                "Luxwert_1" : 0 ,        # Luxwert
                "Ph-Wert": 0 ,           # Ph-Wert Wasser
                "Sauerstoff" : 0,        # O2-Gehalt Wasser
                "Volt"  :0 ,             # Spannung der 12-Voltbatterie
-               "Wasserstand" : 0,       # Wasserstand im Sumpank (um Aktion bei zu viel oder zuwenig auszulösen)
-               "Sonnenaufgang": 0,      #  wird von sunset auf der Grundlage von GPS und Datum ausgerechnet
+               "Wasserstand" : 0,       # Wasserstand im Sumptank 
+               "Sonnenaufgang": 0,      #  wird von sunset.py auf der Grundlage von GPS und Datum ausgerechnet
                "Sonnenuntergang": 0,
-               "Erdfeuchte1" : 0,       # Erdfeuchtmessung in den Erd-Hochbeeten, wenn nich zu feucht, wird das
+               "Erdfeuchte1" : 0,       # Erdfeuchtmessung in den Erd-Hochbeeten, wenn nicht zu feucht, wird das
                "Erdfeuchte2" : 0,       # Brunnenwasser, das zur Kühlung zugeführt wird zur Bewässerung genutzt
                "Erdfeuchte3" : 0,       # ansonsten verrieselt
                "Erdfeuchte4" : 0,
                "Erdfeuchte5" : 0,
                "Erdfeuchte6" : 0
                 }
+
 # Kontrollarray ca entält links die IST-, in der Mitte oder rechts  die SOLL-Zustände ([0,1] heißt: ist aus/zu soll
 # aber an/auf).
 # da wo das Item dreistellig ist, indizierte der letzte Wert, ob ein manual override vorliegt. Beispiel: die
@@ -187,17 +188,18 @@ def loop():
     
 
     
-    if ca["Screen_schreiben"][0] == 1: Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
+    if ca["Screen_schreiben"][0] == 1:
+        Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
-    if not Si.soll_gleich_ist(ca):          # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
+    if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
         
-        Ds.Werte_schreiben(wa, ca)          # schreibt Veränderung in Logdatei
+        Ds.Werte_schreiben(wa, ca)             # schreibt Veränderung in Logdatei
 
-        Ak.change_buttons(screen_app, ca)   # Anpassung der Buttons auf dem Bildschirm
+        Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
              
-        Ak.change_aktoren(ca)               # Aktoren werden gesteuert
+        Ak.change_aktoren(ca)                  # Aktoren werden gesteuert
         
-        Si.ist_gleich_soll(ca)              # IST-Werte werden an SOLL-Werte angeglichen
+        Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
 
     
     if tdiff > datetime.timedelta(seconds = 360):    # schreibt Sensordaten nur einmal pro 6 Minute in Datei

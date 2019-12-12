@@ -211,9 +211,12 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     # öffnet CSV-Datei und liest sie in Liste ein:
     
     with open(dateiname) as csvfile:
-
+##    csvfile=open(dateiname)
         reader = csv.reader(csvfile,delimiter = ",")
+        
         data = list(reader)
+    ##    csvfile.close()
+
         Zaehl_liste = enumerate(data)
         row_count = len(data)
         if MINMAX:
@@ -244,8 +247,8 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
       
 
         Data_Anfang = pos - anzahlwerte     # die auszulesende Datenbankstrecke
-##        print ("EOF = " + str(EOF))
-##        print ("Anzahlwerte = " + str(anzahlwerte))
+    ##        print ("EOF = " + str(EOF))
+    ##        print ("Anzahlwerte = " + str(anzahlwerte))
                
         Data_Ende   = pos
        
@@ -298,12 +301,11 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
                             mydate.append(datumvorher) # Datum hat inzwischen gewechselt, daher vorher
 
                     datumvorher = datum
-    
+
             except:
                 print("Syntaxfehler bei Dateiauslesen, Fehlerhafte Reihe lautet")
                 print(line)
-        csvfile.close()
-        
+    ##    csvfile.close()
         ###################################################################################################
         # liest die Daten aus und zeichnet die Werte auf die Fläche:
               
@@ -453,7 +455,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
                 oldmay = newmay
             else:
                 oldy = newy
-           
+    #csvfile.close()      
     return (pos, EOF, BOF)              # die Parameter werden in Kontrollfenster.py gebraucht
 
     

@@ -24,10 +24,10 @@ def Werte_schreiben(my_array, control):
     for (key, value) in control.items():
         if value[0] != value[1] and key != "Logeintrag" and key != "Screen_schreiben" \
               and key != "Es ist Tag"  :
-                                                        # != Logeintrag, sonst würde eine endlosschleife ausgelöst
+                                                        #!= Logeintrag, sonst würde eine endlosschleife ausgelöst
                                                         # solange nicht die Logdatei geöffnet wird
                                                         # ebensowenig soll ein Logeintrag erfolgen, wenn von Tag auf Nacht
-                                                        # umgestellt oder das Bildschirmschreiben abgestellt wird
+                                                        # umgestellt oder das Bildschirmschreiben abgestellt wird"
             ld = open("Logdatei.csv", "a")
             writerld = csv.writer(ld)
             if value[1] == 1:
@@ -98,23 +98,21 @@ def DLI_schreiben():
     for line in reversed(data):
             
         datum=line[0][0:10]
-        wert = line[1][0:]      # Temperatur, Lux (oder später Ph-Wert, Batteriewert)
+        wert = line[1][0:]      
         wert = float(wert)
-##        print("Gestern = "  + ty)
-##        print("Datum = " + datum)                
+             
         
            
         if datum == ty:
             
             Datentemp.append(wert)      # Kummulieren der Werte gleichen Datums
-            #datum=line[0][1:19]
    
         else:
             if len(Datentemp) > 0 and not(datum > ty):     # sonst würde gleich beim ersten Durchgang gerechnet
             
             
                 summe =int(sum(Datentemp))    # Summiert die Werte
-##                print("Summe = " + str(summe))
+
                 #0.0185 ist der Umrechnungsfaktor von Lux auf PPFD (µmol pro sek und m2)
                 #/1000000 um von µmol auf mol zu kommen
                 # es wird alle 6 Minuten aufgezeichnet, daher: mal 360 (PPFD ist pro Sekunde
@@ -122,7 +120,7 @@ def DLI_schreiben():
                 summeDLI = str(int(summe*0.0185/1000000*360))
                 row4 = [ty,  summeDLI]
                 writerDli.writerow(row4)
-##                print ("row4 = " + str(row4))
+
 
         if datum < ty:   # wenn früher als yesterday
             break

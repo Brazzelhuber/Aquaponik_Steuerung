@@ -159,16 +159,28 @@ def change_aktoren(my_array):
 
     # verschachtelte Liste ordnet GPIO zu
         
-    a_liste = [ ["Hauptpumpe", 18],
-                ["Heizung",    23],         
-                ["Fütterung",  24],             
-                ["WQ to FT",   25],             
-                ["WQ to VR",   12],             
-                ["ST to VR",   16],             
-                ["ST to FT",   26],              
-                ["ST to HB",   13],              
-                ["LU to HP",    6],              
-                ["LO to HP",    5]]
+    a_liste = [ ["Hauptpumpe", 18],            
+                ["WQ to FT",   23],             
+                ["WQ to VR",   24],             
+                ["ST to VR",   25],             
+                ["ST to FT",   12],              
+                ["ST to HB",   16],              
+                ["LU to HP",   26],              
+                ["LO to HP",   13],
+                ["Fütterung",   6],
+                ["Heizung",     5]]
+
+                    # Item       GPIO    Relais Nr. (1. Railaisboard)
+##                ["Hauptpumpe", 18],       1          
+##                ["WQ to FT",   23],       2     
+##                ["WQ to VR",   24],       3     
+##                ["ST to VR",   25],       4     
+##                ["ST to FT",   12],       5      
+##                ["ST to HB",   16],       6      
+##                ["LU to HP",   26],       7      
+##                ["LO to HP",   13],       8
+##                ["Fütterung",   6],
+##                ["Heizung",     5]]
     
     for i in range(0, len(a_liste)):
         
