@@ -165,22 +165,23 @@ def change_aktoren(my_array):
                 ["ST to VR",   25],             
                 ["ST to FT",   12],              
                 ["ST to HB",   16],              
-                ["LU to HP",   26],              
-                ["LO to HP",   13],
-                ["Fütterung",   6],
-                ["Heizung",     5]]
-
-                    # Item       GPIO    Relais Nr. (1. Railaisboard)
-##                ["Hauptpumpe", 18],       1          
+                ["LU to HP",   20],              
+                ["LO to HP",   21],
+                ["Fütterung",  26],
+                ["Heizung",    19]]
+#                                        Relais Nr. 
+#                                       (1. Relais-Board)
+##  a_liste = [ ["Hauptpumpe",   18],       1           
 ##                ["WQ to FT",   23],       2     
 ##                ["WQ to VR",   24],       3     
 ##                ["ST to VR",   25],       4     
 ##                ["ST to FT",   12],       5      
 ##                ["ST to HB",   16],       6      
-##                ["LU to HP",   26],       7      
-##                ["LO to HP",   13],       8
-##                ["Fütterung",   6],
-##                ["Heizung",     5]]
+##                ["LU to HP",   20],       7      
+##                ["LO to HP",   21],       8
+##                ["Fütterung",  26],
+##                ["Heizung",    19]]
+
     
     for i in range(0, len(a_liste)):
         
@@ -190,11 +191,15 @@ def change_aktoren(my_array):
     for key in my_array:
         for i in range(0, len(a_liste)):
             if key == a_liste[i][0]:
+                print("key = " + str(key)+ "     my_array[key][1] = " + str(my_array[key][1]) \
+                      + "    a_liste[i][1] =  "+ str(a_liste[i][1]))
                 if my_array[key][1] == 1:
-                    GPIO.output(a_liste[i][1],GPIO.HIGH)
+                    GPIO.output(a_liste[i][1],GPIO.LOW)
                     
                 elif  my_array[key][1] == 0:
-                    GPIO.output(a_liste[i][1],GPIO.LOW)
+                    GPIO.output(a_liste[i][1],GPIO.HIGH)
+    print("\n")
+    #GPIO.cleanup()
                     
     #------------------------------------------------------------------------------
  

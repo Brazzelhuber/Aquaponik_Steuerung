@@ -403,15 +403,27 @@ class Kontrollpanel(object):
         self.mlf.Anzeige_Fue.grid(row = 3, column =1, padx = 0, pady = 3 ,
                              ipady = 6,sticky =Tk.W+ Tk.E)
 
+##        self.mlf.check_btn_Fue2_an = Tk.Button(self.mlf, text = "Fütterung\nanschalten", \
+##                            relief = "groove", width = 18, height = 2 )
+##        self.mlf.check_btn_Fue2_an.grid(row = 4, column =0, padx = 10, pady = 5 ,
+##                             ipady = 2, sticky =Tk.W+Tk.E)
+##        self.mlf.check_btn_Fue2_an.bind("<Button-1>", lambda event,
+##                             var=control_array: Ch.ButtonCheck(self.mlf.check_btn_Fue_an,control_array, None))
+##        
+##        self.mlf.Anzeige_Fue2 = Tk.Label(self.mlf, text = "Fütterung\nist aus",  \
+##                            relief = "groove", width = 16, height = 2 )
+##        self.mlf.Anzeige_Fue2.grid(row = 4, column =1, padx = 0, pady = 3 ,
+##                             ipady = 6,sticky =Tk.W+ Tk.E)
+
         self.mlf.check_btn_Log_auf = Tk.Button(self.mlf, text = "Logdatei\nöffnen", \
                             command = lambda: self.Datenfenster(control_array,"Logdatei") ,\
                             relief = "groove", width = 18, height = 2 )
-        self.mlf.check_btn_Log_auf.grid(row = 4, column =0, padx = 10, pady = 5 ,
+        self.mlf.check_btn_Log_auf.grid(row = 5, column =0, padx = 10, pady = 5 ,
                              ipady = 2, sticky =Tk.W+Tk.E)
         
         self.mlf.Anzeige_Log = Tk.Label(self.mlf, text = "Log hat keinen\nneuen Eintrag",  \
                             relief = "groove", width = 16, height = 2 )
-        self.mlf.Anzeige_Log.grid(row = 4, column =1, padx = 0, pady = 3 ,
+        self.mlf.Anzeige_Log.grid(row = 5, column =1, padx = 0, pady = 3 ,
                              ipady = 6,sticky =Tk.W+ Tk.E)
 
 

@@ -16,6 +16,6 @@ def Werte_lesen(w_Array):
     w_Array["T_Wasser1"] = Ts.tempSensorWert[0]
     
     w_Array["T_aussen"] = Ts.tempSensorWert[1]         
-    w_Array["Luxwert_1"] = Ls.readLight()
+    #w_Array["Luxwert_1"] = Ls.readLight()
     
     return w_Array

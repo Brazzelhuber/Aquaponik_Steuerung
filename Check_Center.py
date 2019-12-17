@@ -82,6 +82,7 @@ Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -
             "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
             "Kühlung mit Verieselung":           [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
             "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
+            "Wasser auffüllen":                  [1,0,0,0,0,0,0],   # läßt frisches Wasser in das System
             "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf
 
 # Zunächst eine Routine, die weitere Zustandsänderungen auslöst, wenn ein komplexer Vorgang auslöst wurde
@@ -100,7 +101,7 @@ def Manualoverride(co):
     
     if co["normaler CHOP-Circle"][2] == 1 or co["warmer CHOP-Circle"][2] == 1 or\
         co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verieselung"][2]== 1 or\
-        co["Wasser ablassen"][2] == 1:
+        co["Wasser ablassen"][2] == 1 or co["Wasser auffüllen"][2]== 1:
         return True
 
     return False
@@ -113,6 +114,7 @@ def Alles_aus(myscreen, co):
     ButtonCheck(myscreen.wlf.check_btn_CCW_an,co, "CHOP-Circle mit\nWarmluft ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
+    ButtonCheck(myscreen.wlf.check_btn_WA_an,co, "Brunnenventil schließen")  # simulierte Buttonpress
         
     
 def SensorCheck(screen, co, we):    # screen = screen_app, co = Controllarray, we = Wertearray
@@ -233,7 +235,7 @@ def do_it(liste,ar, manov,i):
             
       
         ar[listenkey][1] = liste[i][2]
-        if i < 11 :                           # 1 - 10 sind komplexe Zustände, daher müssen in der Folge
+        if i < 15 :                           # 1 - 14 sind komplexe Zustände, daher müssen in der Folge
             if liste[i][2] == 1 :                   # diverse andere Veränderungen (an Ventilen) vorgnommen werden
                 Config_Zustaende(listenkey, ar)
             else: Config_Zustaende("Nichts",ar)
@@ -243,10 +245,11 @@ def do_it(liste,ar, manov,i):
 ##################################################################################
 # ButtonCeck
 ##################################################################################
-# die Methode bind, wird in Kontrollpanel angewandt, damit hier identifiziert werden kann, welcher Button gedrückt wurde
+# in Kontrollpanel.py wird die Methode "bind" angewandt, damit hier identifiziert werden kann, welcher Button 
+# gedrückt wurde. Direktes callback geht nicht, da sich der Text des Buttons ändern kann
 # wird entweder aufgerufen, wenn ein Button gedrückt wurde, dann ist _button = None
 
-# alternativ kann aus anderen Modulen (Sensorgetriggert oder Zeitschaltung) dieses Modul hier aufgerufen werden,
+# oder ButtonChek kann aus anderen Modulen (Sensorgetriggert oder Zeitschaltung) aufgerufen werden,
 # dann ist BUTTON = _button (simulierter Buttondruck, der Name des Buttons wird als String übergeben)
 
 def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedrückt wurde, ar ist ca (Controlarray)
