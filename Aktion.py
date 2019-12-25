@@ -191,14 +191,14 @@ def change_aktoren(my_array):
     for key in my_array:
         for i in range(0, len(a_liste)):
             if key == a_liste[i][0]:
-                print("key = " + str(key)+ "     my_array[key][1] = " + str(my_array[key][1]) \
-                      + "    a_liste[i][1] =  "+ str(a_liste[i][1]))
+##                print("key = " + str(key)+ "     my_array[key][1] = " + str(my_array[key][1]) \
+##                      + "    a_liste[i][1] =  "+ str(a_liste[i][1]))
                 if my_array[key][1] == 1:
                     GPIO.output(a_liste[i][1],GPIO.LOW)
                     
                 elif  my_array[key][1] == 0:
                     GPIO.output(a_liste[i][1],GPIO.HIGH)
-    print("\n")
+##    print("\n")
     #GPIO.cleanup()
                     
     #------------------------------------------------------------------------------

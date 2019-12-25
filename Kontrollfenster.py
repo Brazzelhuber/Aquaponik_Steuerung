@@ -29,7 +29,7 @@ from smbus import SMBus
 import Werte_Zeichnen as Wz
 import Check_Center as Ch
 import Datepicker as Dp
-
+import Vorgabe as Vw
 
 # Höhe und Breite des Kontrollfensters
 K_H = 768
@@ -41,7 +41,7 @@ class Kontrollpanel(object):
     """"""
  
     #----------------------------------------------------------------------
-    def __init__(self, parent,  bg_Farbe, control_array):
+    def __init__(self, parent,  bg_Farbe, control_array, v_array):
 
         
         """Constructor"""
@@ -85,12 +85,12 @@ class Kontrollpanel(object):
        
         self.plf.grid_propagate(0)
 
-        self.xlf = Tk.LabelFrame(bd = 5, height =250, width =165, relief = "groove" )
+        self.xlf = Tk.LabelFrame(text = "Vorgabewerte" ,bd = 5, height =250, width =175, relief = "groove" )
        
         self.xlf.grid_propagate(0)
         
         self.flf = Tk.LabelFrame(text = "Erdfeuchte",\
-                                       bd = 5, height =350, width =165, relief = "groove" )
+                                       bd = 5, height =350, width =175, relief = "groove" )
        
         self.flf.grid_propagate(0)
 
@@ -129,21 +129,84 @@ class Kontrollpanel(object):
         self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
-# Fischbild: 
+# Fischbild:
+        grenzlabel = Tk.Label(self.xlf, text = "TempWasser Min: ")
+        grenzlabel.grid(row = 0, column = 0, sticky = Tk.W)
+        self.xlf.entry_wmi = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
+        self.xlf.entry_wmi.grid(row=0, column = 1,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.xlf.entry_wmi.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
 
-        canvas_width = 153
-        canvas_height = 240
+        grenzlabel = Tk.Label(self.xlf, text = "TempWasser Max: ")
+        grenzlabel.grid(row = 1, column = 0, sticky = Tk.W)
+        self.xlf.entry_wma = Tk.Entry(self.xlf, width = 4, bg = "white", relief = "sunk")
+        self.xlf.entry_wma.grid(row=1, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_wma.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
 
-        canvas = Tk.Canvas(self.xlf, 
-                   width=canvas_width, 
-                   height=canvas_height)
-        canvas.grid()
+        grenzlabel = Tk.Label(self.xlf, text = "Luft Min: ")
+        grenzlabel.grid(row = 2, column = 0, sticky = Tk.W)
+        self.xlf.entry_lmi = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
+        self.xlf.entry_lmi.grid(row=2, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_lmi.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "SumpPegel Min:")
+        grenzlabel.grid(row = 3, column = 0, sticky = Tk.W)
+        self.xlf.entry_pmi = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
+        self.xlf.entry_pmi.grid(row=3, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_pmi.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "SumpPegel Max:")
+        grenzlabel.grid(row = 4, column = 0, sticky = Tk.W)
+        self.xlf.entry_pma = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
+        self.xlf.entry_pma.grid(row=4, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_pma.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "PhWert Min:")
+        grenzlabel.grid(row = 5, column = 0, sticky = Tk.W)
+        self.xlf.entry_phmi = Tk.Entry(self.xlf, width = 4, bg = "white", relief = "sunk")
+        self.xlf.entry_phmi.grid(row=5, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_phmi.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "PhWert Max:")
+        grenzlabel.grid(row = 6, column = 0, sticky = Tk.W)
+        self.xlf.entry_phma = Tk.Entry(self.xlf, width = 4, bg = "white", relief = "sunk")
+        self.xlf.entry_phma.grid(row=6, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_phma.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "Fütterungszeit:")
+        grenzlabel.grid(row = 7, column = 0, sticky = Tk.W)
+        self.xlf.entry_Fuz = Tk.Entry(self.xlf, width = 4, bg = "white", relief = "sunk")
+        self.xlf.entry_Fuz.grid(row=7, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_Fuz.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        grenzlabel = Tk.Label(self.xlf, text = "Fütterungsdauer:")
+        grenzlabel.grid(row = 8, column = 0, sticky = Tk.W)
+        self.xlf.entry_Fud = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
+        self.xlf.entry_Fud.grid(row=8, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
+        self.xlf.entry_Fud.bind("<Return>",
+                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
         
-        mysize =(canvas_width,canvas_height)
-        img = Image.open("forelle-klein.jpg")
-        img = img.resize(mysize, PIL.Image.ANTIALIAS)
-        canvas.image = ImageTk.PhotoImage(img)
-        canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
+
+##        canvas_width = 153
+##        canvas_height = 240
+##
+##        canvas = Tk.Canvas(self.xlf, 
+##                   width=canvas_width, 
+##                   height=canvas_height)
+##        canvas.grid()
+##        
+##        mysize =(canvas_width,canvas_height)
+##        img = Image.open("forelle-klein.jpg")
+##        img = img.resize(mysize, PIL.Image.ANTIALIAS)
+##        canvas.image = ImageTk.PhotoImage(img)
+##        canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
 
 
 ############################################################################################
@@ -1077,10 +1140,10 @@ class Kontrollpanel(object):
                 if "Licht" in param:
                     Auswahl_Button(Grafikfenster, "Day Light Integral",           
                                    B-570,H-50,120,40,Button_Farbe,Button_Farbe2,Grafik_DLI)
-                # Zeigt Temperaturen synchron, um besser analysieren zu können
-                if "T_" in param:
-                    Auswahl_Button(Grafikfenster, "Alle Temperaturen",           
-                                   B-570,H-50,120,40,Button_Farbe,Button_Farbe2,TempGesamt)
+##                # Zeigt Temperaturen synchron, um besser analysieren zu können
+##                if "T_" in param:
+##                    Auswahl_Button(Grafikfenster, "Alle Temperaturen",           
+##                                   B-570,H-50,120,40,Button_Farbe,Button_Farbe2,TempGesamt)
               
                 if eof:    # wenn Leseposition bei neuesten Daten, geht es nicht weiter
                     Auswahl_Button(Grafikfenster, "Vor",10,H-50,100,40,Button_Blocked,Button_Blocked,Grafik_Vor)

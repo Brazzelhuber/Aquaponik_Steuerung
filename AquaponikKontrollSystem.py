@@ -37,6 +37,7 @@ import Wertelesen as Wl
 import Check_Center as Ch
 import Soll_Ist as Si
 import Aktion as Ak
+import Vorgabe as Vw
 
 ##
 # remote Debugging mit Visual Studio (wenn Debugging --> uncomment):
@@ -53,7 +54,22 @@ import Aktion as Ak
 #########################################################################################################
 
 #######################################################################################################
-# Initiieren: Array mit Sensordaten und Array mit Kontrollvariablen:
+# Initiieren: Array mit Vorgabewerten, Array für Sensordaten und Array mit Kontrollvariablen:
+
+# Array mit Vorgabewerten definiert, ab wann beim Ablesen der Sensordaten automatisch eine Aktion ausgelöst wird, bzw.
+# wann gefüttert werden soll
+
+vw         =  {"TempWasserMin" : 3,         # Temperatur in der Fischtanks
+               "TempWasserMax" : 23,
+               "TempLuftMin"   : 3,         # Temperatur im Gewächshaus unten
+               "WasserpegelMin": 0,         # Wasserspiegel im Sumpftank
+               "WasserpegelMax": 0,
+               "PhWertMin"     : 6.7,
+               "PhWertMax"     : 7.1,
+               "Fuetterung"    : 10.00,
+               "Fuett.dauer"  : 5
+               }
+               
 
 # der Werte-Array beinhaltet die ausgelesenen Sensordaten,
 # bzw. die errechneten Daten für Sonnenauf- und -untergang 
@@ -108,7 +124,8 @@ ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> G
                "ST to FT":                 [0,0,0],  #Sumptank zu Fischtanks
                "ST to HB":                 [0,0,0],  #Sumptank zu Hochbeet
                "LU to HP":                 [0,0,0],  # Luftventile
-               "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpumpo
+               "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpump
+
 
 
 ##################################################################################################
@@ -125,31 +142,44 @@ fenster.configure(background = Hintergrund)
 ###############################################################################
 # Kontrollpanel, mit dem das System vom Bildschirm aus gesteuert werden kann: #
                                                                               #
-screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca)                       #
+screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca, vw)                       #
 ###############################################################################
+# Einlesen der Vorgabewerte:
+
+xy = Vw.LeseVorgabe(screen_app, vw)
 
 # widget und Callback für den Button "Beenden":
 
-def Beenden(after_id):                  # wird von clickma aufgerufen und beendet das Programm
+def Beenden(after_id, vw):                  # wird von clickma aufgerufen und beendet das Programm
+    
+    Vw.WriteWerte(vw)
     fenster.after_cancel(after_id)
     fenster.destroy()
+   
     sys.exit()
    
-clickma = Tk.Button (fenster, text = "Beenden", command = lambda: Beenden(after_id))
+clickma = Tk.Button (fenster, text = "Beenden", command = lambda: Beenden(after_id, vw))
 clickma.grid(row = 3, column = 0, padx = 10, sticky = Tk.E)
 
 #############################################################################################################
 #Anzeige von Datum und Urzeit links unten auf dem Screen
 screen_app.Datum_Zeit = Tk.Label (text = time.strftime("%d.%m.%Y - %H:%M"))
 screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
-################################################################################################################    
+################################################################################################################
+# Variablen für loop:
+t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
+after_id = 0
+
+# Ende der Programminitialisierung
+
+
+
 # Programm starten 
 # loop wird durch die fenster.after-Methode jede Sekunde wiederholt
 ###################################################################
-# Variablen für loop:
 
-t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
-after_id = 0
+
+
 
 #####################################################
 def loop():
@@ -192,7 +222,7 @@ def loop():
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
-        
+                                               # daraus folgt, dass der Sollwert verändert wurde
         Ds.Werte_schreiben(wa, ca)             # schreibt Veränderung in Logdatei
 
         Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
