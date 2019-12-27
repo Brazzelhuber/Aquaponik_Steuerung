@@ -10,12 +10,10 @@ def LeseVorgabe(Screen_App, _array):
         Komma = Linie.find(",")
         Schluessel = Linie[2:Komma-1]
         Wert = Linie[Komma +3:len(Linie)-2]
-##        print(Wert)
-        #print(str(Komma))
-        #print(str(Schluessel) + " = " + str(Wert))
+
         for key in _array.keys():
             if key == Schluessel:
-                #print(Schluessel)
+    
                 _array[key] = Wert
 
     Screen_App.xlf.entry_wmi.insert(0,  str(_array["TempWasserMin"]))
@@ -27,6 +25,8 @@ def LeseVorgabe(Screen_App, _array):
     Screen_App.xlf.entry_phma.insert(0,  str(_array["PhWertMax"]))
     Screen_App.xlf.entry_Fuz.insert(0,  str(_array["Fuetterung"]))
     Screen_App.xlf.entry_Fud.insert(0,  str(_array["Fuett.dauer"]))
+
+    vo.close()
     
 def RefreshWerte(Screen_App, _array):
     
@@ -51,12 +51,6 @@ def WriteWerte(_array):
     vo = open('Vorgabe.csv' , 'w')
     writerl = csv.writer(vo)
     for item in _array.items():
-        writerl.writerow(item)
-##        print(key)
-##        print (str(_array[key]))
-       
-        #print(str(key))
-        
-        
+        writerl.writerow(item)        
 
     vo.close()
