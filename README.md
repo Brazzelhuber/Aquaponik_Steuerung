@@ -55,7 +55,7 @@ Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle z
 
 Hier die grobe Struktur des Programms
 
-![Programmstruktur](Aquaponik_Programm_Struktur.png){: width="200px" }
+![Programmstruktur](Aquaponik_Programm_Struktur.png)
 
-In der Grafik nicht berücksichtigt ist die Tatsache, dass alle Sensordaten als Listbox einsehbar und als Grafik darstellbar sind.
+In der Grafik nicht berücksichtigt ist die Tatsache, dass alle Sensordaten als Listbox einseh- und als Grafik darstellbar sind.
 
