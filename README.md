@@ -1,5 +1,10 @@
 # Aquaponik_Steuerung
+
 Das Programm steuert einen Raspberry Pi, der in einem Aquaponik CHOP-System zum Einsatz kommt.
+
+
+# Realstruktur
+
 Das Besondere an der Anlage, die in einem 50 qm-Gewächshaus installiert ist, ist die Kombination mit
 normalen Erd-Hochbeeten
 
@@ -33,4 +38,20 @@ Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 
 ![RealStruktur](RealStruktur.png)
 
+# Konfiguration des Raspberry Pi
+
+zum Auslesen der Temperatursensoren
+in /boot/config.txt eingetragen:          dtoverlay = w1-gpio
+                                          gpiopin=4
+     
+für den Lichtsensor und die Hardwareclock (tiny RTC)
+muss man in raspi-config unter Interface Options den I2C Bus aktivieren
+
+Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle zu aktivieren
+
+# Struktur des Programms
+
+Hier die grobe Struktur des Programms
+
+![Programmstruktur](Aquaponik_Programm_Struktur.png)
 
