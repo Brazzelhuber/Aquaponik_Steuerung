@@ -31,6 +31,6 @@ Alle Aktoren werden über GPIOs und zwei Relais-Boards gesteuert.
 
 Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 
-![P&I](P&I_Struktur.png)
+![RealStruktur](RealStruktur.png)
 
 
