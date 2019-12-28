@@ -10,10 +10,10 @@ Die Erde in den Hochbeete wird mit Feuchtigkeitssensoren kontrolliert. Falls die
 
 Folgende Sensoren sind im Einsatz: 
 
-- 6 Erdfeuchte über MCP3008
+- 6 Erdfeuchtesensoren über MCP3008
 - 5 Temperatursensoren über Wire-1
-- 1 Lux-Messer zur Überwachung der Lichtintensität
-- 1 Ph-Sensor von Atlas Scientific zur Ph-Messung in den Fischtanks
+- 1 Lux-Messer zur Überwachung der Lichtintensität (über I2C-Bus)
+- 1 Ph-Sensor von Atlas Scientific zur Ph-Messung in den Fischtanks (über UART)
 - 1 Ultraschallsensor zur Messung der Wasserhöhe im Sumptank
 
 Die Pumpe im Sumptank ist eine Geysir-Pumpe, die mit Luft betrieben wird. Zur Heizung des Wassers im Winter kann die Luft von 
@@ -22,11 +22,15 @@ unterm Dach angesaugt werden.
 Wenn das nicht reicht, kann eine Wasserheizung gestartet werden.
 
 Aktoren sind:
-
+- die Hauptpumpe (eine Luftpumpe, die eine Geysirpump betreibt)
 - 2 Luftfventile (Luft von unten/oben)
 - 5 Wasserventile
 - 12-Volt Motor für Fütterungsautomat
 
-Die Struktur ist in der Datei P&I-final (Libreoffice-Format) im Ordner "Dokumentation" zu sehen.
-Dort findet sind auch die Programmstruktur.
+Alle Aktoren werden über GPIOs und zwei Relais-Boards gesteuert.
+
+Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
+
+![P&I](P&I_Struktur.png)
+
 

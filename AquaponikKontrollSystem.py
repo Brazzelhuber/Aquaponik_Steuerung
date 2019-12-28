@@ -100,8 +100,8 @@ wa          = {"T_Luft_oben" : 0,      # Lufttemperatur unterm Dach des Gewächs
 # if-clauses für die Sensordaten sagen: "normaler CHOP-Circle", über den Bildschirm wurde
 # aber "Kühlung mit Bewässerung" gewählt. Dann darf das nicht im nächsten Loop durch die Sensorbedingungen
 # rückgängig gemacht werden, sondern muß entgegen der definierten Bedingungen aufrechterhalten werden,
-# bis wieder eine manuelle Abschaltung erfolgt.
-# Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig gesteuert werden müssen
+# bis wieder eine manuelle Abschaltung über den Bildschirm erfolgt.
+# Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig gesteuert werden müssen.
 # Hauptpumpe funktioniert mit Luft (Geysir Pumpe).
 
 ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
@@ -223,11 +223,12 @@ def loop():
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
                                                # daraus folgt, dass der Sollwert verändert wurde
+                                               
         Ds.Werte_schreiben(wa, ca)             # schreibt Veränderung in Logdatei
 
-        Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
-             
         Ak.change_aktoren(ca)                  # Aktoren werden gesteuert
+
+        Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
         
         Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
 
