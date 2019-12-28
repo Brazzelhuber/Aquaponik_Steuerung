@@ -16,6 +16,7 @@ Die Erde in den Hochbeete wird mit Feuchtigkeitssensoren kontrolliert. Falls die
 Folgende Sensoren sind im Einsatz: 
 
 - 6 Erdfeuchtesensoren über MCP3008
+- über MCP3008 wird auch die Spannung der 12-Volt Batterie überwacht.
 - 5 Temperatursensoren über Wire-1
 - 1 Lux-Messer zur Überwachung der Lichtintensität (über I2C-Bus)
 - 1 Ph-Sensor von Atlas Scientific zur Ph-Messung in den Fischtanks (über UART)
@@ -41,10 +42,11 @@ Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 # Konfiguration des Raspberry Pi
 
 zum Auslesen der Temperatursensoren
-in /boot/config.txt eingetragen:          dtoverlay = w1-gpio
-                                          gpiopin=4
+in /boot/config.txt eingetragen:          
+dtoverlay = w1-gpio
+gpiopin=4
      
-für den Lichtsensor und die Hardwareclock (tiny RTC)
+Für den Lichtsensor und die Hardwareclock (tiny RTC)
 muss man in raspi-config unter Interface Options den I2C Bus aktivieren
 
 Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle zu aktivieren
@@ -53,5 +55,7 @@ Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle z
 
 Hier die grobe Struktur des Programms
 
-![Programmstruktur](Aquaponik_Programm_Struktur.png)
+![Programmstruktur](Aquaponik_Programm_Struktur.png){ width = 80% }
+
+In der Grafik nicht berücksichtigt ist die Tatsache, dass alle Sensordaten als Listbox einsehbar und als Grafik darstellbar sind.
 

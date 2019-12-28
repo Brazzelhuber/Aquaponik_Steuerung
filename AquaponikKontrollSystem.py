@@ -1,21 +1,10 @@
 #!/usr/bin/python3.5
 # coding=utf-8
 # Aquaponik-Kontrollsystem.py
-# Version 1.3
-# Diese Version ist gegenüber Vorgängerversion in Module aufgeteilt. Diese müssen sich im selben Ordner befinden, es ist
-# kein Pfad gesetzt
+
 #------------------------------------------------------------
-## Das Programm steuert im Augenblick 2 Temperatursensoren und einen Lichtsensor 
-## für weitere Einzelheiten zu der verwendeten Hardware siehe: readme.md
-##
-##  zum Auslesen der Temperatursensoren
-## in /boot/config.txt eingetragen:          dtoverlay = w1-gpio
-##                                           gpiopin=4      
-##
-##
-## für den Lichtsensor und die Hardwareclock (tiny RTC)
-## muss man in raspi-config unter Interface Options den I2C Bus aktivieren
-##
+## Für weitere Einzelheiten siehe: readme.md
+
 
 from __future__ import division, print_function  # Maßnahme um pygame mit Python 3.x kompatible zu machen
 import sys, time, csv
@@ -29,8 +18,6 @@ import ptvsd     # dient dem remote-debugging mit Visual Studio
 
 import Kontrollfenster as Kf
 import Temperatursensoren as Ts
-#import Lichtlesen as Ls
-#import EMailsenden as Es
 import Werte_auf_Screen_schreiben as Ws
 import Werte_in_Datei_schreiben as Ds
 import Wertelesen as Wl
@@ -46,7 +33,7 @@ import Vorgabe as Vw
 ##ptvsd.wait_for_attach()
 
 # in VS muß bei Debugging in "an Prozeß anhängen" ptsvd gewählt 
-# und in Ziel: tcp://192.168.178.119:5678 eingegeben werden
+# und in Ziel: tcp://XXX.XXX.XXX:5678 eingegeben werden (XXX.. steht für die Adresse des Raspi)
 
 #---------------------------------------------------------------------------------------------------------
 #########################################################################################################
@@ -56,10 +43,13 @@ import Vorgabe as Vw
 #######################################################################################################
 # Initiieren: Array mit Vorgabewerten, Array für Sensordaten und Array mit Kontrollvariablen:
 
-# Array mit Vorgabewerten definiert, ab wann beim Ablesen der Sensordaten automatisch eine Aktion ausgelöst wird, bzw.
-# wann gefüttert werden soll
+# Array mit Vorgabewerten definiert Grenzwerte für Sensordaten,
+# im Programm sind Bedingungen definiert,
+# ab wann automatisch eine Aktion ausgelöst wird, z.B. Temp Wasser > 23  -> Kühlung
+# Am Schlß noch Fütterungszeit und -dauer
+# die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return)
 
-vw         =  {"TempWasserMin" : 3,         # Temperatur in der Fischtanks
+vw         =  {"TempWasserMin" : 3,         # Temperatur in den Fischtanks
                "TempWasserMax" : 23,
                "TempLuftMin"   : 3,         # Temperatur im Gewächshaus unten
                "WasserpegelMin": 0,         # Wasserspiegel im Sumpftank
@@ -146,7 +136,7 @@ screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca, vw)                     
 ###############################################################################
 # Einlesen der Vorgabewerte:
 
-xy = Vw.LeseVorgabe(screen_app, vw)
+Vw.LeseVorgabe(screen_app, vw)
 
 # widget und Callback für den Button "Beenden":
 
@@ -162,7 +152,7 @@ clickma = Tk.Button (fenster, text = "Beenden", command = lambda: Beenden(after_
 clickma.grid(row = 3, column = 0, padx = 10, sticky = Tk.E)
 
 #############################################################################################################
-#Anzeige von Datum und Urzeit links unten auf dem Screen
+#Anzeige von Datum und Urzeit links unten auf dem Screen (im Gewächshaus gibts kein Internet, daher hardwareclock)
 screen_app.Datum_Zeit = Tk.Label (text = time.strftime("%d.%m.%Y - %H:%M"))
 screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
 ################################################################################################################
