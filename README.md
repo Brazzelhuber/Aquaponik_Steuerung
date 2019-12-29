@@ -73,23 +73,17 @@ Am Schluß werden noch Fütterungszeit und -dauer festgelegt.
 Die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return).
 Bei Beendigung des Programms werden die Werte gespeichert und bei Neustart aufgerufen.
 
-Programmaufruf | Funktion
--------------- | --------
-foobar -v | Erweiterte Informationen
-foobar -t | Programm nur testen
-foobar -vt | Programm mit allen Optionen ausführen
-
-
-vw         =  {  
+Array-Item | Bedeutung
+-------------- | --------  
 |"TempWasserMin" : 3,     |Temperaturminimum in den Fischtanks |  
 |"TempWasserMax" : 23,    |Temperaturmaximum in den Fischtanks |	  	
 "TempLuftMin"   : 3,      |Temperatur im Gewächshaus unten     |   
-"WasserpegelMin": 0,      |Wasserspiegel im Sumpftank          |
-"WasserpegelMax": 0,		
-"PhWertMin"     : 6.7,		    
-"PhWertMax"     : 7.1,  	  	
-"Fuetterung"    : 10.00,  	  
-"Fuett.dauer"  : 5}  		  
+"WasserpegelMin": 0,      |Wasserspiegelminimum im Sumpftank          |
+"WasserpegelMax": 0,	|Wasserspiegelmac im Sumptank|	
+"PhWertMin"     : 6.7,	| Minimum Ph-Wert Wasser|	    
+"PhWertMax"     : 7.1,  	  	 |Maximum PhWert|
+"Fuetterung"    : 10.00,  	  | Fütterungszeit |
+"Fuett.dauer"  : 5}  	| Fütterungsdauer |	  
                  
                
 ## Werte-Array
