@@ -73,16 +73,17 @@ Am Schluß werden noch Fütterungszeit und -dauer festgelegt.
 Die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return).
 Bei Beendigung des Programms werden die Werte gespeichert und bei Neustart aufgerufen.
 
-vw         =  {"TempWasserMin" : 3,         Temperatur in den Fischtanks  
-               "TempWasserMax" : 23,  
-               "TempLuftMin"   : 3,         Temperatur im Gewächshaus unten  
-               "WasserpegelMin": 0,         Wasserspiegel im Sumpftank  
-               "WasserpegelMax": 0,
-               "PhWertMin"     : 6.7,  
-               "PhWertMax"     : 7.1,  
-               "Fuetterung"    : 10.00,  
-               "Fuett.dauer"  : 5  
-               }  
+vw         =  {
+"TempWasserMin" : 3,         Temperatur in den Fischtanks  
+"TempWasserMax" : 23,  
+"TempLuftMin"   : 3,         Temperatur im Gewächshaus unten  
+"WasserpegelMin": 0,         Wasserspiegel im Sumpftank  
+"WasserpegelMax": 0,
+"PhWertMin"     : 6.7,  
+"PhWertMax"     : 7.1,  
+"Fuetterung"    : 10.00,  
+"Fuett.dauer"  : 5}  
+                 
                
 ## Werte-Array
 
