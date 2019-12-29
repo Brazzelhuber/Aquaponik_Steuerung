@@ -130,26 +130,26 @@ Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig 
 Array-Item | Bedeutung
 -------------- | --------  
 |"normaler CHOP-Circle":     [0,0,0], |  normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten |
-               |"warmer CHOP-Circle":       [0,0,0], |  warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach |
-               "Kühlung mit Bewässerung":  [0,0,0], |  zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
-               "Kühlung mit Verieselung":  [0,0,0], |  dito mit Verieselung
-               "Brunnenwasser als Heizung":[0,0,0], |  Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
-               "Wasser auffüllen":         [0,0,0], |  Wasserverlust muss ausgeglichen werden
-               "Wasser ablassen":          [0,0,0], |  zuviel Wasser im System
-               "Hauptpumpe":               [0,0,0], |
-               "Screen_schreiben":         [0,1,0], |  Sensorwerte auf Screen schreiben, kann im Dauerbetrieb abgestellt werden
-               "Heizung":                  [0,0,0], |  wenn es im Winter zu kalt wird
-               "Es ist Tag"      :         [0,0], |    kommt aus den Sonnendaten, Luxwerte werden nur tagsüber geschrieben
-               "Alarm"            :        [0,0], |    wenn was schiefgeht wird EMail geschrieben
-               "Fütterung"  :              [0,0,0], |  Fütterungsautomat einschalten?
-               "Logeintrag":               [0,0], |    bei Zustandsänderung erfolgt ein Logeintrag
-               "WQ to FT":                 [0,0,0], |  die Wasserventile einzel: Wasserquelle (Brunnen) zu Fischtank
-               "WQ to VR":                 [0,0,0], |  Wasserquelle zu Verieselung
-               "ST to VR":                 [0,0,0], |  Sumptank zu Verieselung
-               "ST to FT":                 [0,0,0], |  Sumptank zu Fischtanks
-               "ST to HB":                 [0,0,0], |  Sumptank zu Hochbeet
-               "LU to HP":                 [0,0,0], |  Luftventile
-               "LO to HP":                 [0,0,0] |  saugt Luft von unterm Dach in die airpump
+|"warmer CHOP-Circle":       [0,0,0], |  warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach |
+"Kühlung mit Bewässerung":  [0,0,0], |  zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
+"Kühlung mit Verieselung":  [0,0,0], |  dito mit Verieselung
+"Brunnenwasser als Heizung":[0,0,0], |  Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
+"Wasser auffüllen":         [0,0,0], |  Wasserverlust muss ausgeglichen werden
+"Wasser ablassen":          [0,0,0], |  zuviel Wasser im System
+"Hauptpumpe":               [0,0,0], |
+"Screen_schreiben":         [0,1,0], |  Sensorwerte auf Screen schreiben, kann im Dauerbetrieb abgestellt werden
+"Heizung":                  [0,0,0], |  wenn es im Winter zu kalt wird
+"Es ist Tag"      :         [0,0], |    kommt aus den Sonnendaten, Luxwerte werden nur tagsüber geschrieben
+"Alarm"            :        [0,0], |    wenn was schiefgeht wird EMail geschrieben
+"Fütterung"  :              [0,0,0], |  Fütterungsautomat einschalten?
+"Logeintrag":               [0,0], |    bei Zustandsänderung erfolgt ein Logeintrag
+"WQ to FT":                 [0,0,0], |  die Wasserventile einzel: Wasserquelle (Brunnen) zu Fischtank
+"WQ to VR":                 [0,0,0], |  Wasserquelle zu Verieselung
+"ST to VR":                 [0,0,0], |  Sumptank zu Verieselung
+"ST to FT":                 [0,0,0], |  Sumptank zu Fischtanks
+"ST to HB":                 [0,0,0], |  Sumptank zu Hochbeet
+"LU to HP":                 [0,0,0], |  Luftventile
+"LO to HP":                 [0,0,0] |  saugt Luft von unterm Dach in die airpump
 
 #  Besonderheiten des Programms (2): Doppelnutzung des Moduls ButtonCheck
 
