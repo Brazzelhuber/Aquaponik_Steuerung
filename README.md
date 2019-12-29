@@ -73,6 +73,13 @@ Am Schluß werden noch Fütterungszeit und -dauer festgelegt.
 Die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return).
 Bei Beendigung des Programms werden die Werte gespeichert und bei Neustart aufgerufen.
 
+Programmaufruf | Funktion
+-------------- | --------
+foobar -v | Erweiterte Informationen
+foobar -t | Programm nur testen
+foobar -vt | Programm mit allen Optionen ausführen
+
+
 vw         =  {  
 |"TempWasserMin" : 3,     |Temperaturminimum in den Fischtanks |  
 |"TempWasserMax" : 23,    |Temperaturmaximum in den Fischtanks |	  	
