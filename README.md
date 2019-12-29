@@ -129,8 +129,8 @@ Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig 
 
 Array-Item | Bedeutung
 -------------- | --------  
-"normaler CHOP-Circle":     [0,0,0], |  normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
-               "warmer CHOP-Circle":       [0,0,0], |  warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
+|"normaler CHOP-Circle":     [0,0,0], |  normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten |
+               |"warmer CHOP-Circle":       [0,0,0], |  warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach |
                "Kühlung mit Bewässerung":  [0,0,0], |  zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
                "Kühlung mit Verieselung":  [0,0,0], |  dito mit Verieselung
                "Brunnenwasser als Heizung":[0,0,0], |  Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
