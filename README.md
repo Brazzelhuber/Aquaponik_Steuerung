@@ -151,15 +151,15 @@ Array-Item | Bedeutung
 "LU to HP":                 [0,0,0], |  Luftventile
 "LO to HP":                 [0,0,0] |  saugt Luft von unterm Dach in die airpump
 
-#  Besonderheiten des Programms (2): Doppelnutzung des Moduls ButtonCheck
+#  Besonderheiten des Programms (2): Doppelnutzung der Funktion ButtonCheck()
 
 Im Modul Kontrollpanel.py werden die einzelnen Clickbuttons über die Methode "bind" 
-mit dem Modul ButtonCheck verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
+mit dem Modul ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
 der Text des gedrückten Buttons abgefragt werden.
 
 Um nun für sensorgetriggerte Veränderungsabfragen Programmdoppelstrukturen zu vermeiden wird das Modul ButtonCheck.py
-auch von SensorCheck.py benutzt, das auf der Grundlage der Sensorwerte prüft ob Veränderungen angefragt werden sollen.
+auch von SensorCheck() benutzt, das auf der Grundlage der Sensorwerte prüft ob Veränderungen angefragt werden sollen.
 
-Hierfür wird ein Buttonpress simuliert. Der Text des virtuellen Buttons wird als Paramter übergaben, während bei einem 
-wirklichen Buttonpress dieser Parameter immer gleich None ist.
+Hierfür wird ein Buttonpress simuliert. Der Text des virtuellen Buttons wird als Paramter übergeben, während bei einem 
+wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch button.configure("text")[-1] bekannt).
 
