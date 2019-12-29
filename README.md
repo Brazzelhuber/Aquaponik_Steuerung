@@ -78,11 +78,11 @@ Array-Item | Bedeutung
 |"TempWasserMin" : 3,     |Temperaturminimum in den Fischtanks |  
 |"TempWasserMax" : 23,    |Temperaturmaximum in den Fischtanks |	  	
 "TempLuftMin"   : 3,      |Temperatur im Gewächshaus unten     |   
-"WasserpegelMin": 0,      |Wasserspiegelminimum im Sumpftank          |
-"WasserpegelMax": 0,	|Wasserspiegelmac im Sumptank|	
+"WasserpegelMin":       |Wasserspiegelminimum im Sumpftank          |
+"WasserpegelMax": 	|Wasserspiegelmac im Sumptank|	
 "PhWertMin"     : 6.7,	| Minimum Ph-Wert Wasser|	    
 "PhWertMax"     : 7.1,  	  	 |Maximum PhWert|
-"Fuetterung"    : 10.00,  	  | Fütterungszeit |
+"Fuetterung"    : 10.00  	  | Fütterungszeit |
 "Fuett.dauer"  : 5}  	| Fütterungsdauer |	  
                  
                
@@ -90,25 +90,27 @@ Array-Item | Bedeutung
 
 Der Werte-Array beinhaltet die ausgelesenen Sensordaten, bzw. die errechneten Daten für Sonnenauf- und -untergang 
 
-wa          = {"T_Luft_oben" : 0,      Lufttemperatur unterm Dach des Gewächshauses, kann zum Heizen eingesetzt werden 
-               "T_Luft_unten" : 0,     Lufttemperatur unten
-               "T_Wasser1": 0,         Temperatur Fischtank 1
-               "T_Wasser2": 0,         Temperatur Fischtank 2
-               "T_aussen": 0,          Außentemperatur
-               "Luxwert_1" : 0 ,       Luxwert
-               "Ph-Wert": 0 ,          Ph-Wert Wasser
-               "Sauerstoff" : 0,       O2-Gehalt Wasser (muß noch entschieden werden, ob das sinnvoll ist)
-               "Volt"  :0 ,            Spannung der 12-Voltbatterie
-               "Wasserstand" : 0,      Wasserstand im Sumptank 
-               "Sonnenaufgang": 0,     wird von sunset.py auf der Grundlage von GPS und Datum ausgerechnet
-               "Sonnenuntergang": 0,   die Luxdaten werden nur am Tag gespeichert
-               "Erdfeuchte1" : 0,      Erdfeuchtmessung in den Erd-Hochbeeten
-               "Erdfeuchte2" : 0,       
-               "Erdfeuchte3" : 0,       
-               "Erdfeuchte4" : 0,
-               "Erdfeuchte5" : 0,
-               "Erdfeuchte6" : 0
-                }
+Array-Item | Bedeutung
+-------------- | --------  
+"T_Luft_oben" : |      Lufttemperatur unterm Dach des Gewächshauses
+"T_Luft_unten" : |     Lufttemperatur unten
+"T_Wasser1": |         Temperatur Fischtank 1
+"T_Wasser2": |         Temperatur Fischtank 2
+"T_aussen": |          Außentemperatur
+"Luxwert_1" : |      Luxwert
+"Ph-Wert": |          Ph-Wert Wasser
+"Sauerstoff" : |       O2-Gehalt Wasser (muß noch entschieden werden, ob das sinnvoll ist)
+"Volt"  :|            Spannung der 12-Voltbatterie
+"Wasserstand" : |      Wasserstand im Sumptank 
+"Sonnenaufgang": |     wird von sunset.py auf der Grundlage von GPS und Datum ausgerechnet
+"Sonnenuntergang": |   die Luxdaten werden nur am Tag gespeichert
+"Erdfeuchte1" : |      Erdfeuchtmessung in den Erd-Hochbeeten
+"Erdfeuchte2" : |       
+"Erdfeuchte3" : |       
+"Erdfeuchte4" : |
+"Erdfeuchte5" : |
+"Erdfeuchte6" : |
+                
 
 
 ## Control-Array
