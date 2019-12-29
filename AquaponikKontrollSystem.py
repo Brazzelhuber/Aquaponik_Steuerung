@@ -43,16 +43,12 @@ import Vorgabe as Vw
 #######################################################################################################
 # Initiieren: Array mit Vorgabewerten, Array für Sensordaten und Array mit Kontrollvariablen:
 
-# Array mit Vorgabewerten definiert Grenzwerte für Sensordaten,
-# im Programm sind Bedingungen definiert,
-# ab wann automatisch eine Aktion ausgelöst wird, z.B. Temp Wasser > 23  -> Kühlung
-# Am Schlß noch Fütterungszeit und -dauer
-# die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return)
+# Zur Erklärung siehe README.md
 
-vw         =  {"TempWasserMin" : 3,         # Temperatur in den Fischtanks
+vw         =  {"TempWasserMin" : 3,         
                "TempWasserMax" : 23,
-               "TempLuftMin"   : 3,         # Temperatur im Gewächshaus unten
-               "WasserpegelMin": 0,         # Wasserspiegel im Sumpftank
+               "TempLuftMin"   : 3,         
+               "WasserpegelMin": 0,        
                "WasserpegelMax": 0,
                "PhWertMin"     : 6.7,
                "PhWertMax"     : 7.1,
@@ -61,60 +57,50 @@ vw         =  {"TempWasserMin" : 3,         # Temperatur in den Fischtanks
                }
                
 
-# der Werte-Array beinhaltet die ausgelesenen Sensordaten,
-# bzw. die errechneten Daten für Sonnenauf- und -untergang 
 
-wa          = {"T_Luft_oben" : 0,      # Lufttemperatur unterm Dach des Gewächshauses, kann zum Heizen eingesetzt werden 
-               "T_Luft_unten" : 0,     # Lufttemperatur unten
-               "T_Wasser1": 0,         # Temperatur Fischtank 1
-               "T_Wasser2": 0,          # Fischtank 2
-               "T_aussen": 0,           # Außentemperatur
-               "Luxwert_1" : 0 ,        # Luxwert
-               "Ph-Wert": 0 ,           # Ph-Wert Wasser
-               "Sauerstoff" : 0,        # O2-Gehalt Wasser
-               "Volt"  :0 ,             # Spannung der 12-Voltbatterie
-               "Wasserstand" : 0,       # Wasserstand im Sumptank 
-               "Sonnenaufgang": 0,      #  wird von sunset.py auf der Grundlage von GPS und Datum ausgerechnet
+
+wa          = {"T_Luft_oben" : 0,      
+               "T_Luft_unten" : 0,     
+               "T_Wasser1": 0,         
+               "T_Wasser2": 0,          
+               "T_aussen": 0,           
+               "Luxwert_1" : 0 ,        
+               "Ph-Wert": 0 ,           
+               "Sauerstoff" : 0,        
+               "Volt"  :0 ,             
+               "Wasserstand" : 0,        
+               "Sonnenaufgang": 0,      
                "Sonnenuntergang": 0,
-               "Erdfeuchte1" : 0,       # Erdfeuchtmessung in den Erd-Hochbeeten, wenn nicht zu feucht, wird das
-               "Erdfeuchte2" : 0,       # Brunnenwasser, das zur Kühlung zugeführt wird zur Bewässerung genutzt
-               "Erdfeuchte3" : 0,       # ansonsten verrieselt
+               "Erdfeuchte1" : 0,       
+               "Erdfeuchte2" : 0,       
+               "Erdfeuchte3" : 0,       
                "Erdfeuchte4" : 0,
                "Erdfeuchte5" : 0,
                "Erdfeuchte6" : 0
                 }
 
-# Kontrollarray ca entält links die IST-, in der Mitte oder rechts  die SOLL-Zustände ([0,1] heißt: ist aus/zu soll
-# aber an/auf).
-# da wo das Item dreistellig ist, indizierte der letzte Wert, ob ein manual override vorliegt. Beispiel: die
-# if-clauses für die Sensordaten sagen: "normaler CHOP-Circle", über den Bildschirm wurde
-# aber "Kühlung mit Bewässerung" gewählt. Dann darf das nicht im nächsten Loop durch die Sensorbedingungen
-# rückgängig gemacht werden, sondern muß entgegen der definierten Bedingungen aufrechterhalten werden,
-# bis wieder eine manuelle Abschaltung über den Bildschirm erfolgt.
-# Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig gesteuert werden müssen.
-# Hauptpumpe funktioniert mit Luft (Geysir Pumpe).
 
-ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
-               "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
-               "Kühlung mit Bewässerung":  [0,0,0],  # zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
-               "Kühlung mit Verieselung":  [0,0,0],  # dito mit Verieselung
-               "Brunnenwasser als Heizung":[0,0,0],  # Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
-               "Wasser auffüllen":         [0,0,0],  # Wasserverlust muss ausgeglichen werden
-               "Wasser ablassen":          [0,0,0],  # zuviel Wasser im System
+ca          ={ "normaler CHOP-Circle":     [0,0,0],  
+               "warmer CHOP-Circle":       [0,0,0],  
+               "Kühlung mit Bewässerung":  [0,0,0],  
+               "Kühlung mit Verieselung":  [0,0,0],  
+               "Brunnenwasser als Heizung":[0,0,0],  
+               "Wasser auffüllen":         [0,0,0],  
+               "Wasser ablassen":          [0,0,0],  
                "Hauptpumpe":               [0,0,0],
-               "Screen_schreiben":         [0,1,0],  # Sensorwerte auf Screen schreiben, kann im Dauerbetrieb abgestellt werden
-               "Heizung":                  [0,0,0],  # wenn es im Winter zu kalt wird
-               "Es ist Tag"      :         [0,0],    # kommt aus den Sonnendaten, Luxwerte werden nur tagsüber geschrieben
-               "Alarm"            :        [0,0],    # wenn was schiefgeht wird EMail geschrieben
-               "Fütterung"  :              [0,0,0],  # Fütterungsautomat einschalten?
-               "Logeintrag":               [0,0],    # bei Zustandsänderung erfolgt ein Logeintrag
-               "WQ to FT":                 [0,0,0],  # die Wasserventile einzel: Wasserquelle (Brunnen) zu Fischtank
-               "WQ to VR":                 [0,0,0],  # Wasserquelle zu Verieselung
-               "ST to VR":                 [0,0,0],  #Sumptank zu Verieselung
-               "ST to FT":                 [0,0,0],  #Sumptank zu Fischtanks
-               "ST to HB":                 [0,0,0],  #Sumptank zu Hochbeet
-               "LU to HP":                 [0,0,0],  # Luftventile
-               "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpump
+               "Screen_schreiben":         [0,1,0],   
+               "Heizung":                  [0,0,0],  
+               "Es ist Tag"      :         [0,0],    
+               "Alarm"            :        [0,0],    
+               "Fütterung"  :              [0,0,0],  
+               "Logeintrag":               [0,0],    
+               "WQ to FT":                 [0,0,0],  
+               "WQ to VR":                 [0,0,0],  
+               "ST to VR":                 [0,0,0],  
+               "ST to FT":                 [0,0,0],  
+               "ST to HB":                 [0,0,0],  
+               "LU to HP":                 [0,0,0],  
+               "LO to HP":                 [0,0,0]}  
 
 
 

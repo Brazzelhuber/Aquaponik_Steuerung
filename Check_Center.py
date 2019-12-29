@@ -249,7 +249,7 @@ def do_it(liste,ar, manov,i):
 # gedrückt wurde. Direktes callback geht nicht, da sich der Text des Buttons ändern kann
 # wird entweder aufgerufen, wenn ein Button gedrückt wurde, dann ist _button = None
 
-# oder ButtonChek kann aus anderen Modulen (Sensorgetriggert oder Zeitschaltung) aufgerufen werden,
+# oder ButtonCheck kann aus anderen Modulen (Sensorgetriggert oder Zeitschaltung) aufgerufen werden,
 # dann ist BUTTON = _button (simulierter Buttondruck, der Name des Buttons wird als String übergeben)
 
 def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedrückt wurde, ar ist ca (Controlarray)
