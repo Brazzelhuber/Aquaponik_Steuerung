@@ -51,19 +51,8 @@ DS1307 | Hardwareclock| 5,0| I2C  | siehe oben |
 MCP3008| AD-Wandler|3,3 | SPI| import spidev, in Interface Options SPI aktivieren (geht über MCP3008)|
 SKU: AB142 | Erdfeuchte| 3,3 | SPI | wird an der Analogseite des MCP3008 angeschlossen|
 HC-SR04 | Ultraschall| 3,3| ---| geht direkt über GPIO |
-phProbe|PhMessung|3,3|ch entschieden werden (I2C oder UART 
+phProbe|PhMessung|3,3|offen: I2C oder UART 
 
-
-
-zum Auslesen der Temperatursensoren
-in /boot/config.txt eingetragen:          
-dtoverlay = w1-gpio
-gpiopin=4
-     
-Für den Lichtsensor und die Hardwareclock (tiny RTC)
-muss man in raspi-config unter Interface Options den I2C Bus aktivieren
-
-Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle zu aktivieren
 
 # Programmstruktur
 
@@ -178,3 +167,17 @@ auch von SensorCheck()  gwnutzt.
 Hierfür wird ein Buttonpress simuliert. Der Text des virtuellen Buttons wird als Paramter übergeben, während bei einem 
 wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch button.configure("text")[-1] bekannt).
 
+# Interne Dokumentation
+
+## Durchgangsklemmen Schaltschrank
+
+ |Position |Farbe | Nummerierung |Eingang      | Ausgang     |
+-------- | -------|-------------|-------------| -------------|
+|  1      |gelbgrün | keine      |Erde        | Erde         |
+|   2    | grau    |  keine      | 3,3 V von Pi |             |
+|   3    | grau    |  keine      | 3,3 V von Pi |             |
+|   4    | grau    |  keine      | 3,3 V von Pi |             |
+|   5    | grau    |  keine      | 3,3 V von Pi |             |
+|   6    | grau    |  keine      | 3,3 V von Pi |             |
+|   7    | grau    |  keine      | 3,3 V von Pi |             |
+|   8    | grau    |  keine      | Datenleitung W1 |             |
