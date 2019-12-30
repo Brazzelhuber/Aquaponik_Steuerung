@@ -45,8 +45,14 @@ Folgende Sensoren und Devices kommen zum Einsatz
 
 Device  | Funktion  | Volt | Bus  | Konfiguration       |
 -------- | -------- | ---- | ---- | ----------------------  |
-DS1820  |Temperatur | 3,3  | 1-Wire| in config.txt dtoverlay = w1-gpio  und gpiopin=4 |
+DS1820  |Temperatur | 3,3  | 1-Wire| in config.txt dtoverlay = w1-gpio  und gpiopin=4 einfügen|
 BH1750 | Licht      | 3,3  | I2C   | in Interface Options I2C aktivieren  |
+DS1307 | Hardwareclock| 5,0| I2C  | siehe oben |
+MCP3008| AD-Wandler|3,3 | SPI| import spidev, in Interface Options SPI aktivieren (geht über MCP3008)|
+SKU: AB142 | Erdfeuchte| 3,3 | SPI | wird an der Analogseite des MCP3008 angeschlossen|
+HC-SR04 | Ultraschall| 3,3| ---| geht direkt über GPIO |
+phProbe|PhMessung|3,3|ch entschieden werden (I2C oder UART 
+
 
 
 zum Auslesen der Temperatursensoren
