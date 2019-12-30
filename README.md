@@ -157,12 +157,12 @@ Array-Item | Bedeutung
 #  Besonderheiten des Programms (2): Doppelnutzung der Funktion ButtonCheck()
 
 Im Modul Kontrollpanel.py werden die einzelnen Clickbuttons über die Methode "bind" 
-mit dee Funktion ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
+mit der Funktion ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
 der Text des gedrückten Buttons abgefragt werden.
 
 Die Funktion  SensorCheck() prüft auf der Grundlage der Sensorwerte,  ob Veränderungen angefragt werden sollen.
 Um nun für sensorgetriggerte Veränderungsanfragen Programmdoppelstrukturen zu vermeiden wird die Funktion ButtonCheck()
-auch von SensorCheck()  gwnutzt.
+auch von SensorCheck()  genutzt.
 
 Hierfür wird ein Buttonpress simuliert. Der Text des virtuellen Buttons wird als Paramter übergeben, während bei einem 
 wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch button.configure("text")[-1] bekannt).
@@ -181,3 +181,14 @@ wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch butt
 |   6    | grau    |  keine      | 3,3 V von Pi |             |
 |   7    | grau    |  keine      | 3,3 V von Pi |             |
 |   8    | grau    |  keine      | Datenleitung W1 |             |
+| 9    | grau    |  keine      | Datenleitung W1 |             |
+| 10    | grau    |  keine      | Datenleitung W1 |             |
+| 11   | grau    |  keine      | Datenleitung W1 |             |
+| 12    | grau    |  keine      | Datenleitung W1 |             |
+| 13    | grau    |  keine      | Datenleitung W1 |             |
+| 14    | grau    |  keine      |Gnd von Pi |             |
+| 15    | grau    |  keine      |Gnd von Pi |             |
+| 16    | grau    |  keine      |Gnd von Pi |             |
+| 17    | grau    |  keine      |Gnd von Pi |             |
+| 18    | grau    |  keine      |Gnd von Pi |             |
+| 19    | grau    |  keine      |Gnd von Pi |             |
