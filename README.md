@@ -41,6 +41,14 @@ Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 
 # Konfiguration des Raspberry Pi
 
+Folgende Sensoren und Devices kommen zum Einsatz
+
+Device  | Funktion  | Volt | Bus  | Konfiguration       |
+-------- | -------- | ---- | ---- | ----------------------  |
+DS1820  |Temperatur | 3,3  | 1-Wire| in config.txt dtoverlay = w1-gpio  und gpiopin=4 |
+BH1750 | Licht      | 3,3  | I2C   | in Interface Options I2C aktivieren  |
+
+
 zum Auslesen der Temperatursensoren
 in /boot/config.txt eingetragen:          
 dtoverlay = w1-gpio
@@ -54,7 +62,7 @@ Für die Nutzung des Analog zu Digital-Chips MCP3008 ist die SPI-Schnittstelle z
 # Programmstruktur
 
 Hier die grobe Struktur des Programms
-
+|
 ![Programmstruktur](ProgrammStruktur.png)
 
 # Besonderheiten des Programms (1): Steuerung mit Arrays
