@@ -1,9 +1,9 @@
-TempLuftMin,3
+TempWasserMin,3
 WasserpegelMin,0
-PhWertMin,6.7
-TempWasserMax,23
-TempWasserMin,2
-Fuett.dauer,5
+TempLuftMin,3
 Fuetterung,10.00
-PhWertMax,7.1
 WasserpegelMax,0
+TempWasserMax,23
+PhWertMin,6.7
+Fuett.dauer,5
+PhWertMax,7.1

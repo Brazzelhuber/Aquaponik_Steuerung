@@ -208,7 +208,7 @@ def ManualCheck(ar, manov, text, i):
     
     for key in Zustaende:
         
-        if key != text and key != "Nichts" and ar[key][0] == 1 and manov == True and i <= 30:
+        if key != text and key != "Nichts" and  text != "Heizung" and ar[key][0] == 1 and manov == True and i <= 30:
             messagebox.showwarning("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
                                 text + "\n\n" + "gestartet werden kann")
             

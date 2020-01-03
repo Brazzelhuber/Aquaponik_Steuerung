@@ -1,9 +1,12 @@
+<!-- Required extensions: pymdownx.betterem, pymdownx.tilde, pymdownx.emoji, pymdownx.tasklist, pymdownx.superfences,
+markdown.extensions.tables-->
+
 # Aquaponik_Steuerung
 
 Das Programm steuert einen Raspberry Pi, der in einem Aquaponik CHOP-System zum Einsatz kommt.
 
 
-# Realstruktur
+## Realstruktur
 
 Das Besondere an der Anlage, die in einem 50 qm-Gewächshaus installiert ist, ist die Kombination mit
 normalen Erd-Hochbeeten
@@ -39,7 +42,7 @@ Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 
 ![RealStruktur](RealStruktur.png)
 
-# Konfiguration des Raspberry Pi
+## Konfiguration des Raspberry Pi
 
 Folgende Sensoren und Devices kommen zum Einsatz
 
@@ -54,13 +57,13 @@ HC-SR04 | Ultraschall| 3,3| ---| geht direkt über GPIO |
 phProbe|PhMessung|3,3|offen: I2C oder UART 
 
 
-# Programmstruktur
+## Programmstruktur
 
 Hier die grobe Struktur des Programms
 |
 ![Programmstruktur](ProgrammStruktur.png)
 
-# Besonderheiten des Programms (1): Steuerung mit Arrays
+## Besonderheiten des Programms (1): Steuerung mit Arrays
 
 Das Programm wird im Wesentlichen über drei Arrays gesteuert (die technisch gesehen Dictionaries sind):
 
@@ -68,7 +71,7 @@ Das Programm wird im Wesentlichen über drei Arrays gesteuert (die technisch ges
 - der Werte-Array
 - der Control-Array
 
-## Vorgabe-Array
+### Vorgabe-Array
 
 Der Array mit Vorgabewerten definiert Grenzwerte für Sensordaten. Im Programm sind Bedingungen definiert,
 ab wann automatisch eine Aktion ausgelöst wird, z.B. Temperatur Wasser > 23 Grad -> Kühlung
@@ -76,20 +79,20 @@ Am Schluß werden noch Fütterungszeit und -dauer festgelegt.
 Die Werte werden als Entry-Vorgaben auf dem Screen gezeigt, können also geänderte werden (Abschluß: Return).
 Bei Beendigung des Programms werden die Werte gespeichert und bei Neustart aufgerufen.
 
-Array-Item | Bedeutung
--------------- | --------  
+|Array-Item | Bedeutung  |
+|-------------- | -------- | 
 |"TempWasserMin" : 3,     |Temperaturminimum in den Fischtanks |  
 |"TempWasserMax" : 23,    |Temperaturmaximum in den Fischtanks |	  	
 "TempLuftMin"   : 3,      |Temperatur im Gewächshaus unten     |   
 "WasserpegelMin":       |Wasserspiegelminimum im Sumpftank          |
-"WasserpegelMax": 	|Wasserspiegelmac im Sumptank|	
+"WasserpegelMax": 	|Wasserspiegelmax im Sumptank|	
 "PhWertMin"     : 6.7,	| Minimum Ph-Wert Wasser|	    
 "PhWertMax"     : 7.1,  	  	 |Maximum PhWert|
 "Fuetterung"    : 10.00  	  | Fütterungszeit |
 "Fuett.dauer"  : 5}  	| Fütterungsdauer |	  
                  
                
-## Werte-Array
+### Werte-Array
 
 Der Werte-Array beinhaltet die ausgelesenen Sensordaten, bzw. die errechneten Daten für Sonnenauf- und -untergang 
 
@@ -116,7 +119,8 @@ Array-Item | Bedeutung
                 
 
 
-## Control-Array
+
+### Control-Array
 
 
 Der Kontrollarray ca entält links die IST-, in der Mitte oder rechts  die SOLL-Zustände.
@@ -130,13 +134,13 @@ bis wieder eine manuelle Abschaltung über den Bildschirm erfolgt.
 
 Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig gesteuert werden müssen.
 
-Array-Item | Bedeutung
--------------- | --------  
+|Array-Item | Bedeutung  |
+-------------- | --------  |
 |"normaler CHOP-Circle":     [0,0,0], |  normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten |
 |"warmer CHOP-Circle":       [0,0,0], |  warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach |
 "Kühlung mit Bewässerung":  [0,0,0], |  zugeführtes Brunnenwasser wird zur Bewässerung der Erdbeete genutzt
 "Kühlung mit Verieselung":  [0,0,0], |  dito mit Verieselung
-"Brunnenwasser als Heizung":[0,0,0], |  Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
+"Brunnenwasser als Heizung":[0,0,0], |  Brunnenwasser hat 13 Grad, kann auch zum "Heizen" eingesetzt werden
 "Wasser auffüllen":         [0,0,0], |  Wasserverlust muss ausgeglichen werden
 "Wasser ablassen":          [0,0,0], |  zuviel Wasser im System
 "Hauptpumpe":               [0,0,0], |
@@ -154,7 +158,7 @@ Array-Item | Bedeutung
 "LU to HP":                 [0,0,0], |  Luftventile
 "LO to HP":                 [0,0,0] |  saugt Luft von unterm Dach in die airpump
 
-#  Besonderheiten des Programms (2): Doppelnutzung der Funktion ButtonCheck()
+##  Besonderheiten des Programms (2): Doppelnutzung der Funktion ButtonCheck()
 
 Im Modul Kontrollpanel.py werden die einzelnen Clickbuttons über die Methode "bind" 
 mit der Funktion ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
@@ -171,24 +175,49 @@ wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch butt
 
 ## Durchgangsklemmen Schaltschrank
 
- |Position |Farbe | Nummerierung |Eingang      | Ausgang     |
--------- | -------|-------------|-------------| -------------|
-|  1      |gelbgrün | keine      |Erde        | Erde         |
-|   2    | grau    |  keine      | 3,3 V von Pi |             |
-|   3    | grau    |  keine      | 3,3 V von Pi |             |
-|   4    | grau    |  keine      | 3,3 V von Pi |             |
-|   5    | grau    |  keine      | 3,3 V von Pi |             |
-|   6    | grau    |  keine      | 3,3 V von Pi |             |
-|   7    | grau    |  keine      | 3,3 V von Pi |             |
-|   8    | grau    |  keine      | Datenleitung W1 |             |
-| 9    | grau    |  keine      | Datenleitung W1 |             |
-| 10    | grau    |  keine      | Datenleitung W1 |             |
-| 11   | grau    |  keine      | Datenleitung W1 |             |
-| 12    | grau    |  keine      | Datenleitung W1 |             |
-| 13    | grau    |  keine      | Datenleitung W1 |             |
-| 14    | grau    |  keine      |Gnd von Pi |             |
-| 15    | grau    |  keine      |Gnd von Pi |             |
-| 16    | grau    |  keine      |Gnd von Pi |             |
-| 17    | grau    |  keine      |Gnd von Pi |             |
-| 18    | grau    |  keine      |Gnd von Pi |             |
-| 19    | grau    |  keine      |Gnd von Pi |             |
+Eingang = Schaltschrankintern  
+Ausgang = Nach unten/draußen  
+
+
+
+ |Position |Farbe | Nummerierung |Innen     | Außen/unten| Bemerkung|
+-------- | -------|--------------|----------| -----------|----------|
+|  1      |gelbgrün | keine      |Erde      | Erde       |
+|   2    | grau    |  keine      | 3,3 V von Pi |        |2-7 sind verbunden
+|   3    | grau    |  keine      | 3,3 V von Pi |        |
+|   4    | grau    |  keine      | 3,3 V von Pi |        |
+|   5    | grau    |  keine      | 3,3 V von Pi |        |
+|   6    | grau    |  keine      | 3,3 V von Pi |        |
+|   7    | grau    |  keine      | 3,3 V von Pi |        |
+|   8    | grau    |  keine      | Datenleitung W1 |     |8-13 sind verbunden
+| 9    | grau    |  keine      | Datenleitung W1 |                  |
+| 10    | grau    |  keine       | Datenleitung W1 |                |
+| 11   | grau    |  keine      | Datenleitung W1 |                  |
+| 12    | grau    |  keine       | Datenleitung W1 |                |
+| 13    | grau    |  keine       | Datenleitung W1 |                |
+| 14    | grau    |  keine       |Gnd von Pi|            |14 -18 sind verbunden
+| 15    | grau    |  keine       |Gnd von Pi|            |
+| 16    | grau    |  keine       |Gnd von Pi|            |
+| 17    | grau    |  keine       |Gnd von Pi|            |
+| 18    | grau    |  keine|Gnd von Pi |                  |
+| 19    | grau    |  keine       |Gnd von Pi|            |
+| 20    | grau  |   keine        | geht zu Block bei 8er Relais     |+12 V von ext. Batterie | Block verteilt Plus auf einzelne Relais|
+|21 | grau| keine | Minus von ext.Batterie| | 3 Kontakte,21-27 sind verbunden|
+|22 | grau | keine | Minus von Batt.| |21 -28 breiter
+|23 | grau | keine | Minus von Batt.| |
+|24 | grau | keine | Minus von Batt.| |
+|25 | grau | keine | Minus von Batt.| |
+|26 | grau | keine | Minus von Batt.| |
+|27 | grau | keine | Minus von Batt.| |
+|28 | grau | keine | Minus von Batt.| | letzer Kontakt ist kleiner (2 Kontakte)
+|29  | blau  | keine | Plus von Relais | Hauptpumpe|
+|30  | blau  | keine | Plus von Relais | 
+|31  | blau  | keine | Plus von Relais | 
+|32  | blau  | keine | Plus von Relais | 
+|34  | blau  | keine | Plus von Relais | 
+|35  | blau  | keine | Plus von Relais | 
+|36  | blau  | keine | Plus von Relais | 
+|37  | blau  | keine | Plus von Relais | 
+
+
+
