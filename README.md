@@ -184,7 +184,7 @@ Ausgang = Nach unten/draußen
 -------- | -------|--------------|----------| -----------|----------|
 |  1      |gelbgrün | keine      |Erde      | Erde       |
 |   2    | grau    |  keine      | 3,3 V von Pi |        |2-7 sind verbunden
-|   3    | grau    |  keine      | 3,3 V von Pi |        |
+|   3    | grau    |  keine      | 3,3 V von Pi | Lichtsensor       |
 |   4    | grau    |  keine      | 3,3 V von Pi |        |
 |   5    | grau    |  keine      | 3,3 V von Pi |        |
 |   6    | grau    |  keine      | 3,3 V von Pi |        |
@@ -196,28 +196,31 @@ Ausgang = Nach unten/draußen
 | 12    | grau    |  keine       | Datenleitung W1 |                |
 | 13    | grau    |  keine       | Datenleitung W1 |                |
 | 14    | grau    |  keine       |Gnd von Pi|            |14 -18 sind verbunden
-| 15    | grau    |  keine       |Gnd von Pi|            |
+| 15    | grau    |  keine       |Gnd von Pi|  Lichtsensor          |
 | 16    | grau    |  keine       |Gnd von Pi|            |
 | 17    | grau    |  keine       |Gnd von Pi|            |
 | 18    | grau    |  keine|Gnd von Pi |                  |
 | 19    | grau    |  keine       |Gnd von Pi|            |
 | 20    | grau  |   keine        | geht zu Block bei 8er Relais     |+12 V von ext. Batterie | Block verteilt Plus auf einzelne Relais|
 |21 | grau| keine | Minus von ext.Batterie| | 3 Kontakte,21-27 sind verbunden|
-|22 | grau | keine | Minus von Batt.| |21 -28 breiter
+|22 | grau | keine | Minus von Batt.| |21 -27 breiter
 |23 | grau | keine | Minus von Batt.| |
 |24 | grau | keine | Minus von Batt.| |
 |25 | grau | keine | Minus von Batt.| |
 |26 | grau | keine | Minus von Batt.| |
 |27 | grau | keine | Minus von Batt.| |
 |28 | grau | keine | Minus von Batt.| | letzer Kontakt ist kleiner (2 Kontakte)
-|29  | blau  | keine | Plus von Relais | Hauptpumpe|
-|30  | blau  | keine | Plus von Relais | 
-|31  | blau  | keine | Plus von Relais | 
+|29  | hellblau| keine| SDA für RTC| SDA für Lichtsensor| Lichtsensor und RTC
+|30 | hellblau| keine |SCL für RTC | SCL für Lichtsensor| gehen über I2C
+|31  | blau  | keine | Plus von Relais | Hauptpumpe|
 |32  | blau  | keine | Plus von Relais | 
+|33  | blau  | keine | Plus von Relais | 
 |34  | blau  | keine | Plus von Relais | 
 |35  | blau  | keine | Plus von Relais | 
 |36  | blau  | keine | Plus von Relais | 
 |37  | blau  | keine | Plus von Relais | 
+|38  | blau  | keine | Plus von Relais | 
+
 
 
 
