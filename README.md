@@ -12,7 +12,7 @@ Das Besondere an der Anlage, die in einem 50 qm-Gewächshaus installiert ist, is
 normalen Erd-Hochbeeten
 
 Da hier Regenbogenforellen gezüchtet werden sollen, braucht es für den Sommer eine Kühlung der Fischtanks. Diese soll
-durch frisches Brunnenwasser (13 Grad Celsius) erfolgen, das anschließend zur Bewässerung der Erd-Hochbeete genutzt wird.
+durch frisches Brunnenwasser (gleichmäßig 12 - 13 Grad Celsius) erfolgen, das anschließend zur Bewässerung der Erd-Hochbeete genutzt wird.
 
 Die Erde in den Hochbeete wird mit Feuchtigkeitssensoren kontrolliert. Falls die Erde zu feucht ist, wird das Kühlungswasser verieselt.
 
@@ -25,23 +25,27 @@ Folgende Sensoren sind im Einsatz:
 - 1 Ph-Sensor von Atlas Scientific zur Ph-Messung in den Fischtanks (über UART)
 - 1 Ultraschallsensor zur Messung der Wasserhöhe im Sumptank
 
+
+
+Aktoren sind:  
+
+
+- die Hauptpumpe (eine Luftpumpe, die eine Geysirpump betreibt)  
+- 2 Luftfventile (Luft von unten/oben)  
+- 5 Wasserventile  
+- 12-Volt Motor für Fütterungsautomat  
+- ein 4 KW-Heizstab im Sumptank, falls die Wassertemperatur in den Fischtanks im Winter gegen Null geht.
+
 Die Pumpe im Sumptank ist eine Geysir-Pumpe, die mit Luft betrieben wird. Zur Heizung des Wassers im Winter kann die Luft von 
-unterm Dach angesaugt werden.
-
-Wenn das nicht reicht, kann eine Wasserheizung gestartet werden.
-
-Aktoren sind:
-- die Hauptpumpe (eine Luftpumpe, die eine Geysirpump betreibt)
-- 2 Luftfventile (Luft von unten/oben)
-- 5 Wasserventile
-- 12-Volt Motor für Fütterungsautomat
-
+unterm Dach angesaugt werden.Wenn das nicht reicht, kann eine Wasserheizung gestartet werden.    
 Alle Aktoren werden über GPIOs und zwei Relais-Boards gesteuert.
 
 Hier die Struktur des kombinierten Aquaponik-Erdhochbeet-Systems:
 
 ![RealStruktur](RealStruktur.png)
 
+Bis auf das Ventil ST to FT sind alle Wasserventile nc (normally closed)
+Bei den Luftventilen ist LU to HP no, LO to HP nc.
 ## Konfiguration des Raspberry Pi
 
 Folgende Sensoren und Devices kommen zum Einsatz
@@ -161,7 +165,7 @@ Die ersten fünf Items sind komplexe Zustände, da mehrere Ventile gleichzeitig 
 ##  Besonderheiten des Programms (2): Doppelnutzung der Funktion ButtonCheck()
 
 Im Modul Kontrollpanel.py werden die einzelnen Clickbuttons über die Methode "bind" 
-mit der Funktion ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Funktion button.configure("text")[-1] 
+mit der Funktion ButtonCheck() in CheckCenter.py verbunden. Hier kann mit der Methode button.configure("text")[-1] 
 der Text des gedrückten Buttons abgefragt werden.
 
 Die Funktion  SensorCheck() prüft auf der Grundlage der Sensorwerte,  ob Veränderungen angefragt werden sollen.
@@ -220,6 +224,27 @@ Ausgang = Nach unten/draußen
 |36  | blau  | keine | Plus von Relais | 
 |37  | blau  | keine | Plus von Relais | 
 |38  | blau  | keine | Plus von Relais | 
+|39| grau | keine |3,3 von Pi| Plus an Feuchtesensor 1|
+|40| grau | keine |3,3 von Pi| Plus an Feuchtesensor 2|
+|41| grau | keine |3,3 von Pi| Plus an Feuchtesensor 3|
+|42| grau | keine |3,3 von Pi| Plus an Feuchtesensor 4|
+|43| grau | keine |3,3 von Pi| Plus an Feuchtesensor 5|
+|44| grau | keine |3,3 von Pi| Plus an Feuchtesensor 6|
+|45| grau | keine |Gnd von Pi| Minus an Feuchtesensor 1|
+|46| grau | keine |Gnd von Pi| Minus an Feuchtesensor 2|
+|47| grau | keine |Gnd von Pi| Minus an Feuchtesensor 3|
+|48| grau | keine |Gnd von Pi| Minus an Feuchtesensor 4|
+|49| grau | keine |Gnd von Pi| Minus an Feuchtesensor 5|
+|50| grau | keine |Gnd von Pi| Minus an Feuchtesensor 6|
+|51| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 1|
+|52| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 2|
+|53| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 3|
+|54| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 4|
+|55| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 5|
+|56| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 6|
+|57 | grau| keine| Plus
+
+
 
 
 

@@ -10,6 +10,43 @@
 # nach Aktion werden die Ist- im KOntrollarray auf die Sollwerte gesetzt
 
 def change_sensordaten(_screen, wa):
+
+    # wa-Key und dazugehörige Labelnamen, sowie Feuchtigkeitscode als verschachtelter array.
+    # Funktion eval führt Textstring als Code aus
+    
+    Erde = [["Erdfeuchte1",
+            "_screen.flf.labelA_F1.config(bg = 'blue')",
+                            "_screen.flf.labelA_F1.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F1.config(bg = 'green')",
+                            "_screen.flf.labelA_F1.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F1.config(bg = 'red')"],
+            ["Erdfeuchte2","_screen.flf.labelA_F2.config(bg = 'blue')",
+                            "_screen.flf.labelA_F2.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F2.config(bg = 'green')",
+                            "_screen.flf.labelA_F2.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F2.config(bg = 'red')"],
+            ["Erdfeuchte3","_screen.flf.labelA_F3.config(bg = 'blue')",
+                            "_screen.flf.labelA_F3.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F3.config(bg = 'green')",
+                            "_screen.flf.labelA_F3.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F3.config(bg = 'red')"],
+            ["Erdfeuchte4","_screen.flf.labelA_F4.config(bg = 'blue')",
+                            "_screen.flf.labelA_F4.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F4.config(bg = 'green')",
+                            "_screen.flf.labelA_F4.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F4.config(bg = 'red')"],
+            ["Erdfeuchte5","_screen.flf.labelA_F5.config(bg = 'blue')",
+                            "_screen.flf.labelA_F5.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F5.config(bg = 'green')",
+                            "_screen.flf.labelA_F5.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F5.config(bg = 'red')"],
+            ["Erdfeuchte6","_screen.flf.labelA_F6.config(bg = 'blue')",
+                            "_screen.flf.labelA_F6.config(bg = 'lightblue')",
+                            "_screen.flf.labelA_F6.config(bg = 'green')",
+                            "_screen.flf.labelA_F6.config(bg = 'PaleVioletRed2')",
+                            "_screen.flf.labelA_F6.config(bg = 'red')"]]
+
+            
     
     _screen.tlf.label_lo.config(text=str(wa["T_Luft_oben"]))
     _screen.tlf.label_lu.config(text= str(wa["T_Luft_unten"]))
@@ -19,8 +56,24 @@ def change_sensordaten(_screen, wa):
     _screen.slf.label_a.config(text= str(wa["Sonnenaufgang"]))
     _screen.slf.label_u.config(text= str(wa["Sonnenuntergang"]))
 
-def change_buttons(_screen , ca):
     
+    # Zahlenwerte von MCP3008 für Feuchte werden in Farbcodes umgewandelt:
+    
+    for i in range(0,6):
+        if wa[Erde[i][0]] > 800:
+            eval(Erde[i][5])
+        elif wa[Erde[i][0]] > 700 and wa[Erde[i][0]] <= 800:
+            eval(Erde[i][4])
+        elif wa[Erde[i][0]] > 600 and wa[Erde[i][0]] <= 700:
+            eval(Erde[i][3])
+        elif wa[Erde[i][0]] > 500 and wa[Erde[i][0]] <= 600:
+            eval(Erde[i][2])
+        elif wa[Erde[i][0]] > 400 and wa[Erde[i][0]] <= 500:
+            eval(Erde[i][1])
+    
+
+def change_buttons(_screen , ca):
+    # passt die Buttons an die Soll-Anforderung an:
     
     if ca["normaler CHOP-Circle"][1] == 1:
         _screen.wlf.Anzeige_CCN.configure(text = "normaler CHOP\nCircle ist an", bg = "lightgreen")

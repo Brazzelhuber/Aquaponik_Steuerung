@@ -720,49 +720,49 @@ class Kontrollpanel(object):
         label_F1.configure(bg = bg_Farbe)
         label_F1.grid(row = 0, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F1 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F1.configure(bg = "blue")
-        labelA_F1.grid(row = 0, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F1 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F1.configure(bg = "blue")
+        self.flf.labelA_F1.grid(row = 0, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         label_F2 =Tk.Label(self.flf, text = "Erdfeuchte 2",relief = "groove", width = 12, height = 1)
         label_F2.configure(bg = bg_Farbe)
         label_F2.grid(row = 1, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F2 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F2.configure(bg = "lightblue")
-        labelA_F2.grid(row = 1, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F2 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F2.configure(bg = "lightblue")
+        self.flf.labelA_F2.grid(row = 1, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         label_F3 =Tk.Label(self.flf, text = "Erdfeuchte 3",relief = "groove", width = 12, height = 1)
         label_F3.configure(bg = bg_Farbe)
         label_F3.grid(row = 2, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F3 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F3.configure(bg = "green")
-        labelA_F3.grid(row = 2, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F3 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F3.configure(bg = "green")
+        self.flf.labelA_F3.grid(row = 2, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         label_F4 =Tk.Label(self.flf, text = "Erdfeuchte 4",relief = "groove", width = 12, height = 1)
         label_F4.configure(bg = bg_Farbe)
         label_F4.grid(row = 3, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F4 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F4.configure(bg = "green")
-        labelA_F4.grid(row = 3, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F4 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F4.configure(bg = "green")
+        self.flf.labelA_F4.grid(row = 3, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         label_F5 =Tk.Label(self.flf, text = "Erdfeuchte 5",relief = "groove", width = 12, height = 1)
         label_F5.configure(bg = bg_Farbe)
         label_F5.grid(row = 4, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F5 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F5.configure(bg = "PaleVioletRed2")
-        labelA_F5.grid(row = 4, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F5 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F5.configure(bg = "PaleVioletRed2")
+        self.flf.labelA_F5.grid(row = 4, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         label_F6 =Tk.Label(self.flf, text = "Erdfeuchte 6",relief = "groove", width = 12, height = 1)
         label_F6.configure(bg = bg_Farbe)
         label_F6.grid(row = 5, column = 0, padx = 3, pady = 5, ipadx =2,ipady = 7, sticky =Tk.W)
 
-        labelA_F6 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
-        labelA_F6.configure(bg = "red")
-        labelA_F6.grid(row = 5, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
+        self.flf.labelA_F6 =Tk.Label(self.flf,relief = "groove", width = 3, height = 1)
+        self.flf.labelA_F6.configure(bg = "red")
+        self.flf.labelA_F6.grid(row = 5, column = 1, padx = 3, pady = 6, ipadx =2,ipady = 7, sticky =Tk.W)
 
         labelAE1 =Tk.Label(self.flf, text = "sehr feucht", width = 12)
         labelAE1.configure(bg = "blue", fg = "white")
