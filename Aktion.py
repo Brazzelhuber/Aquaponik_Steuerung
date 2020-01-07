@@ -62,39 +62,42 @@ def change_sensordaten(_screen, wa):
     for i in range(0,6):
         if wa[Erde[i][0]] > 800:
             eval(Erde[i][5])
-        elif wa[Erde[i][0]] > 700 and wa[Erde[i][0]] <= 800:
+        elif wa[Erde[i][0]] > 650 and wa[Erde[i][0]] <= 800:
             eval(Erde[i][4])
-        elif wa[Erde[i][0]] > 600 and wa[Erde[i][0]] <= 700:
+        elif wa[Erde[i][0]] > 500 and wa[Erde[i][0]] <= 650:
             eval(Erde[i][3])
-        elif wa[Erde[i][0]] > 500 and wa[Erde[i][0]] <= 600:
+        elif wa[Erde[i][0]] > 350 and wa[Erde[i][0]] <= 500:
             eval(Erde[i][2])
-        elif wa[Erde[i][0]] > 400 and wa[Erde[i][0]] <= 500:
+        elif wa[Erde[i][0]] <= 350:
             eval(Erde[i][1])
     
 
 def change_buttons(_screen , ca):
     # passt die Buttons an die Soll-Anforderung an:
     
-    if ca["normaler CHOP-Circle"][1] == 1:
-        _screen.wlf.Anzeige_CCN.configure(text = "normaler CHOP\nCircle ist an", bg = "lightgreen")
-        _screen.wlf.check_btn_CCN_an.configure(text = "normalen CHOP\nCircle ausschalten")
-    if ca["normaler CHOP-Circle"][1] == 0:
-        _screen.wlf.Anzeige_CCN.configure(text = "normaler CHOP\nCircle ist aus", bg = "PaleVioletRed2")
-        _screen.wlf.check_btn_CCN_an.configure(text = "normalen CHOP\nCircle anschalten")
+    
+    if ca['normaler CHOP-Circle'][1] == 0:
+        _screen.wlf.Anzeige_CCN.configure(text = 'normaler CHOP\nCircle ist aus', bg = 'PaleVioletRed2')
+        _screen.wlf.check_btn_CCN_an.configure(text = 'normalen CHOP\nCircle anschalten')
+    if ca['normaler CHOP-Circle'][1] == 1:
+        _screen.wlf.Anzeige_CCN.configure(text = 'normaler CHOP\nCircle ist an', bg = 'lightgreen')
+        _screen.wlf.check_btn_CCN_an.configure(text = 'normalen CHOP\nCircle ausschalten')
 
-    if ca["warmer CHOP-Circle"][1] == 1:
-        _screen.wlf.Anzeige_CCW.configure(text = "CHOP-Circle mit\nWarmluft ist an", bg = "lightgreen")
-        _screen.wlf.check_btn_CCW_an.configure(text = "CHOP-Circle mit\nWarmluft ausschalten")
-    if ca["warmer CHOP-Circle"][1] == 0:
-        _screen.wlf.Anzeige_CCW.configure(text = "CHOP-Circle mit\nWarmluft ist aus", bg = "PaleVioletRed2")
-        _screen.wlf.check_btn_CCW_an.configure(text = "CHOP-Circle mit\nWarmluft anschalten")
+    
+    if ca['warmer CHOP-Circle'][1] == 0:
+        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist aus', bg = 'PaleVioletRed2')
+        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft anschalten')
+    if ca['warmer CHOP-Circle'][1] == 1:
+        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist an', bg = 'lightgreen')
+        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft ausschalten')
  
-    if ca["Hauptpumpe"][1] == 1:
-        _screen.wlf.Anzeige_Pumpe.configure(text = "Pumpe ist an", bg = "lightgreen")
-        _screen.wlf.check_btn_P_an.configure(text = "Pumpe ausschalten")
+    
     if ca["Hauptpumpe"][1] == 0:
         _screen.wlf.Anzeige_Pumpe.configure(text = "Pumpe ist aus", bg = "PaleVioletRed2")
         _screen.wlf.check_btn_P_an.configure(text = "Pumpe anschalten")
+    if ca["Hauptpumpe"][1] == 1:
+        _screen.wlf.Anzeige_Pumpe.configure(text = "Pumpe ist an", bg = "lightgreen")
+        _screen.wlf.check_btn_P_an.configure(text = "Pumpe ausschalten")
 
     if ca["Wasser auffüllen"][1] == 0:
         _screen.wlf.Anzeige_WA.configure(text = "Brunnenventil ist zu", bg = "PaleVioletRed2")
@@ -110,19 +113,21 @@ def change_buttons(_screen , ca):
         _screen.wlf.Anzeige_WB.configure(text = "Verieselung ist auf", bg = "lightgreen")
         _screen.wlf.check_btn_WB_an.configure(text = "Wasserablass Stop")
     
-    if ca["Kühlung mit Bewässerung"][1] == 1:
-        _screen.mlf.Anzeige_KUBEW.configure(text = "Kühlung mit\nBewässerung ist an", bg = "lightgreen")
-        _screen.mlf.check_btn_KUBEW_an.configure(text = "Kühlung mit\nBewässerung ausschalten")
+    
     if ca["Kühlung mit Bewässerung"][1] == 0:
         _screen.mlf.Anzeige_KUBEW.configure(text = "Kühlung mit\nBewässerung ist aus", bg = "PaleVioletRed2")
         _screen.mlf.check_btn_KUBEW_an.configure(text = "Kühlung mit\nBewässerung anschalten")
+    if ca["Kühlung mit Bewässerung"][1] == 1:
+        _screen.mlf.Anzeige_KUBEW.configure(text = "Kühlung mit\nBewässerung ist an", bg = "lightgreen")
+        _screen.mlf.check_btn_KUBEW_an.configure(text = "Kühlung mit\nBewässerung ausschalten")
 
-    if ca["Kühlung mit Verieselung"][1] == 1:
-        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerieselung ist an", bg = "lightgreen")
-        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerieselung ausschalten")
+    
     if ca["Kühlung mit Verieselung"][1] == 0:
         _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerieselung ist aus", bg = "PaleVioletRed2")
         _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerieselung anschalten")
+    if ca["Kühlung mit Verieselung"][1] == 1:
+        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerieselung ist an", bg = "lightgreen")
+        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerieselung ausschalten")
 
     if ca["Heizung"][1] == 0:
         _screen.mlf.Anzeige_LampFi.configure(text = "Heizung\nist aus", bg = "PaleVioletRed2")
@@ -131,24 +136,14 @@ def change_buttons(_screen , ca):
         _screen.mlf.Anzeige_LampFi.configure(text = "Heizung\nist an", bg = "lightgreen")
         _screen.mlf.check_btn_Fi_an.configure(text = "Heizung\nausschalten")
 
-    if ca["Fütterung"][1] == 1:
-        _screen.mlf.Anzeige_Fue.configure(text = "Fütterung\nist an", bg = "lightgreen")
-        _screen.mlf.check_btn_Fue_an.configure(text = "Fütterung\nausschalten")
+    
     if ca["Fütterung"][1] == 0:
         _screen.mlf.Anzeige_Fue.configure(text = "Fütterung\nist aus", bg = "PaleVioletRed2")
         _screen.mlf.check_btn_Fue_an.configure(text = "Fütterung\nanschalten")
+    if ca["Fütterung"][1] == 1:
+        _screen.mlf.Anzeige_Fue.configure(text = "Fütterung\nist an", bg = "lightgreen")
+        _screen.mlf.check_btn_Fue_an.configure(text = "Fütterung\nausschalten")
 
-    if ca["Logeintrag"][1] == 1:
-        _screen.mlf.Anzeige_Log.configure(text = "Logdatei hat\nneuen Eintrag", bg = "lightblue")
-        
-    if ca["Logeintrag"][1] == 0:
-        _screen.mlf.Anzeige_Log.configure(text = "Log hat keinen\nneuen Eintrag", bg = "lightgrey")
-        
-
-    if ca["Screen_schreiben"][1] == 0:
-        _screen.click_screen.configure(text = "Bildschirmwerte an")
-    if ca["Screen_schreiben"][1] == 1:
-        _screen.click_screen.configure(text = "Bildschirmwerte aus")
         
     if ca["WQ to FT"][1] == 0:
         _screen.plf.check_btn_WQFT_an.configure(text = "WQ to FT öffnen")
@@ -199,6 +194,17 @@ def change_buttons(_screen , ca):
     if ca["LO to HP"][1] == 1:
         _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP schließen")
         _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist auf", bg = "lightgreen")
+        
+    if ca["Logeintrag"][1] == 0:
+        _screen.mlf.Anzeige_Log.configure(text = "Log hat keinen\nneuen Eintrag", bg = "lightgrey")
+    if ca["Logeintrag"][1] == 1:
+        _screen.mlf.Anzeige_Log.configure(text = "Logdatei hat\nneuen Eintrag", bg = "lightblue")
+        
+
+    if ca["Screen_schreiben"][1] == 0:
+        _screen.click_screen.configure(text = "Bildschirmwerte an")
+    if ca["Screen_schreiben"][1] == 1:
+        _screen.click_screen.configure(text = "Bildschirmwerte aus")
 
     
 

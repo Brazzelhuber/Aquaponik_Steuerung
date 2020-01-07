@@ -1,5 +1,37 @@
 <!-- Required extensions: pymdownx.betterem, pymdownx.tilde, pymdownx.emoji, pymdownx.tasklist, pymdownx.superfences,
 markdown.extensions.tables-->
+# Aquaponics_Control System
+
+The program controls a Raspberry Pi that is used in an aquaponics CHOP system.
+
+##Physical Structure
+What is special about the system, which is installed in a 50 sqm greenhouse, is the combination with
+normal raised beds filled with soil.
+
+Since rainbow trouts are to be bred here, cooling of the fish tanks is required for the summer. This should be managed
+through fresh well water (evenly 12 - 13 degrees Celsius), which is then used to irrigate the raised beds.
+
+
+The soil in the raised beds is checked with moisture sensors. If the soil is too humid, the cooling water is sprayed.
+
+The following sensors are in use:
+
+- 6 soil moisture sensors via MCP3008
+- The voltage of the 12-volt battery is also monitored via MCP3008.
+- 5 temperature sensors via Wire-1
+- 1 lux meter for monitoring the light intensity (via I2C bus)
+- 1 Atlas Scientific pH sensor for pH measurement in fish tanks (via UART)
+- 1 ultrasonic sensor for measuring the water level in the sump tank.
+
+Actuators are:
+
+- the main pump (an air pump that operates a geyser pump)
+- 2 air valves (air from below / above)
+- 5 water valves
+- 12 volt motor for automatic feeder
+- a 4 KW heating element in the sump tank if the water temperature in the fish tanks goes to zero in winter.
+
+
 
 # Aquaponik_Steuerung
 
