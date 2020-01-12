@@ -65,6 +65,12 @@ def Werte_schreiben(my_array, control):
     writerw.writerow(row2)
     wf.close()
 
+    vo = open("Volt.csv","a")
+    writerv = csv.writer(vo)
+    rowv = [t,my_array["Volt"]]
+    writerv.writerow(rowv)
+    vo.close()
+
 
     
     if control["Es ist Tag"][0] == 1:

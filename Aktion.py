@@ -55,6 +55,7 @@ def change_sensordaten(_screen, wa):
     _screen.slf.label_licht.config(text= str(wa["Luxwert_1"]))
     _screen.slf.label_a.config(text= str(wa["Sonnenaufgang"]))
     _screen.slf.label_u.config(text= str(wa["Sonnenuntergang"]))
+    _screen.slf.labelvolt.config(text = str(wa["Volt"]))
 
     
     # Zahlenwerte von MCP3008 für Feuchte werden in Farbcodes umgewandelt:

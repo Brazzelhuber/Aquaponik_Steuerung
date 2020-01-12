@@ -4,13 +4,11 @@
 # Version 1.0
 
 ########################################
-# ContrrollCenter checkt, ob aufgrund der
+# CheckCenter prüft, ob aufgrund der
 
 # Zeitschaltung,
 
-# der Sensordaten
-
-# definierter Bedingungen
+# der Sensordaten und definierter Bedingungen
 
 # oder eines Button-Drucks am Bildschirm
 
@@ -24,23 +22,43 @@ import datetime as dt
 import sunrise as sr
 from tkinter import messagebox
 
-# folgende beiden Arrasy werden vom Hauptprogramm als Parameter übergeben
+# folgende beiden Arrays werden vom Hauptprogramm als Parameter übergeben
+# Erläuterung: siehe README.md
 
-##wa          = {"T_Luft_oben" : 0,      # der Werte-Array beinhaltet die ausgelesenen Sensordaten
-##               "T_Luft_unten" : 0,
-##               "T_Wasser1": 0,
-##               "T_Wasser2:": 0,
-##               "T_aussen":, 0     
-##               "Luxwert_1" : 0 ,
-##               "Luxwert_2" : 0,
-##               "Ph-Wert": 0 ,
-##               "Sauerstoff" : 0,
-##               "Ampere"  :0 ,
-##               "Wasserstand" : 0,
-##               "Sonnenaufgang": 0,
-##               "Sonnenuntergang": 0
+# Vorgabewerte, können manuell über Screen geändert werden
+##vw         =  {"TempWasserMin" : 3,         
+##               "TempWasserMax" : 23,
+##               "TempLuftMin"   : 3,         
+##               "WasserpegelMin": 0,        
+##               "WasserpegelMax": 0,
+##               "PhWertMin"     : 6.7,
+##               "PhWertMax"     : 7.1,
+##               "Fuetterung"    : 10.00,
+##               "Fuett.dauer"  : 5
+##               }
+
+# Sensorwerte:
+##wa          = {"T_Luft_oben" : 0,      
+##               "T_Luft_unten" : 0,     
+##               "T_Wasser1": 0,         
+##               "T_Wasser2": 0,          
+##               "T_aussen": 0,           
+##               "Luxwert_1" : 0 ,        
+##               "Ph-Wert": 0 ,           
+##               "Sauerstoff" : 0,        
+##               "Volt"  :0 ,             
+##               "Wasserstand" : 0,        
+##               "Sonnenaufgang": 0,      
+##               "Sonnenuntergang": 0,
+##               "Erdfeuchte1" : 0,       
+##               "Erdfeuchte2" : 0,       
+##               "Erdfeuchte3" : 0,       
+##               "Erdfeuchte4" : 0,
+##               "Erdfeuchte5" : 0,
+##               "Erdfeuchte6" : 0
 ##                }
-##
+
+## Kontrollarray
 ##ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
 ##               "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
 ##               "Kühlung mit Bewässerung":  [0,0,0],  
@@ -94,8 +112,9 @@ def Config_Zustaende(Zustand, _array):
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
 
 #########################################################################################################        
-# prüft, ob manuell, am Bildschirm etwas ausgelöst wurde (kann man, auch wenn es den Bedingungen für den
-# Sensorcheck widerspricht)
+""" prüft, ob manuell, am Bildschirm etwas ausgelöst wurde (kann man, auch wenn es den Bedingungen in
+Sensorcheck widerspricht)
+"""
 
 def Manualoverride(co):
     
@@ -115,21 +134,40 @@ def Alles_aus(myscreen, co):
     ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WA_an,co, "Brunnenventil schließen")  # simulierte Buttonpress
-        
     
-def SensorCheck(screen, co, we):    # screen = screen_app, co = Controllarray, we = Wertearray
-    
-    zuvielErdfeuchte = False  # zu Testzwecken (später als Sensordaten)
-    
-    # bevor nicht alle Temperatursensoren installiert sind, werden T_Luft_unten und T_Luft oben ignoriert
+########################################################################################################       
+"""
+SensorCheck() prüft, ob aufgrund von Sensordaten und Vorgabewerten eine Aktion auszulösen ist, wenn
+ja wird der entsprechende Sollwert auf 1 gesetzt und in Aktion.py durchgeführt
+"""
+def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarray, we = Wertearray
 
-    # Bedingungen für "normaler CHOP-Circle an":    1. "normaler CHOP-Circle" ist nicht schon an 
-    #                                               2. Wasser nicht zu warm und nicht zu kalt
-    #                                               3. kein manual override
-    #                                               4. keine Fütterung
-    #                                               5. später noch Lufttemperatur
+    # checkt, ob Erde in Hochbeeten zu feucht ist zum Bewässern:
     
-    if  co["normaler CHOP-Circle"][0] != 1 and float(we["T_Wasser1"]) <= 25 and float(we["T_Wasser1"]) > 5 and   \
+    feuchtwert = (float(we["Erdfeuchte1"]) + \
+       float(we["Erdfeuchte2"]) + \
+       float(we["Erdfeuchte3"]) + \
+       float(we["Erdfeuchte4"]) + \
+       float(we["Erdfeuchte5"]) + \
+       float(we["Erdfeuchte6"])) /6
+    
+    if feuchtwert < 350 :
+        zuvielErdfeuchte = True
+
+    else: zuvielErdfeuchte = False
+    
+ """       
+    
+bevor nicht alle Temperatursensoren installiert sind, werden T_Luft_unten und T_Luft oben ignoriert
+
+Bedingungen für "normaler CHOP-Circle an":    1. "normaler CHOP-Circle" ist nicht schon an 
+                                              2. Wasser nicht zu warm und nicht zu kalt
+                                              3. kein manual override
+                                              4. keine Fütterung
+                                              5. später noch Lufttemperatur
+"""    
+    if  co["normaler CHOP-Circle"][0] != 1 and float(we["T_Wasser1"]) <= float(vw["TempWasserMax"]) \
+        and float(we["T_Wasser1"]) > float(vw["TempWasserMin"]) and   \
         not Manualoverride(co) and co["Fütterung"][0] == 0:
 
         Config_Zustaende("Nichts", co)
@@ -138,32 +176,33 @@ def SensorCheck(screen, co, we):    # screen = screen_app, co = Controllarray, w
         
         ButtonCheck(screen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle anschalten")  # simulierte Buttonpress
         
-
+"""
 
     
 
-    # Bedingungen für "Kühlung mit Bewässerung an":     1. "Kühlung mit Bewässerung" ist nicht schon an
-    #                                                   2. Wasser ist zu warm
-    #                                                   3. kein manual override
-    #                                                   4. keine Fütterung
-    #                                                   5. Erde nicht zu feucht
-    #                                                   
-    
-    if  co["Kühlung mit Bewässerung"][0] != 1 and float(we["T_Wasser1"]) > 25 and   \
+Bedingungen für "Kühlung mit Bewässerung an":     1. "Kühlung mit Bewässerung" ist nicht schon an
+                                                  2. Wasser ist zu warm
+                                                  3. kein manual override
+                                                  4. keine Fütterung
+                                                  5. Erde nicht zu feucht
+                                                      
+"""    
+    if  co["Kühlung mit Bewässerung"][0] != 1 and float(we["T_Wasser1"]) > float(vw["TempWasserMax"]) and   \
         not Manualoverride(co) and (zuvielErdfeuchte == False and co["Fütterung"][0] == 0):
 
         Config_Zustaende("Nichts", co)
         Alles_aus(screen, co)
         co["Kühlung mit Bewässerung"][1] = 1
         ButtonCheck(screen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung anschalten")  # simulierte Buttonpress
+"""
+Bedingungen für "Kühlung mit Verieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
+                                                   2. Wasser ist zu warm
+                                                   3. kein manual override
+                                                   4. keine Fütterung
+                                                   5. Erde ist zu feucht
+"""
 
-    # Bedingungen für "Kühlung mit Verieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
-    #                                                   2. Wasser ist zu warm
-    #                                                   3. kein manual override
-    #                                                   4. keine Fütterung
-    #                                                   5. Erde ist zu feucht
-    
-    if  co["Kühlung mit Verieselung"][0] != 1 and float(we["T_Wasser1"]) > 25 and   \
+    if  co["Kühlung mit Verieselung"][0] != 1 and float(we["T_Wasser1"]) > float(vw["TempWasserMax"]) and   \
         not Manualoverride(co) and zuvielErdfeuchte == True and co["Fütterung"][0] == 0:
 
         Config_Zustaende("Nichts", co)

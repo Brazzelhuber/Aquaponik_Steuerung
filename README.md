@@ -1,6 +1,6 @@
 <!-- Required extensions: pymdownx.betterem, pymdownx.tilde, pymdownx.emoji, pymdownx.tasklist, pymdownx.superfences,
 markdown.extensions.tables-->
-# Aquaponics_Control System
+# Aquaponics Control System
 
 The program controls a Raspberry Pi that is used in an aquaponics CHOP system.
 
@@ -47,7 +47,7 @@ BH1750 | Light | 3.3 | I2C | activate in Interface Options I2C |
 DS1307 | Hardware Clock | 5.0 | I2C | see above |
 MCP3008 | AD converter | 3.3 | SPI | import spidev, activate in Interface Options SPI (goes via MCP3008) |
 SKU: AB142 | soil moisture | 3.3 | SPI | is connected to the analog side of the MCP3008 |
-HC-SR04 | ultrasound | 3.3 | --- | goes directly via GPIO |
+HC-SR04 | ultrasound | 5.0 | --- | goes directly via GPIO |
 phProbe | Ph measering | 3,3 | open: I2C or UART
 
 ## Structure of the program
@@ -335,70 +335,81 @@ wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch butt
 
 ## Durchgangsklemmen Schaltschrank
 
-Eingang = Schaltschrankintern  
-Ausgang = Nach unten/draußen  
 
 
 
- |Position |Farbe | Nummerierung |Innen     | Außen/unten| Bemerkung|
--------- | -------|--------------|----------| -----------|----------|
-|  1      |gelbgrün | keine      |Erde      | Erde       |
-|   2    | grau    |  keine      | 3,3 V von Pi |        |2-7 sind verbunden
-|   3    | grau    |  keine      | 3,3 V von Pi | Lichtsensor       |
-|   4    | grau    |  keine      | 3,3 V von Pi |        |
-|   5    | grau    |  keine      | 3,3 V von Pi |        |
-|   6    | grau    |  keine      | 3,3 V von Pi |        |
-|   7    | grau    |  keine      | 3,3 V von Pi |        |
-|   8    | grau    |  keine      | Datenleitung W1 |     |8-13 sind verbunden
-| 9    | grau    |  keine      | Datenleitung W1 |                  |
-| 10    | grau    |  keine       | Datenleitung W1 |                |
-| 11   | grau    |  keine      | Datenleitung W1 |                  |
-| 12    | grau    |  keine       | Datenleitung W1 |                |
-| 13    | grau    |  keine       | Datenleitung W1 |                |
-| 14    | grau    |  keine       |Gnd von Pi|            |14 -18 sind verbunden
-| 15    | grau    |  keine       |Gnd von Pi|  Lichtsensor          |
-| 16    | grau    |  keine       |Gnd von Pi|            |
-| 17    | grau    |  keine       |Gnd von Pi|            |
-| 18    | grau    |  keine|Gnd von Pi |                  |
-| 19    | grau    |  keine       |Gnd von Pi|            |
-| 20    | grau  |   keine        | geht zu Block bei 8er Relais     |+12 V von ext. Batterie | Block verteilt Plus auf einzelne Relais|
-|21 | grau| keine | Minus von ext.Batterie| | 3 Kontakte,21-27 sind verbunden|
-|22 | grau | keine | Minus von Batt.| |21 -27 breiter
-|23 | grau | keine | Minus von Batt.| |
-|24 | grau | keine | Minus von Batt.| |
-|25 | grau | keine | Minus von Batt.| |
-|26 | grau | keine | Minus von Batt.| |
-|27 | grau | keine | Minus von Batt.| |
-|28 | grau | keine | Minus von Batt.| | letzer Kontakt ist kleiner (2 Kontakte)
-|29  | hellblau| keine| SDA für RTC| SDA für Lichtsensor| Lichtsensor und RTC
-|30 | hellblau| keine |SCL für RTC | SCL für Lichtsensor| gehen über I2C
-|31  | blau  | keine | Plus von Relais | Hauptpumpe|
-|32  | blau  | keine | Plus von Relais | 
-|33  | blau  | keine | Plus von Relais | 
-|34  | blau  | keine | Plus von Relais | 
-|35  | blau  | keine | Plus von Relais | 
-|36  | blau  | keine | Plus von Relais | 
-|37  | blau  | keine | Plus von Relais | 
-|38  | blau  | keine | Plus von Relais | 
-|39| grau | keine |3,3 von Pi| Plus an Feuchtesensor 1|
-|40| grau | keine |3,3 von Pi| Plus an Feuchtesensor 2|
-|41| grau | keine |3,3 von Pi| Plus an Feuchtesensor 3|
-|42| grau | keine |3,3 von Pi| Plus an Feuchtesensor 4|
-|43| grau | keine |3,3 von Pi| Plus an Feuchtesensor 5|
-|44| grau | keine |3,3 von Pi| Plus an Feuchtesensor 6|
-|45| grau | keine |Gnd von Pi| Minus an Feuchtesensor 1|
-|46| grau | keine |Gnd von Pi| Minus an Feuchtesensor 2|
-|47| grau | keine |Gnd von Pi| Minus an Feuchtesensor 3|
-|48| grau | keine |Gnd von Pi| Minus an Feuchtesensor 4|
-|49| grau | keine |Gnd von Pi| Minus an Feuchtesensor 5|
-|50| grau | keine |Gnd von Pi| Minus an Feuchtesensor 6|
-|51| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 1|
-|52| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 2|
-|53| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 3|
-|54| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 4|
-|55| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 5|
-|56| blau| keine |Datenleitung zu MCP3008| Analogdaten von Feuchtesensor 6|
-|57 | grau| keine| Plus
+|Position                           |Farbe | Nummerierung|Innen             | Außen/unten     | Bemerkung|
+-------- | --------------------------------|-------------|------------------| ----------------|----------|
+|  1                                |gelbgrün| keine     |Erde              | Erde            |
+|   2    | grau                             |  keine     | 3,3 V von Pi     |                 |2-7 sind verbunden
+|   3    | grau                             |  keine     | 3,3 V von Pi     | Lichtsensor                |
+|   4    | grau                             |  keine     | 3,3 V von Pi     |                 |
+|   5    | grau                             |  keine     | 3,3 V von Pi     |                 |
+|   6    | grau                             |  keine     | 3,3 V von Pi     |                 |
+|   7    | grau                             |  keine     | 3,3 V von Pi     |                 |
+|   8    | grau                             |  keine     | Datenleitung W1             |      |8-13 sind verbunden
+| 9    | grau                              |  keine     | Datenleitung W1   |                            |
+| 10    | grau                             |  keine      | Datenleitung W1             |                 |
+| 11   | grau                              |  keine     | Datenleitung W1   |                            |
+| 12    | grau                             |  keine      | Datenleitung W1             |                 |
+| 13    | grau                             |  keine      | Datenleitung W1             |                 |
+| 14    | grau                             |  keine      |Gnd von Pi        |                 |14 -18 sind verbunden
+| 15    | grau                             |  keine      |Gnd von Pi        |  Lichtsensor               |
+| 16    | grau                             |  keine      |Gnd von Pi        |                 |
+| 17    | grau                             |  keine      |Gnd von Pi        |                 |
+| 18    | grau                             |  keine|Gnd von Pi             |                  |
+| 19    | grau                             |  keine      |Gnd von Pi        |                 |
+| 20    | grau                            |   keine      | geht zu Block bei 8er Relais                  |+12 V von ext. Batterie | Block verteilt Plus auf einzelne Relais|
+|21| grau                           | keine| Minus von ext.Batterie        || 3 Kontakte,21-27 sind verbunden|
+|22| grau                           | keine | Minus von Batt.|             |21 -27 breiter
+|23| grau                           | keine | Minus von Batt.|             |
+|24| grau                           | keine | Minus von Batt.|             |
+|25| grau                           | keine | Minus von Batt.|             |
+|26| grau                           | keine | Minus von Batt.|             |
+|27| grau                           | keine | Minus von Batt.|             |
+|28| grau                           | keine | Minus von Batt.|             | letzer Kontakt ist kleiner (2 Kontakte)
+|29| hellblau| keine| SDA für RTC| SDA für Lichtsensor                                 | Lichtsensor und RTC
+|30| hellblau| keine|SCL für RTC | SCL für Lichtsensor                                 | gehen über I2C
+|31| blau    | keine| Plus von Relais                                      | Hauptpumpe|
+|32| blau    | keine| Plus von Relais                                      | 
+|33| blau    | keine| Plus von Relais                                      | 
+|34| blau    | keine| Plus von Relais                                      | 
+|35| blau    | keine| Plus von Relais                                      | 
+|36| blau    | keine| Plus von Relais                                      | 
+|37| blau    | keine| Plus von Relais                                      | 
+|38| blau    | keine| Plus von Relais                                      | 
+|39| blau| 5 V                               |Plus 5 V von Pi| 5V an Ultrasonic        |39 - 41 sind verbunden
+|40| blau    | 5 V                          | 5V an RTC | 
+|41|blau                            | 5 V  |
+|42| grau                           | keine| Trigger Ultrasonic von GPIO 17| Trigger an Sensor|42 und 43 sind kleiner als die Klemmen < 42
+|43| hellblau|keine | Echo an Platine mit Widerständen|Echo von Sensor| Echo muß auf Platine durch Widerstände laufen
+|44| grau                           | keine|3,3V von Pi| Plus an Feuchtesensor 1       |
+|45| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 2        |
+|46| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 3        |
+|47| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 4        |
+|48| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 5        |
+|49| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 6        |
+|50| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 1       |
+|51| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 2       |
+|52| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 3       |
+|53| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 4       |
+|54| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 5       |
+|55| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 6       |
+|56| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 1|
+|57| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 2|
+|58| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 3|
+|59| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 4|
+|60| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 5|
+|61| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 6|
+|62| grau| keine                          | Plus von 4er Relais | Plus 12 V an Fütterungsautomat|
+63|grau|keine|Plus von 4er Relais|
+64 |grau |keine|Plus von 4er Relais||     |
+65|grau|keine|Plus von 4er Relais|
+66|hellblau|keine| Minus | Minus an Fütterungsautomat
+67|grau|keine| Minus
+68|grau|keine| Minus
+69|grau|keine| Minus
+
 
 
 

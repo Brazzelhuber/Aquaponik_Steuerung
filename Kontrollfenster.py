@@ -380,8 +380,8 @@ class Kontrollpanel(object):
         self.slf.label_Volt.grid(row=4, column = 0, padx = 5, pady = 5, sticky =Tk.W)
         self.slf.label_Volt.configure(bg = bg_Farbe)
 
-        self.slf.labelamp = Tk.Label(self.slf, width = 12, height = 1, bg = "white", relief ="sunk")
-        self.slf.labelamp.grid(row=4, column = 1 , ipady = 3, sticky = Tk.W+Tk.E)
+        self.slf.labelvolt = Tk.Label(self.slf, width = 12, height = 1, bg = "white", relief ="sunk")
+        self.slf.labelvolt.grid(row=4, column = 1 , ipady = 3, sticky = Tk.W+Tk.E)
 
         btn_V_v= Tk.Button(self.slf, text="Daten", \
                                command= lambda: self.Datenfenster(control_array,"Volt"))
@@ -823,7 +823,10 @@ class Kontrollpanel(object):
             dat_nam =('Phwerte_Eichen.csv')     
         elif param == "Logdatei":
             Kindfenster.title("Logdatei") # Titel
-            dat_nam =('Logdatei.csv')         
+            dat_nam =('Logdatei.csv')
+        elif param == "Volt":
+            Kindfenster.title("Batteriespannung")
+            dat_nam ="Volt.csv"
         else:
             print("kein gültiger Paramter übergeben")
 
@@ -992,6 +995,9 @@ class Kontrollpanel(object):
         elif param == "Phwerte":
             
             Dateiname = "Phwerte_Eichen.csv"
+            
+        elif param == "Volt":
+            Dateiname = "Volt.csv"
             
 
         else:

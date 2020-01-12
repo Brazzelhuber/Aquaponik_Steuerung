@@ -67,7 +67,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
         WMAX = 9                        # ph-Wert
         WMIN = 4
     elif "Volt" in dateiname:           # Batteriespannung
-        WMAX = 14
+        WMAX = 13.5
         WMIN = 11
     else: print("kein gültiger Dateiname")
 
@@ -89,6 +89,9 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     elif "Phwerte" in dateiname:
         Titel = "Ph-Werte"
         Y_Delta = 0.5  # Delta von 0.5 bei Ph-Wert
+    elif "Volt" in dateiname:
+        Titel = "Batteriespannung"
+        Y_Delta =0.25
     else:
       print("Fehler bei Lesen Dateiname")
       
@@ -110,7 +113,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
 
     if "Temp" in dateiname:                           # da bei Temperatur Minuswerte möglich sind
-        if "aussen" in dateiname:                                             # wird hier die x-Achse nicht unten gezeichnet
+        if "aussen" in dateiname:                               # wird hier die x-Achse nicht unten gezeichnet
             l_ypunkt   =  int(hoehe - (3*Y_Delta/ 50) * bespH)
         else:  l_ypunkt   =  int(hoehe - (1*Y_Delta/ 50) * bespH) 
         pygame.draw.line(grafikwindow, BLACK, (XEIN, l_ypunkt - YEIN), (breite - XOEIN, l_ypunkt-YEIN), 3)
@@ -123,18 +126,20 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
     # Einteilungen auf y-Achse:
 
-    # Die unterschiedlichen Beschriftungen für Innen- und Außentemperatur, Licht- und Ph-Werte
+    # Die unterschiedlichen Beschriftungen für Innen- und Außentemperatur, Licht- und Ph-Werte und Batteriespannung
 
     Beschriftungsrange_T_innen = ["-5", "0", "5", "10", "15", "20", "25", "30", "35", "40", "45"]
     Beschriftungsrange_T_aussen = ["-15", "-10", "-5","0", "5", "10", "15", "20", "25", "30", "35"]
     Beschriftungsrange_Licht = ["0", "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"]
     Beschriftungsrange_Ph_Werte = ["4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0"]
     Beschriftungsrange_DLI = ["0", "2.5", "5.0", "7.5", "10.0", "12.5", "15.0", "17.5", "20.0", "22.5", "25.0"]
+    Beschriftungsrange_Volt =["11.0","11.25","11.5","11.75","12.0","12.25","12.5","12.75","13.0", "13.25","13.5"]
 
 
 
     
-
+    # Orientierungslinien
+    
     for i in range (0,YEINTEIL):
     # definierte die jeweiligen y-Höhe
       
@@ -150,7 +155,10 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
           o_ypunkt   =  int(hoehe - (i*Y_Delta/ 25) * bespH) 
       elif "Ph" in dateiname:
 
-          o_ypunkt   =  int(hoehe - (i*Y_Delta/ 5) * bespH) 
+          o_ypunkt   =  int(hoehe - (i*Y_Delta/ 5) * bespH)
+          
+      elif "Volt" in dateiname:
+          o_ypunkt   =  int(hoehe - (i*Y_Delta/ 2.5) * bespH)
 
       else:
           print("Fehler")
@@ -201,6 +209,15 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
            txtPh= (Beschriftungsrange_Ph_Werte[i]) 
            myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
            textsurf= myfont.render(txtPh.encode("latin-1"),1,(0,0,0))
+           grafikwindow.blit(textsurf,(XEIN -60, o_ypunkt-YEIN-10))
+           
+      elif "Volt" in dateiname:
+            
+           # Beschriftung der Y-Achse mit Zahlenwerten :
+            
+           txtVolt= (Beschriftungsrange_Volt[i]) + " Volt"
+           myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
+           textsurf= myfont.render(txtVolt.encode("latin-1"),1,(0,0,0))
            grafikwindow.blit(textsurf,(XEIN -60, o_ypunkt-YEIN-10))
             
       else:
@@ -318,7 +335,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
         if MINMAX:
             anzahlwerte = len(Datenwerte[0])  # kann bei Durchschnittswerten variieren
             
-         # Vor Einteilungsstriche auf der X-Achse zeichnen, Sonderbehandlung für Woche:
+         # Einteilungsstriche auf der X-Achse zeichnen, Sonderbehandlung für Woche:
         einteilungswerte = anzahlwerte
 
         if einteilungswerte == 240: einteilungswerte = einteilungswerte/10 # 240 Einteilungen sind zu viel
@@ -352,8 +369,8 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
             else:
 
-
-                t = int(Datenwerte[i])
+                t = (Datenwerte[i])
+                #t = int(Datenwerte[i])
                 
             if MINMAX:
                 

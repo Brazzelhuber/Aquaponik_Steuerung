@@ -37,6 +37,7 @@ def Werte_lesen(w_Array):
     w_Array["T_aussen"] = Ts.tempSensorWert[1]         
     w_Array["Luxwert_1"] = Ls.readLight()
     
+    
     values = [0]*8
     for i in range(8):
         values[i] = mcp.read_adc(i)
@@ -47,6 +48,8 @@ def Werte_lesen(w_Array):
     w_Array["Erdfeuchte4"]= values[4]
     w_Array["Erdfeuchte5"]= values[5]
     w_Array["Erdfeuchte6"]= values[6]
+    w_Array["Volt"] = "{0:5.2f}".format(values[7]/76.66)  # Umrechnung von MCP3008-Wert auf Volt
+    
     return w_Array
 
 

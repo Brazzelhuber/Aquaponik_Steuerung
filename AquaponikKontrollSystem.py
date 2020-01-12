@@ -72,9 +72,9 @@ wa          = {"T_Luft_oben" : 0,
                "Sonnenaufgang": 0,      
                "Sonnenuntergang": 0,
                "Erdfeuchte1" : 0,       
-               "Erdfeuchte2" : 0,       
-               "Erdfeuchte3" : 0,       
-               "Erdfeuchte4" : 0,
+               "Erdfeuchte2" : 800,       
+               "Erdfeuchte3" : 700,       
+               "Erdfeuchte4" : 500,
                "Erdfeuchte5" : 0,
                "Erdfeuchte6" : 0
                 }
@@ -173,11 +173,11 @@ def loop():
 
     wa = Wl.Werte_lesen(wa)                     # liest Werte aus Sensoren und schreibt sie in Array wa
 
-    ca,wa = Ch.SensorCheck(screen_app, ca, wa)  # checkt bei den Sensoren,ob etwas zu tun ist
-                                                # direkte Befehle vom Bildschirm aus werden von Modul
-                                                # "Kontrollpanel" über button-callback
-                                                # aufgerufen und in Modul "Ch.Buttoncheck" in den ca-Array
-                                                # eingetragen
+    ca,wa = Ch.SensorCheck(screen_app, ca, wa, vw)  # checkt bei den Sensoren,ob etwas zu tun ist
+                                                    # direkte Befehle vom Bildschirm aus werden von Modul
+                                                    # "Kontrollpanel" über button-callback
+                                                    # aufgerufen und in Modul "Ch.Buttoncheck" in den ca-Array
+                                                    # eingetragen
   
                                             
     # Feststellen, ob es Tag ist (nur dann werden Lichtdaten in Datei geschrieben)
@@ -194,7 +194,7 @@ def loop():
     
 
     
-    if ca["Screen_schreiben"][0] == 1:
+    if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb == 0
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
