@@ -52,7 +52,7 @@ vw         =  {"TempWasserMin" : 3,
                "WasserpegelMax": 0,
                "PhWertMin"     : 6.7,
                "PhWertMax"     : 7.1,
-               "Fuetterung"    : 10.00,
+               "Fuetterung"    : 10,
                "Fuett.dauer"  : 5
                }
                
@@ -167,6 +167,7 @@ def loop():
     global wa, ca, t1, after_id
 
     t2 = datetime.datetime.now()
+    tf = datetime.datetime.now()   # Variable für Fütterung
 
     
     tdiff = t2 -t1
@@ -197,6 +198,26 @@ def loop():
     if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb == 0
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
+##    fh= vw["Fuetterung"][:2]
+##    fm = vw["Fuetterung"][3:len(vw["Fuetterung"])]
+##    fue_str = vw["Fuetterung"]
+##    fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
+##    fue_stopp_string  = fh + ":" + str(int(fm)+int(vw["Fuett.dauer"]))
+##    fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
+##    
+##    print(fue_zeit)####
+##    print(fue_stopp)
+##
+##    
+##    if t2.time() > fue_zeit and t2.time() <= fue_stopp:
+##        
+##       ca["Fütterung"][1] = 1
+##    else:
+##       ca["Fütterung"][1] = 0
+
+
+    Ak.Fuetterung(t2, ca,vw)                       # prüft ob Fütterungszeit ist
+    
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
                                                # daraus folgt, dass der Sollwert verändert wurde
                                                
@@ -207,7 +228,7 @@ def loop():
         Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
         
         Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
-
+    
     
     if tdiff > datetime.timedelta(seconds = 360):    # schreibt Sensordaten nur einmal pro 6 Minute in Datei
                                                      # = 10 pro Stunde, 240 pro Tag

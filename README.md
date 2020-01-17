@@ -34,7 +34,7 @@ Actuators are:
 The pump in the sump tank is a geyser pump that is operated with air. The air under the roof can be used to heat the water in winter, if this is not enough, water heating can be started.
 All actuators are controlled via GPIOs and two relay boards.
 
-The structure of the combined aquaponic raised bed system can be seen in the first picture of the German section.  
+The structure of the combined aquaponic raised bed system is displayed in the first picture of the German section.  
 
 ## Configuration of the Raspberry Pi
 
@@ -52,7 +52,7 @@ phProbe | Ph measering | 3,3 | open: I2C or UART
 
 ## Structure of the program
 
-Can be seen in the second picture of the German section  
+Displayed in the second picture of the German section  
 
 ## Special features of the program (1): control with arrays
 
@@ -67,7 +67,7 @@ The program is essentially controlled by three arrays (which are technically dic
 
 The array with default values ​​defines limit values ​​for sensor data. Conditions are defined in the program
 when an action is triggered automatically, e.g. Temperature water> 23 degrees -> cooling
-At the end, the feeding time and duration are determined.
+Additionally, the feeding time and duration are determined.
 The values ​​are shown on the screen as entry specifications, so they can be changed (conclusion: return).
 When the program ends, the values ​​are saved and called up when restarting.
 
@@ -381,34 +381,35 @@ wirklichen Buttonpress dieser Parameter immer gleich None ist (ist ja durch butt
 |39| blau| 5 V                               |Plus 5 V von Pi| 5V an Ultrasonic        |39 - 41 sind verbunden
 |40| blau    | 5 V                          | 5V an RTC | 
 |41|blau                            | 5 V  |
-|42| grau                           | keine| Trigger Ultrasonic von GPIO 17| Trigger an Sensor|42 und 43 sind kleiner als die Klemmen < 42
+|42| grau                           | keine| Trigger Ultrasonic von GPIO 17| Trigger an Sensor|42, 43 und 44 sind kleiner als die blauen Klemmen < 42
 |43| hellblau|keine | Echo an Platine mit Widerständen|Echo von Sensor| Echo muß auf Platine durch Widerstände laufen
-|44| grau                           | keine|3,3V von Pi| Plus an Feuchtesensor 1       |
-|45| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 2        |
-|46| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 3        |
-|47| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 4        |
-|48| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 5        |
-|49| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 6        |
-|50| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 1       |
-|51| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 2       |
-|52| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 3       |
-|53| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 4       |
-|54| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 5       |
-|55| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 6       |
-|56| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 1|
-|57| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 2|
-|58| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 3|
-|59| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 4|
-|60| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 5|
-|61| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 6|
-|62| grau| keine                          | Plus von 4er Relais | Plus 12 V an Fütterungsautomat|
-63|grau|keine|Plus von 4er Relais|
-64 |grau |keine|Plus von 4er Relais||     |
-65|grau|keine|Plus von 4er Relais|
-66|hellblau|keine| Minus | Minus an Fütterungsautomat
-67|grau|keine| Minus
+44 | grau| keine | Gnd an Ultrasonic| Gnd an Platine mit Widerständen
+|45| grau                           | keine|3,3V von Pi| Plus an Feuchtesensor 1       |
+|46| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 2        |
+|47| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 3        |
+|48| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 4        |
+|49| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 5        |
+|50| grau                           | keine|3,3 von Pi| Plus an Feuchtesensor 6        |
+|51| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 1       |
+|52| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 2       |
+|53| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 3       |
+|54| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 4       |
+|55| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 5       |
+|56| grau                           | keine|Gnd von Pi| Minus an Feuchtesensor 6       |
+|57| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 1|
+|58| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 2|
+|59| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 3|
+|60| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 4|
+|61| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 5|
+|62| blau| keine                           |Datenleitung zu MCP3008        | Analogdaten von Feuchtesensor 6|
+|63| grau| keine                          | Plus von 4er Relais | Plus 12 V an Fütterungsautomat|
+64|grau|keine|Plus von 4er Relais|
+65 |grau |keine|Plus von 4er Relais||     |
+66|grau|keine|Plus von 4er Relais|
+67|hellblau|keine| Minus | Minus an Fütterungsautomat
 68|grau|keine| Minus
 69|grau|keine| Minus
+70|grau|keine| Minus
 
 
 

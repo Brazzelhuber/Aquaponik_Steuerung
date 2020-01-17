@@ -9,8 +9,6 @@
 # entweder nach manueller oder nach sensorgetriggerter Veränderung (oder durch Zeitschaltung)
 # nach Aktion werden die Ist- im KOntrollarray auf die Sollwerte gesetzt
 
-import datetime
-
 def change_sensordaten(_screen, wa):
 
     # wa-Key und dazugehörige Labelnamen, sowie Feuchtigkeitscode als verschachtelter array.
@@ -210,20 +208,7 @@ def change_buttons(_screen , ca):
         _screen.click_screen.configure(text = "Bildschirmwerte aus")
 
     
-def Fuetterung(jetzt, my_arr, vorg):
-    
-    fh= vorg["Fuetterung"][:2]
-    fm = vorg["Fuetterung"][3:len(vorg["Fuetterung"])]
-    fue_str = vorg["Fuetterung"]
-    fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
-    fue_stopp_string  = fh + ":" + str(int(fm)+int(vorg["Fuett.dauer"]))
-    fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
-    
-    if jetzt.time() > fue_zeit and jetzt.time() <= fue_stopp:
-        
-       my_arr["Fütterung"][1] = 1
-    else:
-       my_arr["Fütterung"][1] = 0
+
     
 def change_aktoren(my_array):
     
@@ -244,19 +229,19 @@ def change_aktoren(my_array):
                 ["LO to HP",   21],
                 ["Fütterung",  22],
                 ["Heizung",    19]]
-##"""                                     (1. Relais-Board)
-##  a_liste = [ ["Hauptpumpe",   18],       1           
-##                ["WQ to FT",   23],       2     
-##                ["WQ to VR",   24],       3     
-##                ["ST to VR",   25],       4     
-##                ["ST to FT",   12],       5      
-##                ["ST to HB",   16],       6      
-##                ["LU to HP",   20],       7      
-##                ["LO to HP",   21],       8
-##                ["Fütterung",  22],       1 (4er-Board)
-##                ["Heizung",    19]]
-##
-##"""    
+"""                                     (1. Relais-Board)
+  a_liste = [ ["Hauptpumpe",   18],       1           
+                ["WQ to FT",   23],       2     
+                ["WQ to VR",   24],       3     
+                ["ST to VR",   25],       4     
+                ["ST to FT",   12],       5      
+                ["ST to HB",   16],       6      
+                ["LU to HP",   20],       7      
+                ["LO to HP",   21],       8
+                ["Fütterung",  22],       1 (4er-Board)
+                ["Heizung",    19]]
+
+"""    
     for i in range(0, len(a_liste)):
         
         GPIO.setup(a_liste[i][1] , GPIO.OUT)

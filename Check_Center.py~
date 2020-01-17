@@ -189,7 +189,7 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
             float(we["T_Wasser1"]) > float(vw["TempWasserMax"]) and \
             not Manualoverride(co) and \
             zuvielErdfeuchte == False and \
-            co["Fütterung"][0] == 0:
+            co["Fütterung"][0] == 0):
 
         Config_Zustaende("Nichts", co)
         Alles_aus(screen, co)
