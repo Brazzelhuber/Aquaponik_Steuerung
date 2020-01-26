@@ -10,6 +10,10 @@
 # nach Aktion werden die Ist- im KOntrollarray auf die Sollwerte gesetzt
 
 import datetime
+import Check_Center as Ch
+import RPi.GPIO as GPIO
+import time
+import tkinter as Tk
 
 def change_sensordaten(_screen, wa):
 
@@ -61,6 +65,7 @@ def change_sensordaten(_screen, wa):
 
     
     # Zahlenwerte von MCP3008 für Feuchte werden in Farbcodes umgewandelt:
+    # Funktion eval führt Textstring aus Erde-Array als Code aus
     
     for i in range(0,6):
         if wa[Erde[i][0]] > 800:
@@ -110,10 +115,10 @@ def change_buttons(_screen , ca):
         _screen.wlf.check_btn_WA_an.configure(text = "Brunnenventil schließen")
 
     if ca["Wasser ablassen"][1] == 0:
-        _screen.wlf.Anzeige_WB.configure(text = "Verieselung ist zu", bg = "PaleVioletRed2")
+        _screen.wlf.Anzeige_WB.configure(text = "Verrieselung ist zu", bg = "PaleVioletRed2")
         _screen.wlf.check_btn_WB_an.configure(text = "Wasser ablassen")
     if ca["Wasser ablassen"][1] == 1:
-        _screen.wlf.Anzeige_WB.configure(text = "Verieselung ist auf", bg = "lightgreen")
+        _screen.wlf.Anzeige_WB.configure(text = "Verrieselung ist auf", bg = "lightgreen")
         _screen.wlf.check_btn_WB_an.configure(text = "Wasserablass Stop")
     
     
@@ -125,12 +130,12 @@ def change_buttons(_screen , ca):
         _screen.mlf.check_btn_KUBEW_an.configure(text = "Kühlung mit\nBewässerung ausschalten")
 
     
-    if ca["Kühlung mit Verieselung"][1] == 0:
-        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerieselung ist aus", bg = "PaleVioletRed2")
-        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerieselung anschalten")
-    if ca["Kühlung mit Verieselung"][1] == 1:
-        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerieselung ist an", bg = "lightgreen")
-        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerieselung ausschalten")
+    if ca["Kühlung mit Verrieselung"][1] == 0:
+        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerrieselung ist aus", bg = "PaleVioletRed2")
+        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerrieselung anschalten")
+    if ca["Kühlung mit Verrieselung"][1] == 1:
+        _screen.mlf.Anzeige_KURIE.configure(text = "Kühlung mit\nVerrieselung ist an", bg = "lightgreen")
+        _screen.mlf.check_btn_KURIE_an.configure(text = "Kühlung mit\nVerrieselung ausschalten")
 
     if ca["Heizung"][1] == 0:
         _screen.mlf.Anzeige_LampFi.configure(text = "Heizung\nist aus", bg = "PaleVioletRed2")
@@ -209,8 +214,10 @@ def change_buttons(_screen , ca):
     if ca["Screen_schreiben"][1] == 1:
         _screen.click_screen.configure(text = "Bildschirmwerte aus")
 
+
     
-def Fuetterung(jetzt, my_arr, vorg):
+    
+def Fuetterung(jetzt, my_arr, vorg, _screen):
     
     fh= vorg["Fuetterung"][:2]
     fm = vorg["Fuetterung"][3:len(vorg["Fuetterung"])]
@@ -221,14 +228,48 @@ def Fuetterung(jetzt, my_arr, vorg):
     
     if jetzt.time() > fue_zeit and jetzt.time() <= fue_stopp:
         
+       Ch.Alles_aus(_screen, my_arr)  
        my_arr["Fütterung"][1] = 1
     else:
        my_arr["Fütterung"][1] = 0
+
+def Vorlauf(v_screen, my_array):
+    from tkinter import messagebox
     
-def change_aktoren(my_array):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+
+    WQtoFT = 23           
+    WQtoVR = 24
+
+    GPIO.setup(WQtoFT, GPIO.OUT)
+    GPIO.setup(WQtoVR, GPIO.OUT)
+
+    GPIO.output(WQtoFT, GPIO.HIGH)
+    GPIO.output(WQtoVR, GPIO.LOW)
+
+
+    win = Tk.Toplevel()
+    win.transient()
+    
+    win.title('Wait')
+    win.geometry("280x100+500+300")
+    Tk.Label(win, text="Brunnenwasser wird zur Abkühlung\neine Minute verrieselt").grid(ipady = 35, ipadx =30)
+
     
     
-    import RPi.GPIO as GPIO
+    win.after(15000, win.quit)
+    win.mainloop()
+    
+    GPIO.output(WQtoFT, GPIO.HIGH)
+    GPIO.output(WQtoVR, GPIO.HIGH)
+
+    win.destroy()
+    
+    
+def change_aktoren(my_screen, my_array):
+    
+    
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
@@ -253,7 +294,7 @@ def change_aktoren(my_array):
 ##                ["ST to HB",   16],       6      
 ##                ["LU to HP",   20],       7      
 ##                ["LO to HP",   21],       8
-##                ["Fütterung",  22],       1 (4er-Board)
+##                ["Fütterung",  22],       1 (2. Relais-Board)
 ##                ["Heizung",    19]]
 ##
 ##"""    
@@ -263,17 +304,20 @@ def change_aktoren(my_array):
 
 
     for key in my_array:
+        
         for i in range(0, len(a_liste)):
             if key == a_liste[i][0]:
-##                print("key = " + str(key)+ "     my_array[key][1] = " + str(my_array[key][1]) \
-##                      + "    a_liste[i][1] =  "+ str(a_liste[i][1]))
+                
                 if my_array[key][1] == 1:
+                    if key == "WQ to FT":
+                        Vorlauf(my_screen, my_array)    # Vorlauf eine Minute, damit das Wasser abkühlt
+                        
                     GPIO.output(a_liste[i][1],GPIO.LOW)
                     
                 elif  my_array[key][1] == 0:
                     GPIO.output(a_liste[i][1],GPIO.HIGH)
-##    print("\n")
-    #GPIO.cleanup()
+    
+    GPIO.cleanup()
                     
     #------------------------------------------------------------------------------
  

@@ -123,13 +123,14 @@ class Kontrollpanel(object):
         self.Abk0.grid(row = 3, column = 1, sticky = Tk.E)
         self.Abk1 = Tk.Label ( text = "WQ = Wasserquelle | FT = Fischtank")
         self.Abk1.grid(row = 3, column = 2, sticky = Tk.W)
-        self.Abk2 = Tk.Label ( text = "ST = Sumptank | VR = Verieselung | HB = Hochbeet" )
+        self.Abk2 = Tk.Label ( text = "ST = Sumptank | VR = Verrieselung | HB = Hochbeet" )
         self.Abk2.grid(row = 4, column = 2, sticky = Tk.W)
         self.Abk3 = Tk.Label ( text = "LU = Lufteinlass unten | LO = Lufteinlass oben" )
         self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
-# Fischbild:
+# Grenzwerte des Systems:
+
         grenzlabel = Tk.Label(self.xlf, text = "TempWasser Min: ")
         grenzlabel.grid(row = 0, column = 0, sticky = Tk.W)
         self.xlf.entry_wmi = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
@@ -193,21 +194,6 @@ class Kontrollpanel(object):
         self.xlf.entry_Fud.bind("<Return>",
                                 lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
         
-
-##        canvas_width = 153
-##        canvas_height = 240
-##
-##        canvas = Tk.Canvas(self.xlf, 
-##                   width=canvas_width, 
-##                   height=canvas_height)
-##        canvas.grid()
-##        
-##        mysize =(canvas_width,canvas_height)
-##        img = Image.open("forelle-klein.jpg")
-##        img = img.resize(mysize, PIL.Image.ANTIALIAS)
-##        canvas.image = ImageTk.PhotoImage(img)
-##        canvas.create_image(0,0, anchor=Tk.NW, image=canvas.image)
-
 
 ############################################################################################
        # Temperatur Box
@@ -430,13 +416,13 @@ class Kontrollpanel(object):
         
        
 
-        self.mlf.check_btn_KURIE_an = Tk.Button(self.mlf, text = "Kühlung mit\nVerieselung anschalten", \
+        self.mlf.check_btn_KURIE_an = Tk.Button(self.mlf, text = "Kühlung mit\nVerrieselung anschalten", \
                             relief = "groove", width = 18, height = 2)
         self.mlf.check_btn_KURIE_an.grid(row = 1, column =0, padx = 10, pady = 5 ,
                              ipady = 2, sticky =Tk.W+Tk.E)
         self.mlf.check_btn_KURIE_an.bind("<Button-1>", lambda event,
                              var=control_array: Ch.ButtonCheck(self.mlf.check_btn_KURIE_an,control_array, None))
-        self.mlf.Anzeige_KURIE = Tk.Label(self.mlf, text = "Kühlung mit\nVerieselung ist aus",  \
+        self.mlf.Anzeige_KURIE = Tk.Label(self.mlf, text = "Kühlung mit\nVerrieselung ist aus",  \
                             relief = "groove", width = 16, height = 2 )
         self.mlf.Anzeige_KURIE.grid(row = 1, column =1, padx = 0, pady = 3 ,
                              ipady = 6,sticky =Tk.W+ Tk.E)
@@ -559,7 +545,7 @@ class Kontrollpanel(object):
         self.wlf.check_btn_WB_an.bind("<Button-1>", lambda event,
                              var=control_array: Ch.ButtonCheck(self.wlf.check_btn_WB_an,control_array, None))
         
-        self.wlf.Anzeige_WB = Tk.Label(self.wlf, text = "Verieselung ist zu",  \
+        self.wlf.Anzeige_WB = Tk.Label(self.wlf, text = "Verrieselung ist zu",  \
                             relief = "groove", width = 16, height = 1 )
         self.wlf.Anzeige_WB.grid(row = 4, column =1, padx = 10, pady = 3 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)

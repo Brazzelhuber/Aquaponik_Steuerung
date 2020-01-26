@@ -62,7 +62,7 @@ from tkinter import messagebox
 ##ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
 ##               "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
 ##               "Kühlung mit Bewässerung":  [0,0,0],  
-##               "Kühlung mit Verieselung":  [0,0,0],
+##               "Kühlung mit Verrieselung":  [0,0,0],
 ##               "Brunnenwasser als Heizung":[0,0,0],  # Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
 ##               "Wasser auffüllen":         [0,0,0],  # Wasserverlust muss ausgeglichen werden
 ##               "Wasser ablassen":          [0,0,0],  # zuviel Wasser im System
@@ -85,6 +85,16 @@ from tkinter import messagebox
 ##############################################################################################################
 # das sind Devices, die bei komplexen Zustandsänderungen simultan geändert werden:
 
+def Ist_es_Tag(t1,t2,ca,wa):
+
+    if (t2.time() > wa["Sonnenaufgang"]) and (t2.time() < wa["Sonnenuntergang"]):
+        ca["Es ist Tag"][0] = 1
+        ca["Es ist Tag"][1] = 1
+            
+    else:
+        ca["Es ist Tag"][0] = 0
+        ca["Es ist Tag"][1] = 0
+
 devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende gesteuert
            "ST to FT",      #
            "ST to HB",      #
@@ -98,7 +108,7 @@ devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende g
 Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
             "warmer CHOP-Circle":                [0,1,0,0,1,0,1],   # CHOP (ST -> FT -> GB -> ST) wobei LO to HP on
             "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
-            "Kühlung mit Verieselung":           [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
+            "Kühlung mit Verrieselung":           [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
             "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
             "Wasser auffüllen":                  [1,0,0,0,0,0,0],   # läßt frisches Wasser in das System
             "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf
@@ -119,7 +129,7 @@ Sensorcheck widerspricht)
 def Manualoverride(co):
     
     if co["normaler CHOP-Circle"][2] == 1 or co["warmer CHOP-Circle"][2] == 1 or\
-        co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verieselung"][2]== 1 or\
+        co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verrieselung"][2]== 1 or\
         co["Wasser ablassen"][2] == 1 or co["Wasser auffüllen"][2]== 1:
         return True
 
@@ -129,7 +139,7 @@ def Manualoverride(co):
 def Alles_aus(myscreen, co):
     
     ButtonCheck(myscreen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung ausschalten")  # simulierte Buttonpress
-    ButtonCheck(myscreen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerieselung ausschalten")  # simulierte Buttonpress
+    ButtonCheck(myscreen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerrieselung ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_CCW_an,co, "CHOP-Circle mit\nWarmluft ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
@@ -144,18 +154,18 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
 
     # checkt, ob Erde in Hochbeeten zu feucht ist zum Bewässern:
     
-##    feuchtwert = (float(we["Erdfeuchte1"]) + \
-##       float(we["Erdfeuchte2"]) + \
-##       float(we["Erdfeuchte3"]) + \
-##       float(we["Erdfeuchte4"]) + \
-##       float(we["Erdfeuchte5"]) + \
-##       float(we["Erdfeuchte6"])) /6
-##    
-##    if feuchtwert < 350 :
-##        zuvielErdfeuchte = True
-##    else:
-##        zuvielErdfeuchte = False
-##    
+    feuchtwert = (float(we["Erdfeuchte1"]) + \
+       float(we["Erdfeuchte2"]) + \
+       float(we["Erdfeuchte3"]) + \
+       float(we["Erdfeuchte4"]) + \
+       float(we["Erdfeuchte5"]) + \
+       float(we["Erdfeuchte6"])) /6
+    
+    if feuchtwert < 350 :
+        zuvielErdfeuchte = True
+    else:
+        zuvielErdfeuchte = False
+    
 ##"""       
 ##    
 ##bevor nicht alle Temperatursensoren installiert sind, werden T_Luft_unten und T_Luft oben ignoriert
@@ -196,20 +206,20 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
         co["Kühlung mit Bewässerung"][1] = 1
 ##        ButtonCheck(screen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung anschalten")  # simulierte Buttonpress
 ##"""
-##Bedingungen für "Kühlung mit Verieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
+##Bedingungen für "Kühlung mit Verrieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
 ##                                                   2. Wasser ist zu warm
 ##                                                   3. kein manual override
 ##                                                   4. keine Fütterung
 ##                                                   5. Erde ist zu feucht """
 
 
-    if co["Kühlung mit Verieselung"][0] != 1 and float(we["T_Wasser1"]) > float(vw["TempWasserMax"]) and   \
+    if co["Kühlung mit Verrieselung"][0] != 1 and float(we["T_Wasser1"]) > float(vw["TempWasserMax"]) and   \
        not Manualoverride(co) and zuvielErdfeuchte == True and co["Fütterung"][0] == 0:
 
        Config_Zustaende("Nichts", co)
        Alles_aus(screen, co)
-       co["Kühlung mit Verieselung"][1] = 1
-       ButtonCheck(screen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerieselung anschalten")  # simulierte Buttonpress
+       co["Kühlung mit Verrieselung"][1] = 1
+       ButtonCheck(screen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerrieselung anschalten")  # simulierte Buttonpress
 
         
     # Wasserqualität:
@@ -304,8 +314,8 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
               ["CHOP-Circle mit\nWarmluft ausschalten", "warmer CHOP-Circle",       0],
               ["Kühlung mit\nBewässerung anschalten",   "Kühlung mit Bewässerung",  1],
               ["Kühlung mit\nBewässerung ausschalten",  "Kühlung mit Bewässerung",  0],
-              ["Kühlung mit\nVerieselung anschalten",   "Kühlung mit Verieselung",  1],
-              ["Kühlung mit\nVerieselung ausschalten",  "Kühlung mit Verieselung",  0],
+              ["Kühlung mit\nVerrieselung anschalten",   "Kühlung mit Verrieselung",  1],
+              ["Kühlung mit\nVerrieselung ausschalten",  "Kühlung mit Verrieselung",  0],
               ["Wasser ablassen",                       "Wasser ablassen",          1],
               ["Wasserablass Stop",                     "Wasser ablassen",          0],
               ["Pumpe anschalten",                      "Hauptpumpe",               1],

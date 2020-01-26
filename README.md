@@ -4,7 +4,7 @@ markdown.extensions.tables-->
 
 The program controls a Raspberry Pi that is used in an aquaponics CHOP system.
 
-##Physical Structure  
+## Physical Structure  
 What is special about the system, which is installed in a 50 sqm greenhouse, is the combination with
 normal raised beds filled with soil.
 

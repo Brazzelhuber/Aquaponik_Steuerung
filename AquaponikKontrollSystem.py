@@ -83,7 +83,7 @@ wa          = {"T_Luft_oben" : 0,
 ca          ={ "normaler CHOP-Circle":     [0,0,0],  
                "warmer CHOP-Circle":       [0,0,0],  
                "Kühlung mit Bewässerung":  [0,0,0],  
-               "Kühlung mit Verieselung":  [0,0,0],  
+               "Kühlung mit Verrieselung":  [0,0,0],  
                "Brunnenwasser als Heizung":[0,0,0],  
                "Wasser auffüllen":         [0,0,0],  
                "Wasser ablassen":          [0,0,0],  
@@ -151,7 +151,7 @@ after_id = 0
 
 
 # Programm starten 
-# loop wird durch die fenster.after-Methode jede Sekunde wiederholt
+# loop wird durch die (fenster.)after-Methode jede Sekunde wiederholt
 ###################################################################
 
 
@@ -160,72 +160,44 @@ after_id = 0
 #####################################################
 def loop():
     
-    # Datum und Uhrzeit aktualisieren:
-    
-    screen_app.Datum_Zeit.configure (text = time.strftime("%d.%m.%Y - %H:%M"))
     
     global wa, ca, t1, after_id
 
-    t2 = datetime.datetime.now()
-    tf = datetime.datetime.now()   # Variable für Fütterung
+     # Datum und Uhrzeit auf Screen aktualisieren:
+    
+    screen_app.Datum_Zeit.configure (text = time.strftime("%d.%m.%Y - %H:%M"))
 
+    t2 = datetime.datetime.now()
+    
     
     tdiff = t2 -t1
 
     wa = Wl.Werte_lesen(wa)                     # liest Werte aus Sensoren und schreibt sie in Array wa
 
     ca,wa = Ch.SensorCheck(screen_app, ca, wa, vw)  # checkt bei den Sensoren,ob etwas zu tun ist
-                                                    # direkte Befehle vom Bildschirm aus werden von Modul
+                                                    # manuelle Befehle vom Bildschirm aus werden von Modul
                                                     # "Kontrollpanel" über button-callback
                                                     # aufgerufen und in Modul "Ch.Buttoncheck" in den ca-Array
                                                     # eingetragen
-  
-                                            
-    # Feststellen, ob es Tag ist (nur dann werden Lichtdaten in Datei geschrieben)
+    
+    Ch.Ist_es_Tag(t1,t2,ca,wa)          # Feststellen, ob es Tag ist (nur dann werden Lichtdaten in Datei geschrieben)
     
     
-    if (t2.time() > wa["Sonnenaufgang"]) and (t2.time() < wa["Sonnenuntergang"]):
-        ca["Es ist Tag"][0] = 1
-        ca["Es ist Tag"][1] = 1
-        
-        
-    else:
-        ca["Es ist Tag"][0] = 0
-        ca["Es ist Tag"][1] = 0
-    
-
-    
-    if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb == 0
+    if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb = 0
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
     
-##    fh= vw["Fuetterung"][:2]
-##    fm = vw["Fuetterung"][3:len(vw["Fuetterung"])]
-##    fue_str = vw["Fuetterung"]
-##    fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
-##    fue_stopp_string  = fh + ":" + str(int(fm)+int(vw["Fuett.dauer"]))
-##    fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
-##    
-##    print(fue_zeit)####
-##    print(fue_stopp)
-##
-##    
-##    if t2.time() > fue_zeit and t2.time() <= fue_stopp:
-##        
-##       ca["Fütterung"][1] = 1
-##    else:
-##       ca["Fütterung"][1] = 0
 
 
-    Ak.Fuetterung(t2, ca,vw)                       # prüft ob Fütterungszeit ist
+    Ak.Fuetterung(t2, ca,vw, screen_app)       # prüft ob Fütterungszeit ist
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
                                                # daraus folgt, dass der Sollwert verändert wurde
                                                
         Ds.Werte_schreiben(wa, ca)             # schreibt Veränderung in Logdatei
 
-        Ak.change_aktoren(ca)                  # Aktoren werden gesteuert
+        Ak.change_aktoren(fenster, ca)                  # Aktoren werden gesteuert
 
-        Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm
+        Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm   
         
         Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
     
@@ -239,7 +211,7 @@ def loop():
            wa["Sonnenaufgang"]=0       # bewirkt, dass in sensorcheck sunrise und sunset neu berechnet werden
            wa["Sonnenuntergang"]=0
            Ds.DLI_schreiben()          # schreibt die Lichtwerte als Daylight Integral in csv-database
-        t1 = t2                
+        t1 = t2                        # setzt Zeitdelta zurück               
       
     after_id = fenster.after(1000, loop)            # after-Methode wiederholt loop , Zeitwert in Millisekunden
  
