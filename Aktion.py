@@ -233,7 +233,7 @@ def Fuetterung(jetzt, my_arr, vorg, _screen):
     else:
        my_arr["Fütterung"][1] = 0
 
-def Vorlauf(v_screen, my_array):
+def Vorlauf():
     from tkinter import messagebox
     
     GPIO.setmode(GPIO.BCM)
@@ -252,7 +252,7 @@ def Vorlauf(v_screen, my_array):
     win = Tk.Toplevel()
     win.transient()
     
-    win.title('Wait')
+    win.title('Warten')
     win.geometry("280x100+500+300")
     Tk.Label(win, text="Brunnenwasser wird zur Abkühlung\neine Minute verrieselt").grid(ipady = 35, ipadx =30)
 
@@ -267,7 +267,7 @@ def Vorlauf(v_screen, my_array):
     win.destroy()
     
     
-def change_aktoren(my_screen, my_array):
+def change_aktoren(my_array):
     
     
     GPIO.setmode(GPIO.BCM)
@@ -295,13 +295,18 @@ def change_aktoren(my_screen, my_array):
 ##                ["LU to HP",   20],       7      
 ##                ["LO to HP",   21],       8
 ##                ["Fütterung",  22],       1 (2. Relais-Board)
-##                ["Heizung",    19]]
+##                ["Heizung",    19]]       2
 ##
 ##"""    
     for i in range(0, len(a_liste)):
         
         GPIO.setup(a_liste[i][1] , GPIO.OUT)
-
+        
+    if (my_array["Kühlung mit Bewässerung"][1] == 1 and my_array["Kühlung mit Bewässerung"][0] == 0) or \
+          (my_array["Kühlung mit Verrieselung"][1] == 1 and  my_array["Kühlung mit Verrieselung"][0] == 0):
+            
+                                            
+        Vorlauf() # Vorlauf eine Minute, damit das Wasser abkühlt, wenn Kühlung angefordert ist aber noch nicht läuft
 
     for key in my_array:
         
@@ -309,15 +314,11 @@ def change_aktoren(my_screen, my_array):
             if key == a_liste[i][0]:
                 
                 if my_array[key][1] == 1:
-                    if key == "WQ to FT":
-                        Vorlauf(my_screen, my_array)    # Vorlauf eine Minute, damit das Wasser abkühlt
-                        
                     GPIO.output(a_liste[i][1],GPIO.LOW)
-                    
                 elif  my_array[key][1] == 0:
                     GPIO.output(a_liste[i][1],GPIO.HIGH)
     
-    GPIO.cleanup()
+   
                     
     #------------------------------------------------------------------------------
  

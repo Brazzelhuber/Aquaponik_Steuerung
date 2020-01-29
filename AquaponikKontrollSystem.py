@@ -195,7 +195,7 @@ def loop():
                                                
         Ds.Werte_schreiben(wa, ca)             # schreibt Veränderung in Logdatei
 
-        Ak.change_aktoren(fenster, ca)                  # Aktoren werden gesteuert
+        Ak.change_aktoren(ca)                  # Aktoren werden gesteuert
 
         Ak.change_buttons(screen_app, ca)      # Anpassung der Buttons auf dem Bildschirm   
         

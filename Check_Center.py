@@ -96,7 +96,7 @@ def Ist_es_Tag(t1,t2,ca,wa):
         ca["Es ist Tag"][1] = 0
 
 devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende gesteuert
-           "ST to FT",      #
+           "ST to FT",      
            "ST to HB",      #
            "ST to VR",
            "Hauptpumpe",
@@ -108,7 +108,7 @@ devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende g
 Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
             "warmer CHOP-Circle":                [0,1,0,0,1,0,1],   # CHOP (ST -> FT -> GB -> ST) wobei LO to HP on
             "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
-            "Kühlung mit Verrieselung":           [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
+            "Kühlung mit Verrieselung":          [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
             "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
             "Wasser auffüllen":                  [1,0,0,0,0,0,0],   # läßt frisches Wasser in das System
             "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf
@@ -117,7 +117,7 @@ Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -
 
 def Config_Zustaende(Zustand, _array):
     
-    for i  in range(0,7):
+    for i  in range(0,7):               
         
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
 
@@ -285,7 +285,7 @@ def do_it(liste,ar, manov,i):
             
       
         ar[listenkey][1] = liste[i][2]
-        if i < 15 :                           # 1 - 14 sind komplexe Zustände, daher müssen in der Folge
+        if i < 14 :                           # 1 - 14 sind komplexe Zustände, daher müssen in der Folge
             if liste[i][2] == 1 :                   # diverse andere Veränderungen (an Ventilen) vorgnommen werden
                 Config_Zustaende(listenkey, ar)
             else: Config_Zustaende("Nichts",ar)
