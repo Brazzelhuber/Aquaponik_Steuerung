@@ -71,6 +71,12 @@ def Werte_schreiben(my_array, control):
     writerv.writerow(rowv)
     vo.close()
 
+    ws = open("Wasserstand.csv","a")
+    writerw = csv.writer(ws)
+    roww = [t,my_array["Wasserstand"]]
+    writerw.writerow(roww)
+    ws.close()
+
 
     
     if control["Es ist Tag"][0] == 1:

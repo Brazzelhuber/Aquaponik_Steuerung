@@ -18,7 +18,6 @@ import ptvsd     # dient dem remote-debugging mit Visual Studio
 
 import Kontrollfenster as Kf
 import Temperatursensoren as Ts
-import Werte_auf_Screen_schreiben as Ws
 import Werte_in_Datei_schreiben as Ds
 import Wertelesen as Wl
 import Check_Center as Ch

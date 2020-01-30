@@ -558,56 +558,56 @@ class Kontrollpanel(object):
 
         label_WQ =Tk.Label(self.qlf, text = "Qualität", relief = "ridge", borderwidth = 5)
         label_WQ.configure(bg = bg_Farbe)
-        label_WQ.grid(row = 0, column = 0, padx = 5, pady = 4, ipadx= 5, ipady = 4, sticky =Tk.W)
+        label_WQ.grid(row = 0, column = 0, padx = 3, pady = 4, ipadx= 5, ipady = 4, sticky =Tk.W)
     
         label_Ph = Tk.Label(self.qlf,text = "Ph-Wert:" )
-        label_Ph.grid(row=1, column = 0, padx = 5, pady = 5, sticky =Tk.W)
+        label_Ph.grid(row=1, column = 0, padx = 3, pady = 5, sticky =Tk.W)
         label_Ph.configure(bg = bg_Farbe)
 
-        self.qlf.labelpl = Tk.LabelFrame(self.qlf, width = 50, height = 25, bg = "white")
+        self.qlf.labelpl = Tk.Label(self.qlf, width = 5, height = 1, bg = "white")
         self.qlf.labelpl.grid(row=1, column = 1 , sticky = Tk.W+Tk.E)
 
         btn_Ph_v= Tk.Button(self.qlf, text="Daten", \
                                command= lambda: self.Datenfenster(control_array,"Ph"))
-        btn_Ph_v.grid(row = 1, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.W)
+        btn_Ph_v.grid(row = 1, column =2, padx = 3, pady = 5, ipadx = 7, sticky =Tk.W)
 
         btn_Ph_g = Tk.Button(self.qlf, text="Grafik", \
                                 command= lambda: self.Grafikfenster("Ph"))
-        btn_Ph_g.grid(row = 1, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_Ph_g.grid(row = 1, column =3, padx = 3, pady = 5, ipadx = 17, sticky =Tk.W)
 
         self.qlf.label_O = Tk.Label(self.qlf,text = "O2-Wert:" )
-        self.qlf.label_O.grid(row=2, column = 0, padx = 5, pady = 5, sticky =Tk.W)
+        self.qlf.label_O.grid(row=2, column = 0, padx = 3, pady = 5, sticky =Tk.W)
         self.qlf.label_O.configure(bg = bg_Farbe)
 
-        self.qlf.labelo = Tk.LabelFrame(self.qlf, width = 50, height = 25, bg = "white")
+        self.qlf.labelo = Tk.Label(self.qlf, width = 5, height = 1, bg = "white")
         self.qlf.labelo.grid(row=2, column = 1 , sticky = Tk.W+Tk.E)
 
         btn_O= Tk.Button(self.qlf, text="Daten", \
                                command= lambda: self.Datenfenster(control_array,"O2"))
-        btn_O.grid(row = 2, column =2, padx = 5, pady = 15, ipadx = 7, sticky =Tk.W)
+        btn_O.grid(row = 2, column =2, padx = 3, pady = 15, ipadx = 7, sticky =Tk.W)
 
         btn_O_g = Tk.Button(self.qlf, text="Grafik", \
                                 command= lambda: self.Grafikfenster("O2"))
-        btn_O_g.grid(row = 2, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_O_g.grid(row = 2, column =3, padx = 3, pady = 5, ipadx = 17, sticky =Tk.W)
 
         label_WH =Tk.Label(self.qlf, text = "W-Höhe", relief = "ridge", borderwidth = 5)
         label_WH.configure(bg = bg_Farbe)
-        label_WH.grid(row = 3, column = 0, padx = 5, pady = 4, ipadx= 5, ipady = 4, sticky =Tk.W)
+        label_WH.grid(row = 3, column = 0, padx = 3, pady = 4, ipadx= 5, ipady = 4, sticky =Tk.W)
 
         label_Wh = Tk.Label(self.qlf,text = "W-Höhe:" )
-        label_Wh.grid(row=4, column = 0, padx = 5, pady = 5, sticky =Tk.W)
+        label_Wh.grid(row=4, column = 0, padx = 3, pady = 5, sticky =Tk.W)
         label_Wh.configure(bg = bg_Farbe)
 
-        self.qlf.labelWh = Tk.LabelFrame(self.qlf, width = 50, height = 25, bg = "white")
-        self.qlf.labelWh.grid(row=4, column = 1 , sticky = Tk.W+Tk.E)
+        self.qlf.labelWh_Anzeige = Tk.Label(self.qlf, width = 5, height = 1, bg = "white")
+        self.qlf.labelWh_Anzeige.grid(row=4, column = 1 , padx = 3, pady = 4, ipadx= 5, ipady = 4, sticky = Tk.W+Tk.E)
 
         btn_Wh_v= Tk.Button(self.qlf, text="Daten", \
                                command= lambda: self.Datenfenster(control_array,"Wh"))
-        btn_Wh_v.grid(row = 4, column =2, padx = 5, pady = 5, ipadx = 7, sticky =Tk.W)
+        btn_Wh_v.grid(row = 4, column =2, padx = 3, pady = 5, ipadx = 7, sticky =Tk.W)
 
         btn_Wh_g = Tk.Button(self.qlf, text="Grafik", \
                                 command= lambda: self.Grafikfenster("Wh"))
-        btn_Wh_g.grid(row = 4, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.W)
+        btn_Wh_g.grid(row = 4, column =3, padx = 3, pady = 5, ipadx = 17, sticky =Tk.W)
 
         
 ###########################################################################################################
