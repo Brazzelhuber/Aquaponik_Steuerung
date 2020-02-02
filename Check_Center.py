@@ -82,8 +82,6 @@ from tkinter import messagebox
 ##               "LO to HP":                 [0,0,0]}  #  saugt Luft von unterm Dach in die airpumpo
 
 
-##############################################################################################################
-# das sind Devices, die bei komplexen Zustandsänderungen simultan geändert werden:
 
 def Ist_es_Tag(t1,t2,ca,wa):
 
@@ -94,6 +92,9 @@ def Ist_es_Tag(t1,t2,ca,wa):
     else:
         ca["Es ist Tag"][0] = 0
         ca["Es ist Tag"][1] = 0
+
+##############################################################################################################
+# das sind Devices, die bei komplexen Zustandsänderungen simultan geändert werden:
 
 devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende gesteuert
            "ST to FT",      
@@ -151,7 +152,8 @@ SensorCheck() prüft, ob aufgrund von Sensordaten und Vorgabewerten eine Aktion 
 ja wird der entsprechende Sollwert auf 1 gesetzt und in Aktion.py durchgeführt
 """
 def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarray, we = Wertearray
-
+    
+#######################################################################
     # checkt, ob Erde in Hochbeeten zu feucht ist zum Bewässern:
     
     feuchtwert = (float(we["Erdfeuchte1"]) + \
@@ -169,25 +171,25 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
 ##"""       
 ##    
 ##bevor nicht alle Temperatursensoren installiert sind, werden T_Luft_unten und T_Luft oben ignoriert
-##
+###########################################
 ##Bedingungen für "normaler CHOP-Circle an":    1. "normaler CHOP-Circle" ist nicht schon an 
 ##                                              2. Wasser nicht zu warm und nicht zu kalt
 ##                                              3. kein manual override
 ##                                              4. keine Fütterung
-##                                              5. später noch Lufttemperatur """
+##                                              5. kein Wasserablassen
    
     if co["normaler CHOP-Circle"][0] != 1 and float(we["T_Wasser1"]) <= float(vw["TempWasserMax"]) and \
-            float(we["T_Wasser1"]) > float(vw["TempWasserMin"]) and not Manualoverride(co) and co["Fütterung"][0] == 0: 
-            
+            float(we["T_Wasser1"]) > float(vw["TempWasserMin"]) and not Manualoverride(co) and \
+            co["Fütterung"][0] == 0 and co["Wasser ablassen"][0] == 0:
+        
+           
         Config_Zustaende("Nichts", co)
         Alles_aus(screen, co)
         co["normaler CHOP-Circle"][1] = 1
         ButtonCheck(screen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle anschalten")  # simulierte Buttonpress
-        
-##"""
-##
-##    
-##
+
+   
+#################################################
 ##Bedingungen für "Kühlung mit Bewässerung an":     1. "Kühlung mit Bewässerung" ist nicht schon an
 ##                                                  2. Wasser ist zu warm
 ##                                                  3. kein manual override
@@ -204,8 +206,8 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
         Config_Zustaende("Nichts", co)
         Alles_aus(screen, co)
         co["Kühlung mit Bewässerung"][1] = 1
-##        ButtonCheck(screen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung anschalten")  # simulierte Buttonpress
-##"""
+        
+################################################
 ##Bedingungen für "Kühlung mit Verrieselung an":     1. "Kühlung mit Verieslung" ist nicht schon an
 ##                                                   2. Wasser ist zu warm
 ##                                                   3. kein manual override
@@ -220,9 +222,24 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
        Alles_aus(screen, co)
        co["Kühlung mit Verrieselung"][1] = 1
        ButtonCheck(screen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerrieselung anschalten")  # simulierte Buttonpress
+       
 
+##################################################
+# Bedingungen für Wasser ablassen                       1. Wasser wir nicht schon abgelassen
+#                                                       2. Abstand Wasserflächte Sumptank zu Ultraschallsensor < 5 cm
+#                                                       3. kein manual override
+
+    if co["Wasser ablassen"][0] != 1 and float(we["Wasserstand"]) < 5 and not Manualoverride(co):
+                                               
+       Config_Zustaende("Nichts", co)
+       Alles_aus(screen, co)
+       co["Wasser ablassen"][1] = 1
+   
+    if float(we["Wasserstand"]) >= 5 and float(we["Wasserstand"]) < 80:  # wenn Wasserstand im Normbereich
+       co["Wasser ablassen"][1] = 0
+         
         
-    # Wasserqualität:
+# Wasserqualität:
     
     if we["Sauerstoff"] < 4.5 and False:        # Sauerstoff wird noch nicht gemessen
         co["Sauerstoffpumpe"][1] = 1

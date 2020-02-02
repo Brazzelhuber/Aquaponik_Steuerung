@@ -813,6 +813,9 @@ class Kontrollpanel(object):
         elif param == "Volt":
             Kindfenster.title("Batteriespannung")
             dat_nam ="Volt.csv"
+        elif param == "Wh":
+            Kindfenster.title("Wasserhöhe Sumptank")
+            dat_nam ="Wasserstand.csv"
         else:
             print("kein gültiger Paramter übergeben")
 
@@ -984,6 +987,8 @@ class Kontrollpanel(object):
             
         elif param == "Volt":
             Dateiname = "Volt.csv"
+        elif param == "Wh":
+            Dateiname = "Wasserstand.csv"
             
 
         else:

@@ -57,7 +57,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
             WMAX = 45                   # im Gewächshaus hoffentlich nie unter null
             WMIN= -5
 
-        else:
+        elif "aussen" in dateiname:
             WMAX = 35
             WMIN = -15                # Temperaturextreme außen, die vorkommen können
     elif "Licht" in dateiname:
@@ -69,6 +69,9 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     elif "Volt" in dateiname:           # Batteriespannung
         WMAX = 13.5
         WMIN = 11
+    elif "Wasserstand" in dateiname:           # Batteriespannung
+        WMAX = 110
+        WMIN = 0
     else: print("kein gültiger Dateiname")
 
 ###########################################################################################
@@ -92,6 +95,9 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     elif "Volt" in dateiname:
         Titel = "Batteriespannung"
         Y_Delta =0.25
+    elif "Wasserstand" in dateiname:
+        Titel = "Wasserhöhe in Sumptank"
+        Y_Delta = 10  # Delta von 10 cm bei Wasserstand
     else:
       print("Fehler bei Lesen Dateiname")
       
@@ -114,8 +120,8 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
     if "Temp" in dateiname:                           # da bei Temperatur Minuswerte möglich sind
         if "aussen" in dateiname:                               # wird hier die x-Achse nicht unten gezeichnet
-            l_ypunkt   =  int(hoehe - (3*Y_Delta/ 50) * bespH)
-        else:  l_ypunkt   =  int(hoehe - (1*Y_Delta/ 50) * bespH) 
+            l_ypunkt   =  int(hoehe - (3*Y_Delta/ 50) * bespH)  # Außentemperatur geht bis -15 Grad
+        else:  l_ypunkt   =  int(hoehe - (1*Y_Delta/ 50) * bespH) # innen und Wasser bis -5 (als Meßbereich)
         pygame.draw.line(grafikwindow, BLACK, (XEIN, l_ypunkt - YEIN), (breite - XOEIN, l_ypunkt-YEIN), 3)
 
     else:
@@ -134,6 +140,7 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
     Beschriftungsrange_Ph_Werte = ["4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0"]
     Beschriftungsrange_DLI = ["0", "2.5", "5.0", "7.5", "10.0", "12.5", "15.0", "17.5", "20.0", "22.5", "25.0"]
     Beschriftungsrange_Volt =["11.0","11.25","11.5","11.75","12.0","12.25","12.5","12.75","13.0", "13.25","13.5"]
+    Beschriftungsrange_Wasser=["0","10","20","30","40","50","60","70","80","90","100","110"]
 
 
 
@@ -159,6 +166,9 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
           
       elif "Volt" in dateiname:
           o_ypunkt   =  int(hoehe - (i*Y_Delta/ 2.5) * bespH)
+          
+      elif "Wasserstand" in dateiname:
+          o_ypunkt   =  int(hoehe - (i*Y_Delta/ 110) * bespH)
 
       else:
           print("Fehler")
@@ -171,14 +181,11 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
 
       
       if "Temp" in dateiname:
-          
-
-          if "aussen" in dateiname:
-              txtGrad=   (Beschriftungsrange_T_aussen[i]) + " C°"
-          else:
+          if "innen" in dateiname or "Wasser" in dateiname:
               txtGrad=   (Beschriftungsrange_T_innen[i]) + " C°"
+          elif "aussen" in dateiname:
+              txtGrad=   (Beschriftungsrange_T_aussen[i]) + " C°"
            
-
            # Beschriftung der Y-Achse mit Zahlenwerten in Grad C°:
           
           myfont = pygame.font.SysFont("freesans,ttf", 14)             # font für die Achsenbeschriftung
@@ -218,6 +225,15 @@ def Zeichne_Werte(dateiname, grafikwindow, hoehe,breite,anzahlwerte, pos, EOF, B
            txtVolt= (Beschriftungsrange_Volt[i]) + " Volt"
            myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
            textsurf= myfont.render(txtVolt.encode("latin-1"),1,(0,0,0))
+           grafikwindow.blit(textsurf,(XEIN -60, o_ypunkt-YEIN-10))
+           
+      elif "Wasserstand" in dateiname:
+            
+           # Beschriftung der Y-Achse mit Zahlenwerten :
+            
+           txtWh= (Beschriftungsrange_Wasser[i]) + " cm"
+           myfont = pygame.font.SysFont("freesans,ttf", 14)    # font für die Achsenbeschriftung
+           textsurf= myfont.render(txtWh.encode("latin-1"),1,(0,0,0))
            grafikwindow.blit(textsurf,(XEIN -60, o_ypunkt-YEIN-10))
             
       else:

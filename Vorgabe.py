@@ -40,32 +40,33 @@ def Fehlermeldung():
     win.mainloop()
     win.destroy()
         
-def Uhrzeit_korrekt(string):
+def Uhrzeit_korrekt(my_string):
     
     zahlen = ["0","1","2","3","4","5","6","7","8","9"]
+    if len(my_string) <5:
+        Fehlermeldung()
+        return False
     
-    
-    if string[0] in zahlen:
-        print("OK")
-        Stunde1 = int(string[0])
+    if my_string[0] in zahlen:
+        Stunde1 = int(my_string[0])
     else:
         Fehlermeldung()
         return False
-    if string[1] in zahlen:
-        Stunde2 = int(string[1])
+    if my_string[1] in zahlen:
+        Stunde2 = int(my_string[1])
     else:
         Fehlermeldung()
         return False
-    if string[2] != ":":
+    if my_string[2] != ":":
         Fehlermeldung()
         return False
-    if string[3] in zahlen:
-        Minute1 = int(string[3])
+    if my_string[3] in zahlen:
+        Minute1 = int(my_string[3])
     else :
         Fehlermeldung()
         return False
-    if string[4] in zahlen:
-        Minute2 = int(string[4])
+    if my_string[4] in zahlen:
+        Minute2 = int(my_string[4])
     else:
         Fehlermeldung()
         return False
@@ -91,11 +92,13 @@ def RefreshWerte(Screen_App, _array):
     _array["PhWertMax"] = Screen_App.xlf.entry_phma.get()
     while True:
         eingabe = Screen_App.xlf.entry_Fuz.get()
-        if Uhrzeit_korrekt(eingabe):
+                                 
+        if Uhrzeit_korrekt(eingabe) :
             _array["Fuetterung"] = eingabe
             break
-        else:
-            Screen_App.xlf.entry_Fuz.delete(0, len(Screen_App.xlf.entry_Fuz.get()))
+##        else:
+##            
+##            Screen_App.xlf.entry_Fuz.delete(0, len(Screen_App.xlf.entry_Fuz.get()))
             
         
        
