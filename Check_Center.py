@@ -84,6 +84,9 @@ from tkinter import messagebox
 
 
 def Ist_es_Tag(t1,t2,ca,wa):
+    ca["Es ist Tag"][0] = 1
+    ca["Es ist Tag"][1] = 1
+    return
 
     if (t2.time() > wa["Sonnenaufgang"]) and (t2.time() < wa["Sonnenuntergang"]):
         ca["Es ist Tag"][0] = 1

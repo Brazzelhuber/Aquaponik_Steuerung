@@ -7,17 +7,30 @@
 
 
 from __future__ import division, print_function  # Maßnahme um pygame mit Python 3.x kompatible zu machen
-import sys, time, csv
+#import Myimport as imp
+import sys
+import time
+import csv
 import tkinter as Tk                             # GUI-Bibliothek
 import datetime
 from smbus import SMBus
+import logging
+import importlib
 
-import ptvsd     # dient dem remote-debugging mit Visual Studio
+##
+
+### Import SPI library (for hardware SPI) and MCP3008 library.
+##import Adafruit_GPIO.SPI as SPI
+##import Adafruit_MCP3008
+
+#import ptvsd     # dient dem remote-debugging mit Visual Studio
 
 # eigene Module
 
 import Kontrollfenster as Kf
-import Temperatursensoren as Ts
+
+
+import Temperatursensoren 
 import Werte_in_Datei_schreiben as Ds
 import Wertelesen as Wl
 import Check_Center as Ch
@@ -33,6 +46,8 @@ import Vorgabe as Vw
 
 # in VS muß bei Debugging in "an Prozeß anhängen" ptsvd gewählt 
 # und in Ziel: tcp://XXX.XXX.XXX:5678 eingegeben werden (XXX.. steht für die Adresse des Raspi)
+
+
 
 #---------------------------------------------------------------------------------------------------------
 #########################################################################################################
@@ -106,7 +121,7 @@ ca          ={ "normaler CHOP-Circle":     [0,0,0],
 ##################################################################################################
 # Sensoren initiieren:
 
-Ts.ds1820einlesen() #Anzahl und Bezeichnungen der vorhandenen Temperatursensoren einlesen
+Temperatursensoren.ds1820einlesen() #Anzahl und Bezeichnungen der vorhandenen Temperatursensoren einlesen
 ##################################################################################################
 #Fenster initiieren : 
 
@@ -142,6 +157,10 @@ screen_app.Datum_Zeit = Tk.Label (text = time.strftime("%d.%m.%Y - %H:%M"))
 screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
 ################################################################################################################
 # Variablen für loop:
+
+
+
+
 t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
 after_id = 0
 
@@ -152,26 +171,43 @@ after_id = 0
 # Programm starten 
 # loop wird durch die (fenster.)after-Methode jede Sekunde wiederholt
 ###################################################################
-
-
+# Debugging:
+import psutil
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename='Speicher.log',
+                    filemode='w')
 
 
 #####################################################
 def loop():
+    t2 = datetime.datetime.now()
     
+    for p in psutil.process_iter(attrs=['pid', 'name']):
+        if 'python' in p.info['name']:
+            
+            logging.debug(p.info['name']+ "\nCPU-Prozent: " + str(p.cpu_percent())+\
+                  "  Memory-Prozent:" +  str("{:3.1f}".format(p.memory_percent()))+\
+                  "  Status :  "+ str(p.status()))
+                    
+                  
     
-    global wa, ca, t1, after_id
 
+    global wa, ca, vw, t1, after_id
+    
+    
+    
      # Datum und Uhrzeit auf Screen aktualisieren:
     
     screen_app.Datum_Zeit.configure (text = time.strftime("%d.%m.%Y - %H:%M"))
 
-    t2 = datetime.datetime.now()
+    
     
     
     tdiff = t2 -t1
 
-    wa = Wl.Werte_lesen(wa)                     # liest Werte aus Sensoren und schreibt sie in Array wa
+    wa = Wl.Werte_lesen(wa)                         # liest Werte aus Sensoren und schreibt sie in Array wa
 
     ca,wa = Ch.SensorCheck(screen_app, ca, wa, vw)  # checkt bei den Sensoren,ob etwas zu tun ist
                                                     # manuelle Befehle vom Bildschirm aus werden von Modul
@@ -212,11 +248,11 @@ def loop():
            Ds.DLI_schreiben()          # schreibt die Lichtwerte als Daylight Integral in csv-database
         t1 = t2                        # setzt Zeitdelta zurück               
       
-    after_id = fenster.after(1000, loop)            # after-Methode wiederholt loop , Zeitwert in Millisekunden
+    after_id = fenster.after(1000, loop)           # after-Methode wiederholt loop , Zeitwert in Millisekunden
  
 ##### Ende loop ###########################################################################
 
-fenster.after(0,loop)                               # 0 heißt, es geht sofort los
+fenster.after(0,loop)                             # 0 heißt, es geht sofort los
 
 fenster.mainloop()
 

@@ -65,11 +65,11 @@ def Werte_schreiben(my_array, control):
     writerw.writerow(row2)
     wf.close()
 
-    vo = open("Volt.csv","a")
-    writerv = csv.writer(vo)
+    vl = open("Volt.csv","a")
+    writerv = csv.writer(vl)
     rowv = [t,my_array["Volt"]]
     writerv.writerow(rowv)
-    vo.close()
+    vl.close()
 
     ws = open("Wasserstand.csv","a")
     writerw = csv.writer(ws)

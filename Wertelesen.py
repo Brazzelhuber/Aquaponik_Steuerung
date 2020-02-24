@@ -4,9 +4,25 @@
 # Version 1.2
 
 ##########################################################
+import sys
 
+##
+##if not ("Temperatursensoren" in sys.modules):
+##    import Temperatursensoren
+##else:
+##    print("Temperatursensoren ist schon in sys.modules")
+import Temperatursensoren
+##import importlib
 
-import Temperatursensoren as Ts
+##spec = importlib.util.find_spec('Temperatursensoren')
+##print('Loader:', spec.loader)
+##
+##m = spec.loader.load_module()
+##print('Module:', m)
+##temp_specs = importlib.util.find_spec("Temperatursensoren")
+##Temperatursensoren = importlib.util.module_from_spec(temp_specs)
+##temp_specs.loader.exec_module(Temperatursensoren)
+
 import Lichtlesen as Ls
 import RPi.GPIO as GPIO
 import time
@@ -20,56 +36,42 @@ import Adafruit_MCP3008
 
 def Wasserstand():
     
+    from Bluetin_Echo import Echo
+
+##    distance = 25
+##
+##    return distance
+##    
      
-    #GPIO Mode (BOARD / BCM)
-    GPIO.setmode(GPIO.BCM)
-     
-    #set GPIO Pins
-    GPIO_TRIGGER = 6
-    GPIO_ECHO = 17
-     
-    #set GPIO direction (IN / OUT)
-    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-    GPIO.setup(GPIO_ECHO, GPIO.IN)
-     
-   
-    # set Trigger to HIGH
-    GPIO.output(GPIO_TRIGGER, True)
+    TRIGGER_PIN = 6
+    ECHO_PIN = 17
+    # Initialise Sensor with pins, speed of sound.
+    speed_of_sound = 315
+    echo = Echo(TRIGGER_PIN, ECHO_PIN, speed_of_sound)
+    # Measure Distance 5 times, return average.
+    samples = 5
+    result = echo.read('cm', samples)
+    result = ("%4.1f" % result)
+    
+##    # Reset GPIO Pins.
+##    echo.stop()
  
-    # set Trigger after 0.01ms to LOW
-    time.sleep(0.00001)
-    GPIO.output(GPIO_TRIGGER, False)
- 
-    StartTime = time.time()
-    StopTime = time.time()
- 
-    # save StartTime
-    while GPIO.input(GPIO_ECHO) == 0:
-        StartTime = time.time()
- 
-    # save time of arrival
-    while GPIO.input(GPIO_ECHO) == 1:
-        StopTime = time.time()
- 
-    # time difference between start and arrival
-    TimeElapsed = StopTime - StartTime
-    # multiply with the sonic speed (34300 cm/s)
-    # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
-    distance = ("%3.1f" %distance)
- 
-    return distance
+    return result
      
      
 
 def Werte_lesen(w_Array):
-
-    Ts.ds1820auslesen()    # liest die Temperaturen aus den Sensoren
-    w_Array["T_Wasser1"] = Ts.tempSensorWert[0]
     
-    w_Array["T_aussen"] = Ts.tempSensorWert[1]         
+    # Temperaturen :
+
+    Temperatursensoren.ds1820auslesen()    
+    w_Array["T_Wasser1"] = Temperatursensoren.tempSensorWert[0]
+    
+    w_Array["T_aussen"] = Temperatursensoren.tempSensorWert[1]
+    
     w_Array["Luxwert_1"] = Ls.readLight()
-    # MCP3008 - Abfrage:
+    
+    # MCP3008 - Abfrage für Erdfeuchte und Batteriespannung:
     CLK  = 11
     MISO = 9
     MOSI = 10

@@ -90,15 +90,16 @@ def RefreshWerte(Screen_App, _array):
     _array["WasserpegelMax"] = Screen_App.xlf.entry_pma.get()
     _array["PhWertMin"] = Screen_App.xlf.entry_phmi.get()
     _array["PhWertMax"] = Screen_App.xlf.entry_phma.get()
-    while True:
-        eingabe = Screen_App.xlf.entry_Fuz.get()
-                                 
-        if Uhrzeit_korrekt(eingabe) :
-            _array["Fuetterung"] = eingabe
-            break
-##        else:
-##            
-##            Screen_App.xlf.entry_Fuz.delete(0, len(Screen_App.xlf.entry_Fuz.get()))
+    _array["Fuetterung"] = Screen_App.xlf.entry_Fuz.get()
+##    while True:
+##        eingabe = Screen_App.xlf.entry_Fuz.get()
+##                                 
+##        if Uhrzeit_korrekt(eingabe) :
+##            _array["Fuetterung"] = eingabe
+##            break
+####        else:
+####            
+####            Screen_App.xlf.entry_Fuz.delete(0, len(Screen_App.xlf.entry_Fuz.get()))
             
         
        

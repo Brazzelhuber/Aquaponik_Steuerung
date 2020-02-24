@@ -204,7 +204,7 @@ class Kontrollpanel(object):
         ############
         
         # Beschriftung:
-        label_T_lo =Tk.Label(self.tlf, text = "Luft oben:          ")
+        label_T_lo =Tk.Label(self.tlf, text = "Luft Frühbeet:")
         label_T_lo.configure(bg = bg_Farbe)
         label_T_lo.grid(row = 1, column = 0, padx = 5, pady = 5, ipady = 15, sticky =Tk.W)
 
@@ -213,12 +213,11 @@ class Kontrollpanel(object):
         self.tlf.label_lo.grid(row=1, column = 1,  ipady = 4, sticky = Tk.W + Tk.E)
         self.tlf.label_space =  Tk.Label(self.tlf, width = 2)
         self.tlf.label_space.grid(row = 1, column = 2)
-##        self.frame1.grid_columnconfigure(3, minsize=40)
 
         # Pushbutton für Daten und Grafik:
 
         btn_T_lo_d = Tk.Button(self.tlf, text="Daten", \
-                              command= lambda: self.Datenfenster(control_array,"T_Luft_oben"))
+                              command= lambda: self.Datenfenster(control_array,"T_Luft_Frühbeet"))
         btn_T_lo_d.grid(row = 1, column =3, padx = 5, pady = 5, ipadx = 17, sticky =Tk.E)
 
         btn_T_lo_g = Tk.Button(self.tlf, text="Grafik", \
@@ -792,9 +791,9 @@ class Kontrollpanel(object):
         elif param == "T_Luft_unten":
             Kindfenster.title("Temperatur unten") # Titel
             dat_nam =('Tempdateninnen_unten.csv')             
-        elif param == "T_Luft_oben":
-            Kindfenster.title("Temperatur oben") # Titel
-            dat_nam =('Tempdateninnen_oben.csv')             
+        elif param == "T_Luft_Frühbeet":
+            Kindfenster.title("Temperatur Frühbeet") # Titel
+            dat_nam =('Tempdateninnen_Fruehbeet.csv')             
         elif param == "T_Wasser1":
             Kindfenster.title("Temperatur Tank 1") # Titel
             dat_nam =('Tempdaten_Wasser1.csv')             
@@ -971,7 +970,7 @@ class Kontrollpanel(object):
         elif param == "T_Luft_unten":
             Dateiname = 'Tempdateninnen_unten.csv'            
         elif param == "T_Luft_oben":
-            Dateiname = 'Tempdateninnen_oben.csv'             
+            Dateiname = 'Tempdateninnen_Fruehbeet.csv'             
         elif param == "T_Wasser1":
             Dateiname = 'Tempdaten_Wasser1.csv'
         elif param == "T_Wasser2":
