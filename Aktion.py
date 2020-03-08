@@ -54,7 +54,7 @@ def change_sensordaten(_screen, wa):
 
             
     
-    _screen.tlf.label_lo.config(text=str(wa["T_Luft_oben"]))
+    _screen.tlf.label_lo.config(text=str(wa["T_Luft_Frühbeet"]))
     _screen.tlf.label_lu.config(text= str(wa["T_Luft_unten"]))
     _screen.tlf.label_w1.config(text= str(wa["T_Wasser1"]))
     _screen.tlf.label_a.config(text= str(wa["T_aussen"]))
@@ -95,12 +95,12 @@ def change_buttons(_screen , ca):
         _screen.wlf.check_btn_CCN_an.configure(text = 'normalen CHOP\nCircle ausschalten')
 
     
-    if ca['warmer CHOP-Circle'][1] == 0:
-        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist aus', bg = 'PaleVioletRed2')
-        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft anschalten')
-    if ca['warmer CHOP-Circle'][1] == 1:
-        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist an', bg = 'lightgreen')
-        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft ausschalten')
+##    if ca['warmer CHOP-Circle'][1] == 0:
+##        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist aus', bg = 'PaleVioletRed2')
+##        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft anschalten')
+##    if ca['warmer CHOP-Circle'][1] == 1:
+##        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist an', bg = 'lightgreen')
+##        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft ausschalten')
  
     
     if ca["Hauptpumpe"][1] == 0:

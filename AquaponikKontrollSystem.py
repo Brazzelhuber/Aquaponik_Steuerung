@@ -73,7 +73,7 @@ vw         =  {"TempWasserMin" : 3,
 
 
 
-wa          = {"T_Luft_oben" : 0,      
+wa          = {"T_Luft_Frühbeet" : 0,      
                "T_Luft_unten" : 0,     
                "T_Wasser1": 0,         
                "T_Wasser2": 0,          
@@ -172,25 +172,25 @@ after_id = 0
 # loop wird durch die (fenster.)after-Methode jede Sekunde wiederholt
 ###################################################################
 # Debugging:
-import psutil
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)-8s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='Speicher.log',
-                    filemode='w')
-
+##import psutil
+##logging.basicConfig(level=logging.DEBUG,
+##                    format='%(asctime)s %(levelname)-8s %(message)s',
+##                    datefmt='%a, %d %b %Y %H:%M:%S',
+##                    filename='Speicher.log',
+##                    filemode='w')
+##
 
 #####################################################
 def loop():
     t2 = datetime.datetime.now()
     
-    for p in psutil.process_iter(attrs=['pid', 'name']):
-        if 'python' in p.info['name']:
-            
-            logging.debug(p.info['name']+ "\nCPU-Prozent: " + str(p.cpu_percent())+\
-                  "  Memory-Prozent:" +  str("{:3.1f}".format(p.memory_percent()))+\
-                  "  Status :  "+ str(p.status()))
-                    
+##    for p in psutil.process_iter(attrs=['pid', 'name']):
+##        if 'python' in p.info['name']:
+##            
+##            logging.debug(p.info['name']+ "\nCPU-Prozent: " + str(p.cpu_percent())+\
+##                  "  Memory-Prozent:" +  str("{:3.1f}".format(p.memory_percent()))+\
+##                  "  Status :  "+ str(p.status()))
+##                    
                   
     
 

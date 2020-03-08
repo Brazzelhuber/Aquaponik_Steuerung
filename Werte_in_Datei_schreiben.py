@@ -33,7 +33,7 @@ def Werte_schreiben(my_array, control):
             if value[1] == 1:
                 Wert = "ein"
             elif value[1] == 0: Wert = "aus"
-            Wertzusatz = " -- To = "+ str(my_array["T_Luft_oben"])+ ", Tu = " + str(my_array["T_Luft_unten"]) \
+            Wertzusatz = " -- TFrüh = "+ str(my_array["T_Luft_Frühbeet"])+ ", Tu = " + str(my_array["T_Luft_unten"]) \
                          + " ,Tw1 = " + str(my_array["T_Wasser1"]) + " ,Tw2 = "+ str(my_array["T_Wasser2"]) \
                          + " ,Ta = " + str(my_array["T_aussen"])
             Wert = Wert + Wertzusatz

@@ -80,7 +80,7 @@ class Kontrollpanel(object):
         self.qlf.grid_propagate(0)
 
         
-        self.plf = Tk.LabelFrame(text = "Ventileinzelsteuerung",\
+        self.plf = Tk.LabelFrame(text = "Einzelventile/Durchflußsensoren",\
                                        bd = 5, height =350, width =340, relief = "groove" )
        
         self.plf.grid_propagate(0)
@@ -125,8 +125,8 @@ class Kontrollpanel(object):
         self.Abk1.grid(row = 3, column = 2, sticky = Tk.W)
         self.Abk2 = Tk.Label ( text = "ST = Sumptank | VR = Verrieselung | HB = Hochbeet" )
         self.Abk2.grid(row = 4, column = 2, sticky = Tk.W)
-        self.Abk3 = Tk.Label ( text = "LU = Lufteinlass unten | LO = Lufteinlass oben" )
-        self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
+##        self.Abk3 = Tk.Label ( text = "LU = Lufteinlass unten | LO = Lufteinlass oben" )
+##        self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
 # Grenzwerte des Systems:
@@ -498,55 +498,55 @@ class Kontrollpanel(object):
 
         #CHOP-Circle mit Wärmetauscher (zieht die warme Luft unterm Dach an)
 
-        self.wlf.check_btn_CCW_an = Tk.Button(self.wlf, text = "CHOP-Circle mit\nWarmluft anschalten",  \
-                                    relief = "groove", width = 16, height = 2 )
-        self.wlf.check_btn_CCW_an.grid(row = 1, column =0, padx = 10, pady = 3 , \
-                             ipady = 3,sticky =Tk.W+ Tk.E)
-        self.wlf.check_btn_CCW_an.bind("<Button-1>", lambda event,\
-                             var=control_array: Ch.ButtonCheck(self.wlf.check_btn_CCW_an,control_array, None))
-
-        self.wlf.Anzeige_CCW = Tk.Label(self.wlf, text = "CHOP-Circle mit\nWarmluft ist aus",  \
-                            relief = "groove", width = 16, height = 2 )
-        self.wlf.Anzeige_CCW.grid(row = 1, column =1, padx = 10, pady = 3 ,\
-                             ipady = 3,sticky =Tk.W+ Tk.E)
+##        self.wlf.check_btn_CCW_an = Tk.Button(self.wlf, text = "CHOP-Circle mit\nWarmluft anschalten",  \
+##                                    relief = "groove", width = 16, height = 2 )
+##        self.wlf.check_btn_CCW_an.grid(row = 1, column =0, padx = 10, pady = 3 , \
+##                             ipady = 3,sticky =Tk.W+ Tk.E)
+##        self.wlf.check_btn_CCW_an.bind("<Button-1>", lambda event,\
+##                             var=control_array: Ch.ButtonCheck(self.wlf.check_btn_CCW_an,control_array, None))
+##
+##        self.wlf.Anzeige_CCW = Tk.Label(self.wlf, text = "CHOP-Circle mit\nWarmluft ist aus",  \
+##                            relief = "groove", width = 16, height = 2 )
+##        self.wlf.Anzeige_CCW.grid(row = 1, column =1, padx = 10, pady = 3 ,\
+##                             ipady = 3,sticky =Tk.W+ Tk.E)
         ######################################################
         # Hauptpumpe
         
         self.wlf.check_btn_P_an = Tk.Button(self.wlf, text = "Pumpe anschalten", \
                             relief = "groove", width = 16, height = 1 , anchor = Tk.W)
-        self.wlf.check_btn_P_an.grid(row = 2, column =0, padx = 12, pady = 3 ,
+        self.wlf.check_btn_P_an.grid(row = 1, column =0, padx = 12, pady = 3 ,
                             ipady =3,  sticky =Tk.W+ Tk.E)
         self.wlf.check_btn_P_an.bind("<Button-1>", lambda event,
                             var=control_array: Ch.ButtonCheck(self.wlf.check_btn_P_an,control_array, None))
         self.wlf.Anzeige_Pumpe = Tk.Label(self.wlf, text = "Pumpe ist aus",  \
                             relief = "groove", width = 16, height = 1 )
-        self.wlf.Anzeige_Pumpe.grid(row = 2, column =1, padx = 10, pady = 3 ,
+        self.wlf.Anzeige_Pumpe.grid(row = 1, column =1, padx = 10, pady = 3 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
         # Wasser auffüllen:
 
         self.wlf.check_btn_WA_an = Tk.Button(self.wlf, text = "Wasser auffüllen", \
                             relief = "groove", width = 16, height = 1 )
-        self.wlf.check_btn_WA_an.grid(row = 3, column =0, padx = 10, pady = 3 ,
+        self.wlf.check_btn_WA_an.grid(row = 2, column =0, padx = 10, pady = 3 ,
                              ipady = 3, sticky =Tk.W+Tk.E)
         self.wlf.check_btn_WA_an.bind("<Button-1>", lambda event,
                              var=control_array: Ch.ButtonCheck(self.wlf.check_btn_WA_an,control_array, None))
         
         self.wlf.Anzeige_WA = Tk.Label(self.wlf, text = "Brunnenventil ist zu",  \
                             relief = "groove", width = 16, height = 1 )
-        self.wlf.Anzeige_WA.grid(row = 3, column =1, padx = 10, pady = 3 ,
+        self.wlf.Anzeige_WA.grid(row = 2, column =1, padx = 10, pady = 3 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
          # Wasser ablassen:
 
         self.wlf.check_btn_WB_an = Tk.Button(self.wlf, text = "Wasser ablassen", \
                             relief = "groove", width = 16, height = 1 )
-        self.wlf.check_btn_WB_an.grid(row = 4, column =0, padx = 10, pady = 3 ,
+        self.wlf.check_btn_WB_an.grid(row = 3, column =0, padx = 10, pady = 3 ,
                              ipady = 3, sticky =Tk.W+Tk.E)
         self.wlf.check_btn_WB_an.bind("<Button-1>", lambda event,
                              var=control_array: Ch.ButtonCheck(self.wlf.check_btn_WB_an,control_array, None))
         
         self.wlf.Anzeige_WB = Tk.Label(self.wlf, text = "Verrieselung ist zu",  \
                             relief = "groove", width = 16, height = 1 )
-        self.wlf.Anzeige_WB.grid(row = 4, column =1, padx = 10, pady = 3 ,
+        self.wlf.Anzeige_WB.grid(row = 3, column =1, padx = 10, pady = 3 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
 
        

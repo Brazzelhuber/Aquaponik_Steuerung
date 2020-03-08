@@ -6,22 +6,8 @@
 ##########################################################
 import sys
 
-##
-##if not ("Temperatursensoren" in sys.modules):
-##    import Temperatursensoren
-##else:
-##    print("Temperatursensoren ist schon in sys.modules")
-import Temperatursensoren
-##import importlib
 
-##spec = importlib.util.find_spec('Temperatursensoren')
-##print('Loader:', spec.loader)
-##
-##m = spec.loader.load_module()
-##print('Module:', m)
-##temp_specs = importlib.util.find_spec("Temperatursensoren")
-##Temperatursensoren = importlib.util.module_from_spec(temp_specs)
-##temp_specs.loader.exec_module(Temperatursensoren)
+import Temperatursensoren
 
 import Lichtlesen as Ls
 import RPi.GPIO as GPIO
@@ -37,11 +23,6 @@ import Adafruit_MCP3008
 def Wasserstand():
     
     from Bluetin_Echo import Echo
-
-##    distance = 25
-##
-##    return distance
-##    
      
     TRIGGER_PIN = 6
     ECHO_PIN = 17
@@ -53,8 +34,7 @@ def Wasserstand():
     result = echo.read('cm', samples)
     result = ("%4.1f" % result)
     
-##    # Reset GPIO Pins.
-##    echo.stop()
+
  
     return result
      
@@ -70,6 +50,7 @@ def Werte_lesen(w_Array):
     w_Array["T_aussen"] = Temperatursensoren.tempSensorWert[1]
     
     w_Array["Luxwert_1"] = Ls.readLight()
+    #w_Array["Luxwert_1"] = 0
     
     # MCP3008 - Abfrage für Erdfeuchte und Batteriespannung:
     CLK  = 11

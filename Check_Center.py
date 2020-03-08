@@ -110,7 +110,6 @@ devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende g
 # 0 ist geschlossen, 1 ist offen, bzw. bei Hauptpumpe an und aus
 
 Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
-            "warmer CHOP-Circle":                [0,1,0,0,1,0,1],   # CHOP (ST -> FT -> GB -> ST) wobei LO to HP on
             "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
             "Kühlung mit Verrieselung":          [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
             "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
@@ -121,7 +120,7 @@ Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -
 
 def Config_Zustaende(Zustand, _array):
     
-    for i  in range(0,7):               
+    for i  in range(0,6):               
         
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
 
@@ -144,7 +143,7 @@ def Alles_aus(myscreen, co):
     
     ButtonCheck(myscreen.mlf.check_btn_KUBEW_an,co, "Kühlung mit\nBewässerung ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.mlf.check_btn_KURIE_an,co, "Kühlung mit\nVerrieselung ausschalten")  # simulierte Buttonpress
-    ButtonCheck(myscreen.wlf.check_btn_CCW_an,co, "CHOP-Circle mit\nWarmluft ausschalten")  # simulierte Buttonpress
+##    ButtonCheck(myscreen.wlf.check_btn_CCW_an,co, "CHOP-Circle mit\nWarmluft ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WA_an,co, "Brunnenventil schließen")  # simulierte Buttonpress
