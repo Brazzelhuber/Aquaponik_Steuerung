@@ -184,13 +184,7 @@ after_id = 0
 def loop():
     t2 = datetime.datetime.now()
     
-##    for p in psutil.process_iter(attrs=['pid', 'name']):
-##        if 'python' in p.info['name']:
-##            
-##            logging.debug(p.info['name']+ "\nCPU-Prozent: " + str(p.cpu_percent())+\
-##                  "  Memory-Prozent:" +  str("{:3.1f}".format(p.memory_percent()))+\
-##                  "  Status :  "+ str(p.status()))
-##                    
+           
                   
     
 
@@ -223,7 +217,7 @@ def loop():
     
 
 
-    Ak.Fuetterung(t2, ca,vw, screen_app)       # prüft ob Fütterungszeit ist
+    
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
                                                # daraus folgt, dass der Sollwert verändert wurde
@@ -236,6 +230,7 @@ def loop():
         
         Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
     
+    Ak.Fuetterung(t2, ca,vw, screen_app)       # prüft ob Fütterungszeit ist
     
     if tdiff > datetime.timedelta(seconds = 360):    # schreibt Sensordaten nur einmal pro 6 Minute in Datei
                                                      # = 10 pro Stunde, 240 pro Tag

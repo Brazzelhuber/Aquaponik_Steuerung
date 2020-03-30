@@ -221,20 +221,24 @@ def change_buttons(_screen , ca):
     
     
 def Fuetterung(jetzt, my_arr, vorg, _screen):
+
+    if my_arr["Fütterung"][2] == 0:
     
-    fh= vorg["Fuetterung"][:2]
-    fm = vorg["Fuetterung"][3:len(vorg["Fuetterung"])]
-    fue_str = vorg["Fuetterung"]
-    fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
-    fue_stopp_string  = fh + ":" + str(int(fm)+int(vorg["Fuett.dauer"]))
-    fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
-    
-    if jetzt.time() > fue_zeit and jetzt.time() <= fue_stopp:
+        fh= vorg["Fuetterung"][:2]
+        fm = vorg["Fuetterung"][3:len(vorg["Fuetterung"])]
+        fue_str = vorg["Fuetterung"]
+        fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
+        fue_stopp_string  = fh + ":" + str(int(fm)+int(vorg["Fuett.dauer"]))
+        fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
         
-       Ch.Alles_aus(_screen, my_arr)  
-       my_arr["Fütterung"][1] = 1
-    else:
-       my_arr["Fütterung"][1] = 0
+        if jetzt.time() > fue_zeit and jetzt.time() <= fue_stopp:
+            
+           Ch.Alles_aus(_screen, my_arr)  
+           my_arr["Fütterung"][1] = 1
+        else:
+           my_arr["Fütterung"][1] = 0
+
+
 
 def Vorlauf():
     from tkinter import messagebox

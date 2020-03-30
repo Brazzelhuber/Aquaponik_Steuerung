@@ -84,9 +84,9 @@ from tkinter import messagebox
 
 
 def Ist_es_Tag(t1,t2,ca,wa):
-    ca["Es ist Tag"][0] = 1
-    ca["Es ist Tag"][1] = 1
-    return
+##    ca["Es ist Tag"][0] = 1
+##    ca["Es ist Tag"][1] = 1
+##    return
 
     if (t2.time() > wa["Sonnenaufgang"]) and (t2.time() < wa["Sonnenuntergang"]):
         ca["Es ist Tag"][0] = 1
@@ -105,22 +105,25 @@ devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende g
            "ST to VR",
            "Hauptpumpe",
            "LU to HP",
-           "LO to HP"]
+           "LO to HP",
+           "Fütterung"]
 # in Configur_Zustaende wird durch devices und Zustände durchgegangen und die Sollwerte verändert
 # 0 ist geschlossen, 1 ist offen, bzw. bei Hauptpumpe an und aus
 
-Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
-            "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0],   # WQ -> FT -> GB -> ST -> HB
-            "Kühlung mit Verrieselung":          [1,0,0,1,1,1,0],   # WQ -> FT -> GB -> ST -> VR
-            "Wasser ablassen":                   [0,0,0,1,1,1,0],   # pumpt Wasser aus dem ST nach draußen
-            "Wasser auffüllen":                  [1,0,0,0,0,0,0],   # läßt frisches Wasser in das System
-            "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf
+Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
+            "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0,0],   # WQ -> FT -> GB -> ST -> HB
+            "Kühlung mit Verrieselung":          [1,0,0,1,1,1,0,0],   # WQ -> FT -> GB -> ST -> VR
+            "Wasser ablassen":                   [0,0,0,1,1,1,0,0],   # pumpt Wasser aus dem ST nach draußen
+            "Wasser auffüllen":                  [1,0,0,0,0,0,0,0],   # läßt frisches Wasser in das System
+            "Fütterung":                         [0,0,0,0,0,0,0,1],   # bei Fütterung wird alles andere abgestellt
+            "Nichts":                            [0,0,0,0,0,0,0,0]}   # Nichts auf oder an
 
 # Zunächst eine Routine, die weitere Zustandsänderungen auslöst, wenn ein komplexer Vorgang auslöst wurde
 
 def Config_Zustaende(Zustand, _array):
+    #print("bin in Config_Zustaende, Zustand = " + str(Zustand) +" Fütterung[1] = "+ str(_array["Fütterung"][1]))
     
-    for i  in range(0,6):               
+    for i  in range(0,8):               
         
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
 
@@ -130,10 +133,12 @@ Sensorcheck widerspricht)
 """
 
 def Manualoverride(co):
+    print("bin in Manualoverride , co[Fütterung][2]= " + str(co["Fütterung"][2]))
+    
     
     if co["normaler CHOP-Circle"][2] == 1 or co["warmer CHOP-Circle"][2] == 1 or\
         co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verrieselung"][2]== 1 or\
-        co["Wasser ablassen"][2] == 1 or co["Wasser auffüllen"][2]== 1:
+        co["Wasser ablassen"][2] == 1 or co["Wasser auffüllen"][2]== 1 or co["Fütterung"][2] == 1:
         return True
 
     return False
@@ -158,12 +163,12 @@ def SensorCheck(screen, co, we, vw):    # screen = screen_app, co = Controllarra
 #######################################################################
     # checkt, ob Erde in Hochbeeten zu feucht ist zum Bewässern:
     
-    feuchtwert = (float(we["Erdfeuchte1"]) + \
-       float(we["Erdfeuchte2"]) + \
-       float(we["Erdfeuchte3"]) + \
-       float(we["Erdfeuchte4"]) + \
-       float(we["Erdfeuchte5"]) + \
-       float(we["Erdfeuchte6"])) /6
+    feuchtwert = ( float(we["Erdfeuchte1"]) + \
+                   float(we["Erdfeuchte2"]) + \
+                   float(we["Erdfeuchte3"]) + \
+                   float(we["Erdfeuchte4"]) + \
+                   float(we["Erdfeuchte5"]) + \
+                   float(we["Erdfeuchte6"])) /6
     
     if feuchtwert < 350 :
         zuvielErdfeuchte = True
@@ -304,7 +309,7 @@ def do_it(liste,ar, manov,i):
             
       
         ar[listenkey][1] = liste[i][2]
-        if i < 14 :                           # 1 - 14 sind komplexe Zustände, daher müssen in der Folge
+        if i < 16 :                           # 1 - 16 sind komplexe Zustände, daher müssen in der Folge
             if liste[i][2] == 1 :                   # diverse andere Veränderungen (an Ventilen) vorgnommen werden
                 Config_Zustaende(listenkey, ar)
             else: Config_Zustaende("Nichts",ar)
@@ -341,6 +346,8 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
               ["Pumpe ausschalten",                     "Hauptpumpe",               0],
               ["Wasser auffüllen",                      "Wasser auffüllen",         1],
               ["Brunnenventil schließen",               "Wasser auffüllen",         0],
+              ["Fütterung\nanschalten",                 "Fütterung",                1],
+              ["Fütterung\nausschalten",                "Fütterung",                0],
               ["WQ to VR öffnen",                       "WQ to VR",                 1],
               ["WQ to VR schließen",                    "WQ to VR",                 0],
               ["WQ to FT öffnen",                       "WQ to FT",                 1],
@@ -355,8 +362,6 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
               ["LO to HP schließen",                    "LO to HP",                 0],
               ["LU to HP öffnen",                       "LU to HP",                 1],
               ["LU to HP schließen",                    "LU to HP",                 0],
-              ["Fütterung\nanschalten",                 "Fütterung",                1],
-              ["Fütterung\nausschalten",                "Fütterung",                0],
               ["Heizung\nanschalten",                   "Heizung",                  1],
               ["Heizung\nausschalten",                  "Heizung",                  0],
               ["Bildschirmwerte an",                    "Screen_schreiben",         1],
@@ -365,8 +370,9 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
                                       
        
     
-                        # manov = True = manual override (d.h. vom Bildschirm aus wird eine Aktion ausgelöst,
-                                                # die evtl. den definierten Sensorbedingungen widersprechen
+                        # manov = True bedeutet manual override, d.h. vom Bildschirm aus wird eine Aktion ausgelöst,
+                                                # die evtl. den definierten Sensorbedingungen oder Zeitschaltung
+                                                # widersprechen
                                                 
     if _button == None:                         # butt.configure("text")[-1] gibt Buttontext
         BUTTON = butt.configure("text")[-1]     # aus Kontrolpanel.py zurück. Dort ist _button immer None
