@@ -60,7 +60,7 @@ from tkinter import messagebox
 
 ## Kontrollarray
 ##ca          ={ "normaler CHOP-Circle":     [0,0,0],  # normaler Betrieb (FT -> GB -> ST ->FT) wobei Luft von unten
-##               "warmer CHOP-Circle":       [0,0,0],  # warmer Betrieb (FT -> GB -> ST ->FT) wobei Luft von unterm Dach
+##               "Bewässerung":              [0,0,0],       # Bewässerung der Blumenwiese
 ##               "Kühlung mit Bewässerung":  [0,0,0],  
 ##               "Kühlung mit Verrieselung":  [0,0,0],
 ##               "Brunnenwasser als Heizung":[0,0,0],  # Brunnenwasser hat 15 Grad, kann auch zum "Heizen" eingesetzt werden
@@ -104,26 +104,26 @@ devices = ["WQ to FT",      # die devices werden durch die Liste bei Zustaende g
            "ST to HB",      #
            "ST to VR",
            "Hauptpumpe",
-           "LU to HP",
-           "LO to HP",
+           "WQ to WI",
            "Fütterung"]
 # in Configur_Zustaende wird durch devices und Zustände durchgegangen und die Sollwerte verändert
 # 0 ist geschlossen, 1 ist offen, bzw. bei Hauptpumpe an und aus
 
-Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,1,0,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
-            "Kühlung mit Bewässerung":           [1,0,1,0,1,1,0,0],   # WQ -> FT -> GB -> ST -> HB
-            "Kühlung mit Verrieselung":          [1,0,0,1,1,1,0,0],   # WQ -> FT -> GB -> ST -> VR
-            "Wasser ablassen":                   [0,0,0,1,1,1,0,0],   # pumpt Wasser aus dem ST nach draußen
-            "Wasser auffüllen":                  [1,0,0,0,0,0,0,0],   # läßt frisches Wasser in das System
-            "Fütterung":                         [0,0,0,0,0,0,0,1],   # bei Fütterung wird alles andere abgestellt
-            "Nichts":                            [0,0,0,0,0,0,0,0]}   # Nichts auf oder an
+Zustaende ={"normaler CHOP-Circle":              [0,1,0,0,1,0,0],   # CHOP (ST -> FT -> GB -> ST) wobei LU to HP on
+            "Kühlung mit Bewässerung":           [1,0,1,0,1,0,0],   # WQ -> FT -> GB -> ST -> HB
+            "Kühlung mit Verrieselung":          [1,0,0,1,1,0,0],   # WQ -> FT -> GB -> ST -> VR
+            "Wasser ablassen":                   [0,0,0,1,1,0,0],   # pumpt Wasser aus dem ST nach draußen
+            "Wasser auffüllen":                  [1,0,0,0,0,0,0],   # läßt frisches Wasser in das System
+            "Bewässerung":                       [0,0,0,0,0,1,0],
+            "Fütterung":                         [0,0,0,0,0,0,0],   # bei Fütterung wird alles andere abgestellt
+            "Nichts":                            [0,0,0,0,0,0,0]}   # Nichts auf oder an
 
 # Zunächst eine Routine, die weitere Zustandsänderungen auslöst, wenn ein komplexer Vorgang auslöst wurde
 
 def Config_Zustaende(Zustand, _array):
     #print("bin in Config_Zustaende, Zustand = " + str(Zustand) +" Fütterung[1] = "+ str(_array["Fütterung"][1]))
     
-    for i  in range(0,8):               
+    for i  in range(0,7):               
         
         if devices[i] in _array: _array[devices[i]][1] = Zustaende[Zustand][i]
 
@@ -133,10 +133,10 @@ Sensorcheck widerspricht)
 """
 
 def Manualoverride(co):
-    print("bin in Manualoverride , co[Fütterung][2]= " + str(co["Fütterung"][2]))
+    #print("bin in Manualoverride , co[Fütterung][2]= " + str(co["Fütterung"][2]))
     
     
-    if co["normaler CHOP-Circle"][2] == 1 or co["warmer CHOP-Circle"][2] == 1 or\
+    if co["normaler CHOP-Circle"][2] == 1 or co["Bewässerung"][2] == 1 or\
         co["Kühlung mit Bewässerung"][2] == 1 or co["Kühlung mit Verrieselung"][2]== 1 or\
         co["Wasser ablassen"][2] == 1 or co["Wasser auffüllen"][2]== 1 or co["Fütterung"][2] == 1:
         return True
@@ -152,6 +152,7 @@ def Alles_aus(myscreen, co):
     ButtonCheck(myscreen.wlf.check_btn_CCN_an,co, "normalen CHOP\nCircle ausschalten")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WB_an,co, "Wasserablass Stop")  # simulierte Buttonpress
     ButtonCheck(myscreen.wlf.check_btn_WA_an,co, "Brunnenventil schließen")  # simulierte Buttonpress
+    ButtonCheck(myscreen.wlf.check_btn_BLW_an,co, "Bewässerung\nBlumenwiese ausschalten")  # simulierte Buttonpress
     
 ########################################################################################################       
 """
@@ -282,7 +283,8 @@ def ManualCheck(ar, manov, text, i):
     
     for key in Zustaende:
         
-        if key != text and key != "Nichts" and  text != "Heizung" and ar[key][0] == 1 and manov == True and i <= 30:
+        if key != text and key != "Nichts" and  text != "Heizung" and ar[key][0] == 1 \
+           and manov == True and i <= 30:
             messagebox.showwarning("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
                                 text + "\n\n" + "gestartet werden kann")
             
@@ -334,8 +336,8 @@ def ButtonCheck(butt,ar, _button):              # butt ist der Button, der gedr�
 #                    ##########                             ######               ######
     b_liste =[["normalen CHOP\nCircle anschalten",      "normaler CHOP-Circle",     1],
               ["normalen CHOP\nCircle ausschalten",     "normaler CHOP-Circle",     0],
-              ["CHOP-Circle mit\nWarmluft anschalten",  "warmer CHOP-Circle",       1],
-              ["CHOP-Circle mit\nWarmluft ausschalten", "warmer CHOP-Circle",       0],
+              ["Bewässerung\nBlumenwiese anschalten",   "Bewässerung",              1],
+              ["Bewässerung\nBlumenwiese ausschalten",  "Bewässerung",              0],
               ["Kühlung mit\nBewässerung anschalten",   "Kühlung mit Bewässerung",  1],
               ["Kühlung mit\nBewässerung ausschalten",  "Kühlung mit Bewässerung",  0],
               ["Kühlung mit\nVerrieselung anschalten",   "Kühlung mit Verrieselung",  1],

@@ -41,7 +41,7 @@ class Kontrollpanel(object):
     """"""
  
     #----------------------------------------------------------------------
-    def __init__(self, parent,  bg_Farbe, control_array, v_array):
+    def __init__(self, parent,  bg_Farbe, control_array, v_array, z_array):
 
         
         """Constructor"""
@@ -49,6 +49,8 @@ class Kontrollpanel(object):
         self.parent = parent
         parent.title("Aquaponik Kontrollpanel")
         parent.geometry('%dx%d+%d+%d' % (K_B, K_H,0,0))
+        
+        
         
         self.tlf= Tk.LabelFrame(text = "Temperatur", \
                                         bd = 5, height =350, width =480, relief = "groove")
@@ -125,8 +127,8 @@ class Kontrollpanel(object):
         self.Abk1.grid(row = 3, column = 2, sticky = Tk.W)
         self.Abk2 = Tk.Label ( text = "ST = Sumptank | VR = Verrieselung | HB = Hochbeet" )
         self.Abk2.grid(row = 4, column = 2, sticky = Tk.W)
-##        self.Abk3 = Tk.Label ( text = "LU = Lufteinlass unten | LO = Lufteinlass oben" )
-##        self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
+        self.Abk3 = Tk.Label ( text = "WI = Wiese" )
+        self.Abk3.grid(row = 5, column = 2, sticky = Tk.W)
 
        ###########################################################################################
 # Grenzwerte des Systems:
@@ -180,20 +182,13 @@ class Kontrollpanel(object):
         self.xlf.entry_phma.bind("<Return>",
                                 lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
 
-        grenzlabel = Tk.Label(self.xlf, text = "Fütterungszeit:")
-        grenzlabel.grid(row = 7, column = 0, sticky = Tk.W)
-        self.xlf.entry_Fuz = Tk.Entry(self.xlf, width = 4, bg = "white", relief = "sunk")
-        self.xlf.entry_Fuz.grid(row=7, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
-        self.xlf.entry_Fuz.bind("<Return>",
-                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
 
-        grenzlabel = Tk.Label(self.xlf, text = "Fütterungsdauer:")
-        grenzlabel.grid(row = 8, column = 0, sticky = Tk.W)
-        self.xlf.entry_Fud = Tk.Entry(self.xlf, width = 4,  bg = "white", relief = "sunk")
-        self.xlf.entry_Fud.grid(row=8, column = 1,  ipady = 1, pady =1,sticky = Tk.W + Tk.E)
-        self.xlf.entry_Fud.bind("<Return>",
-                                lambda event, var=v_array: Vw.RefreshWerte(self,v_array))
+
+        Zeitschaltung = Tk.Button(self.xlf, text="Zeitschalt\nuhr", \
+                              command= lambda: self.Zeitfenster(z_array ))
+        Zeitschaltung.grid(row = 7, column =0, padx = 5, pady = 5, ipadx = 7, sticky =Tk.E)
         
+
 
 ############################################################################################
        # Temperatur Box
@@ -451,17 +446,7 @@ class Kontrollpanel(object):
         self.mlf.Anzeige_Fue.grid(row = 3, column =1, padx = 0, pady = 3 ,
                              ipady = 6,sticky =Tk.W+ Tk.E)
 
-##        self.mlf.check_btn_Fue2_an = Tk.Button(self.mlf, text = "Fütterung\nanschalten", \
-##                            relief = "groove", width = 18, height = 2 )
-##        self.mlf.check_btn_Fue2_an.grid(row = 4, column =0, padx = 10, pady = 5 ,
-##                             ipady = 2, sticky =Tk.W+Tk.E)
-##        self.mlf.check_btn_Fue2_an.bind("<Button-1>", lambda event,
-##                             var=control_array: Ch.ButtonCheck(self.mlf.check_btn_Fue_an,control_array, None))
-##        
-##        self.mlf.Anzeige_Fue2 = Tk.Label(self.mlf, text = "Fütterung\nist aus",  \
-##                            relief = "groove", width = 16, height = 2 )
-##        self.mlf.Anzeige_Fue2.grid(row = 4, column =1, padx = 0, pady = 3 ,
-##                             ipady = 6,sticky =Tk.W+ Tk.E)
+
 
         self.mlf.check_btn_Log_auf = Tk.Button(self.mlf, text = "Logdatei\nöffnen", \
                             command = lambda: self.Datenfenster(control_array,"Logdatei") ,\
@@ -496,20 +481,6 @@ class Kontrollpanel(object):
                              ipady = 3,sticky =Tk.W+ Tk.E)
 
 
-        #CHOP-Circle mit Wärmetauscher (zieht die warme Luft unterm Dach an)
-
-##        self.wlf.check_btn_CCW_an = Tk.Button(self.wlf, text = "CHOP-Circle mit\nWarmluft anschalten",  \
-##                                    relief = "groove", width = 16, height = 2 )
-##        self.wlf.check_btn_CCW_an.grid(row = 1, column =0, padx = 10, pady = 3 , \
-##                             ipady = 3,sticky =Tk.W+ Tk.E)
-##        self.wlf.check_btn_CCW_an.bind("<Button-1>", lambda event,\
-##                             var=control_array: Ch.ButtonCheck(self.wlf.check_btn_CCW_an,control_array, None))
-##
-##        self.wlf.Anzeige_CCW = Tk.Label(self.wlf, text = "CHOP-Circle mit\nWarmluft ist aus",  \
-##                            relief = "groove", width = 16, height = 2 )
-##        self.wlf.Anzeige_CCW.grid(row = 1, column =1, padx = 10, pady = 3 ,\
-##                             ipady = 3,sticky =Tk.W+ Tk.E)
-        ######################################################
         # Hauptpumpe
         
         self.wlf.check_btn_P_an = Tk.Button(self.wlf, text = "Pumpe anschalten", \
@@ -548,6 +519,21 @@ class Kontrollpanel(object):
                             relief = "groove", width = 16, height = 1 )
         self.wlf.Anzeige_WB.grid(row = 3, column =1, padx = 10, pady = 3 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
+
+        
+        #Bewässerung Blumenwiese
+        self.wlf.check_btn_BLW_an = Tk.Button(self.wlf, text = "Bewässerung\nBlumenwiese anschalten",  \
+                                    relief = "groove", width = 16, height = 2 )
+        self.wlf.check_btn_BLW_an.grid(row = 4, column =0, padx = 10, pady = 3 , \
+                             ipady = 3,sticky =Tk.W+ Tk.E)
+        self.wlf.check_btn_BLW_an.bind("<Button-1>", lambda event,\
+                             var=control_array: Ch.ButtonCheck(self.wlf.check_btn_BLW_an,control_array, None))
+
+        self.wlf.Anzeige_BLW = Tk.Label(self.wlf, text = "Bewässerung\nist aus",  \
+                            relief = "groove", width = 16, height = 2 )
+        self.wlf.Anzeige_BLW.grid(row = 4, column =1, padx = 10, pady = 3 ,\
+                             ipady = 3,sticky =Tk.W+ Tk.E)
+        ######################################################
 
        
 
@@ -674,29 +660,19 @@ class Kontrollpanel(object):
 
 
         ##        #####################################################
-        # Luftventile
+        # Bewässerung Blumenwiese
      
-        self.plf.check_btn_LUHP_an = Tk.Button(self.plf, text = "LU to HP schließen", \
+        self.plf.check_btn_WQWI_an = Tk.Button(self.plf, text = "WQ to WI öffnen", \
                                 relief = "groove", width = 16, height = 1 , anchor = Tk.W)
-        self.plf.check_btn_LUHP_an.grid(row = 5, column =0, padx = 12, pady = 5 ,
+        self.plf.check_btn_WQWI_an.grid(row = 5, column =0, padx = 12, pady = 5 ,
                             ipady =3, sticky =Tk.W+ Tk.E)
-        self.plf.check_btn_LUHP_an.bind("<Button-1>", lambda event,
-                            var=control_array: Ch.ButtonCheck(self.plf.check_btn_LUHP_an,control_array, None))
-        self.plf.Anzeige_LUHP = Tk.Label(self.plf, text = "LU to HP ist auf",  \
+        self.plf.check_btn_WQWI_an.bind("<Button-1>", lambda event,
+                            var=control_array: Ch.ButtonCheck(self.plf.check_btn_WQWI_an,control_array, None))
+        self.plf.Anzeige_WQWI = Tk.Label(self.plf, text = "WQ to WI ist zu",  \
                             relief = "groove", width = 16, height = 1 )
-        self.plf.Anzeige_LUHP.grid(row = 5, column =1, padx = 10, pady = 5 ,
+        self.plf.Anzeige_WQWI.grid(row = 5, column =1, padx = 10, pady = 5 ,
                              ipady = 7,sticky =Tk.W+ Tk.E)
         
-        self.plf.check_btn_LOHP_an = Tk.Button(self.plf, text = "LO to HP schließen", \
-                            relief = "groove", width = 16, height = 1 , anchor = Tk.W)
-        self.plf.check_btn_LOHP_an.grid(row = 6, column =0, padx = 12, pady = 5 ,
-                            ipady= 3,sticky =Tk.W+ Tk.E)
-        self.plf.check_btn_LOHP_an.bind("<Button-1>", lambda event,
-                             var=control_array: Ch.ButtonCheck(self.plf.check_btn_LOHP_an,control_array, None))
-        self.plf.Anzeige_LOHP = Tk.Label(self.plf, text = "LO to HP ist auf",  \
-                            relief = "groove", width = 16, height = 1 )
-        self.plf.Anzeige_LOHP.grid(row = 6, column =1, padx = 10, pady = 5 ,
-                             ipady = 7,sticky =Tk.W+ Tk.E)
 
         ##########################################################################################
         # Erdfeuchtelabel:
@@ -765,7 +741,68 @@ class Kontrollpanel(object):
 
 ################################################################################################################
     
-       
+    def Zeitfenster(self,z_array):
+        parent =  self.parent
+        self.z_kindfenster = Tk.Toplevel()
+        self.z_kindfenster.geometry("400x150+500+100")
+        self.z_kindfenster.title("Werte Zeitschaltuhr")
+        
+        zeitlabel1 = Tk.Label(self.z_kindfenster, text = "Fütterung Anfang: ")
+        zeitlabel1.grid(row = 0, column = 0, pady =3, padx = 3, ipady = 3, sticky = Tk.W)
+        self.entry_fuz_a = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_fuz_a.grid(row=0, column = 1,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_fuz_a.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        zeitlabel2 = Tk.Label(self.z_kindfenster, text = "Fütterung Ende: ")
+        zeitlabel2.grid(row = 0, column = 2, pady =3, padx = 3,ipady = 3, sticky = Tk.W)
+        self.entry_fuz_e = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_fuz_e.grid(row=0, column = 3,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_fuz_e.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        zeitlabel3 = Tk.Label(self.z_kindfenster, text = "Beleuchtung Anfang: ")
+        zeitlabel3.grid(row = 1, column = 0, pady =3, padx = 3, ipady = 3, sticky = Tk.W)
+        self.entry_bel_a = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_bel_a.grid(row=1, column = 1,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_bel_a.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        zeitlabel4 = Tk.Label(self.z_kindfenster, text = "Beleuchtung Ende: ")
+        zeitlabel4.grid(row = 1, column = 2, pady =3, padx = 3,ipady = 3, sticky = Tk.W)
+        self.entry_bel_e = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_bel_e.grid(row=1, column = 3,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_bel_e.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        zeitlabel5 = Tk.Label(self.z_kindfenster, text = "Blumenwiese Anfang: ")
+        zeitlabel5.grid(row = 2, column = 0, pady =3, padx = 3, ipady = 3, sticky = Tk.W)
+        self.entry_blu_a = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_blu_a.grid(row=2, column = 1,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_blu_a.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        zeitlabel6 = Tk.Label(self.z_kindfenster, text = "Blumentwiese Ende: ")
+        zeitlabel6.grid(row = 2, column = 2, pady =3, padx = 3,ipady = 3, sticky = Tk.W)
+        self.entry_blu_e = Tk.Entry(self.z_kindfenster, width = 5,  bg = "white", relief = "sunk")
+        self.entry_blu_e.grid(row=2, column = 3,  ipady = 1, pady =1, sticky = Tk.W + Tk.E)
+        self.entry_blu_e.bind("<Return>",
+                                lambda event, var=z_array: Vw.RefreshZeiten(self,z_array))
+        
+        Vw.LeseZeiten(self, z_array)
+        Vw.ZeitenEinfuegen(self, z_array)
+        
+        def KindfensterSchliessen(self, z_array):
+            Vw.WriteZeiten(z_array)
+            self.z_kindfenster.destroy()
+
+        self.savebutton = Tk.Button(self.z_kindfenster, text = "Sichern", width = 10)
+        self.savebutton.grid(row=3, column = 0,  ipady = 4, pady =1, sticky = Tk.W + Tk.E)
+        self.savebutton.bind("<Button-1>",
+                lambda event, var=z_array: Vw.RefreshZeiten(self, z_array))
+
+        self.leavebutton = Tk.Button(self.z_kindfenster, text = "Beenden", width = 10)
+        self.leavebutton.grid(row=3, column = 2,  ipady = 4, pady =1, sticky = Tk.W + Tk.E)
+        self.leavebutton.bind("<Button-1>",
+                lambda event, var=z_array: KindfensterSchliessen(self, z_array) )
+
+        
+
 
 ##############################################################################################################        
 

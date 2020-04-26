@@ -7,7 +7,7 @@
 
 
 from __future__ import division, print_function  # Maßnahme um pygame mit Python 3.x kompatible zu machen
-#import Myimport as imp
+
 import sys
 import time
 import csv
@@ -16,14 +16,10 @@ import datetime
 from smbus import SMBus
 import logging
 import importlib
+import threading
+from threading import Thread
+from queue import Queue
 
-##
-
-### Import SPI library (for hardware SPI) and MCP3008 library.
-##import Adafruit_GPIO.SPI as SPI
-##import Adafruit_MCP3008
-
-#import ptvsd     # dient dem remote-debugging mit Visual Studio
 
 # eigene Module
 
@@ -37,8 +33,11 @@ import Check_Center as Ch
 import Soll_Ist as Si
 import Aktion as Ak
 import Vorgabe as Vw
+import Zeitschaltuhr as Zsu
 
 ##
+#import ptvsd     # dient dem remote-debugging mit Visual Studio
+
 # remote Debugging mit Visual Studio (wenn Debugging --> uncomment):
 ##
 ##ptvsd.enable_attach()
@@ -55,7 +54,8 @@ import Vorgabe as Vw
 #########################################################################################################
 
 #######################################################################################################
-# Initiieren: Array mit Vorgabewerten, Array für Sensordaten und Array mit Kontrollvariablen:
+# Initiieren: Array mit Vorgabewerten, Array für Sensordaten, Array mit Kontrollvariablen und mit Werten
+# für die Zeitschaltuhr:
 
 # Zur Erklärung siehe README.md
 
@@ -66,8 +66,7 @@ vw         =  {"TempWasserMin" : 3,
                "WasserpegelMax": 0,
                "PhWertMin"     : 6.7,
                "PhWertMax"     : 7.1,
-               "Fuetterung"    : 10,
-               "Fuett.dauer"  : 5
+               
                }
                
 
@@ -95,9 +94,9 @@ wa          = {"T_Luft_Frühbeet" : 0,
 
 
 ca          ={ "normaler CHOP-Circle":     [0,0,0],  
-               "warmer CHOP-Circle":       [0,0,0],  
+               "Bewässerung":              [0,0,0],  
                "Kühlung mit Bewässerung":  [0,0,0],  
-               "Kühlung mit Verrieselung":  [0,0,0],  
+               "Kühlung mit Verrieselung": [0,0,0],  
                "Brunnenwasser als Heizung":[0,0,0],  
                "Wasser auffüllen":         [0,0,0],  
                "Wasser ablassen":          [0,0,0],  
@@ -106,15 +105,35 @@ ca          ={ "normaler CHOP-Circle":     [0,0,0],
                "Heizung":                  [0,0,0],  
                "Es ist Tag"      :         [0,0],    
                "Alarm"            :        [0,0],    
-               "Fütterung"  :              [0,0,0],  
+               "Fütterung"  :              [0,0,0],
+               "Beleuchtung":              [0,0,0],
                "Logeintrag":               [0,0],    
                "WQ to FT":                 [0,0,0],  
                "WQ to VR":                 [0,0,0],  
-               "ST to VR":                 [0,0,0],  
+               "ST to VR":                 [0,0,0],  																																						
                "ST to FT":                 [0,0,0],  
-               "ST to HB":                 [0,0,0],  
-               "LU to HP":                 [0,0,0],  
-               "LO to HP":                 [0,0,0]}  
+               "ST to HB":                 [0,0,0],   																																																																																																																																																																																																																																																																																				
+               "WQ to WI":                 [0,0,0]}																																																																	
+
+zeiten =     {"Fuetterung_Anfang":      "09:00",
+              "Fuetterung_Ende" :       "09:10",
+              "Beleuchtung_Anfang":    "06:00",
+              "Beleuchtung_Ende":      "20:00",
+              "Blumenwiese_Anfang":    "09:30",
+              "Blumenwiese_Ende":      "09:35"
+              }
+
+
+###################################################################################################
+
+# Thread für Zeitschaltuhr initiieren:
+
+
+queue1 = Queue()
+queue2 = Queue()
+pill2kill = threading.Event()
+zsu = threading.Thread(target=Zsu.timecontrol, args =(pill2kill, ca, zeiten, queue1,queue2))
+zsu.start()
 
 
 
@@ -129,22 +148,27 @@ Hintergrund = "lightgrey"
 fenster = Tk.Tk()
 fenster.configure(background = Hintergrund)
 
+
 ###############################################################################
 # Kontrollpanel, mit dem das System vom Bildschirm aus gesteuert werden kann: #
                                                                               #
-screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca, vw)                       #
+screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca, vw, zeiten)                       #
 ###############################################################################
-# Einlesen der Vorgabewerte:
+# Einlesen der Vorgabewerte und Werte für Zeitschaltung:
 
 Vw.LeseVorgabe(screen_app, vw)
+##Vw.LeseZeiten(screen_app, zeiten)
 
 # widget und Callback für den Button "Beenden":
 
 def Beenden(after_id, vw):                  # wird von clickma aufgerufen und beendet das Programm
     
-    Vw.WriteWerte(vw)
+    pill2kill.set()             # killt den zeitschaltuhrthread
+    Vw.WriteWerte(vw)           # schreibt die Vorgabewerte in Datei
+    Vw.WriteZeiten(zeiten)      # schreibt die Zeitschaltuhrherte in Datei
     fenster.after_cancel(after_id)
     fenster.destroy()
+    
    
     sys.exit()
    
@@ -156,49 +180,31 @@ clickma.grid(row = 3, column = 0, padx = 10, sticky = Tk.E)
 screen_app.Datum_Zeit = Tk.Label (text = time.strftime("%d.%m.%Y - %H:%M"))
 screen_app.Datum_Zeit.grid(row = 3, column = 0 , sticky = Tk.W)
 ################################################################################################################
-# Variablen für loop:
-
-
-
-
-t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
-after_id = 0
-
 # Ende der Programminitialisierung
 
-
+######################################################################
 
 # Programm starten 
 # loop wird durch die (fenster.)after-Methode jede Sekunde wiederholt
 ###################################################################
-# Debugging:
-##import psutil
-##logging.basicConfig(level=logging.DEBUG,
-##                    format='%(asctime)s %(levelname)-8s %(message)s',
-##                    datefmt='%a, %d %b %Y %H:%M:%S',
-##                    filename='Speicher.log',
-##                    filemode='w')
-##
+# Variablen für loop:
 
-#####################################################
+t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
+after_id = 0
+
 def loop():
+    myvar = queue1.get()
+    #print(str(myvar))
+    zeiten = queue2.get()
+    #print(str(zeiten))
     t2 = datetime.datetime.now()
     
-           
-                  
-    
-
     global wa, ca, vw, t1, after_id
-    
-    
     
      # Datum und Uhrzeit auf Screen aktualisieren:
     
     screen_app.Datum_Zeit.configure (text = time.strftime("%d.%m.%Y - %H:%M"))
 
-    
-    
-    
     tdiff = t2 -t1
 
     wa = Wl.Werte_lesen(wa)                         # liest Werte aus Sensoren und schreibt sie in Array wa
@@ -214,9 +220,6 @@ def loop():
     
     if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb = 0
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
-    
-
-
     
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert

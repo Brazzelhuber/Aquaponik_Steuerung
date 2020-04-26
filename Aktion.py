@@ -95,12 +95,12 @@ def change_buttons(_screen , ca):
         _screen.wlf.check_btn_CCN_an.configure(text = 'normalen CHOP\nCircle ausschalten')
 
     
-##    if ca['warmer CHOP-Circle'][1] == 0:
-##        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist aus', bg = 'PaleVioletRed2')
-##        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft anschalten')
-##    if ca['warmer CHOP-Circle'][1] == 1:
-##        _screen.wlf.Anzeige_CCW.configure(text = 'CHOP-Circle mit\nWarmluft ist an', bg = 'lightgreen')
-##        _screen.wlf.check_btn_CCW_an.configure(text = 'CHOP-Circle mit\nWarmluft ausschalten')
+    if ca['Bewässerung'][1] == 0:
+        _screen.wlf.Anzeige_BLW.configure(text = 'Bewässerung\nist aus', bg = 'PaleVioletRed2')
+        _screen.wlf.check_btn_BLW_an.configure(text = 'Bewässerung\nBlumenwiese anschalten')
+    if ca['Bewässerung'][1] == 1:
+        _screen.wlf.Anzeige_BLW.configure(text = 'Bewässerung\nBlumenwiese ist an', bg = 'lightgreen')
+        _screen.wlf.check_btn_BLW_an.configure(text = 'Bewässerung\nBlumenwiese ausschalten')
  
     
     if ca["Hauptpumpe"][1] == 0:
@@ -192,19 +192,19 @@ def change_buttons(_screen , ca):
         _screen.plf.check_btn_STHB_an.configure(text = "ST to HB schließen")
         _screen.plf.Anzeige_STHB.configure(text = "ST to HB ist auf", bg = "lightgreen")
 
-    if ca["LU to HP"][1] == 0:
-        _screen.plf.check_btn_LUHP_an.configure(text = "LU to HP öffnen")
-        _screen.plf.Anzeige_LUHP.configure(text = "LU to HP\nist zu", bg = "PaleVioletRed2")       
-    if ca["LU to HP"][1] == 1:
-        _screen.plf.check_btn_LUHP_an.configure(text = "LU to HP schließen")
-        _screen.plf.Anzeige_LUHP.configure(text = "LU to HP\nist auf", bg = "lightgreen")
+    if ca["WQ to WI"][1] == 0:
+        _screen.plf.check_btn_WQWI_an.configure(text = "WQ to WI öffnen")
+        _screen.plf.Anzeige_WQWI.configure(text = "WQ to WI\nist zu", bg = "PaleVioletRed2")       
+    if ca["WQ to WI"][1] == 1:
+        _screen.plf.check_btn_WQWI_an.configure(text = "WQ to WI schließen")
+        _screen.plf.Anzeige_WQWI.configure(text = "WQ to WI\nist auf", bg = "lightgreen")
 
-    if ca["LO to HP"][1] == 0:
-        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP öffnen")
-        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist zu", bg = "PaleVioletRed2")       
-    if ca["LO to HP"][1] == 1:
-        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP schließen")
-        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist auf", bg = "lightgreen")
+##    if ca["LO to HP"][1] == 0:
+##        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP öffnen")
+##        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist zu", bg = "PaleVioletRed2")       
+##    if ca["LO to HP"][1] == 1:
+##        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP schließen")
+##        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist auf", bg = "lightgreen")
         
     if ca["Logeintrag"][1] == 0:
         _screen.mlf.Anzeige_Log.configure(text = "Log hat keinen\nneuen Eintrag", bg = "lightgrey")
@@ -221,6 +221,7 @@ def change_buttons(_screen , ca):
     
     
 def Fuetterung(jetzt, my_arr, vorg, _screen):
+    return
 
     if my_arr["Fütterung"][2] == 0:
     

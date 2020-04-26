@@ -1,5 +1,7 @@
 import csv
 import tkinter as Tk
+import datetime
+from tkinter import messagebox
 
 
 def LeseVorgabe(Screen_App, _array):
@@ -24,10 +26,55 @@ def LeseVorgabe(Screen_App, _array):
     Screen_App.xlf.entry_pma.insert(0,  str(_array["WasserpegelMax"]))
     Screen_App.xlf.entry_phmi.insert(0,  str(_array["PhWertMin"]))
     Screen_App.xlf.entry_phma.insert(0,  str(_array["PhWertMax"]))
-    Screen_App.xlf.entry_Fuz.insert(0,  str(_array["Fuetterung"]))
-    Screen_App.xlf.entry_Fud.insert(0,  str(_array["Fuett.dauer"]))
 
     vo.close()
+    
+def ZeitenEinfuegen(Screen_App, z_array):
+    
+    Screen_App.entry_fuz_a.delete(0,  Tk.END)
+    Screen_App.entry_fuz_e.delete(0,  Tk.END)
+    Screen_App.entry_bel_a.delete(0,  Tk.END)
+    Screen_App.entry_bel_e.delete(0,  Tk.END)
+    Screen_App.entry_blu_a.delete(0,  Tk.END)
+    Screen_App.entry_blu_e.delete(0,  Tk.END)
+    
+    
+    Screen_App.entry_fuz_a.insert(0,  str(z_array["Fuetterung_Anfang"]))
+    Screen_App.entry_fuz_e.insert(0,  str(z_array["Fuetterung_Ende"]))
+    Screen_App.entry_bel_a.insert(0,  str(z_array["Beleuchtung_Anfang"]))
+    Screen_App.entry_bel_e.insert(0,  str(z_array["Beleuchtung_Ende"]))
+    Screen_App.entry_blu_a.insert(0,  str(z_array["Blumenwiese_Anfang"]))
+    Screen_App.entry_blu_e.insert(0,  str(z_array["Blumenwiese_Ende"]))
+    
+def LeseZeiten(Screen_App, z_array):
+    
+    zo = open("Zeiten.csv", "r")
+    reader1= csv.reader(zo)
+    daten = list(reader1)
+    for line in daten:
+        Linie = str(line)
+        Komma = Linie.find(",")
+        Schluessel = Linie[2:Komma-1]
+        Wert = Linie[Komma +3:len(Linie)-2]
+
+        for key in z_array.keys():
+            if key == Schluessel:
+    
+                z_array[key] = Wert
+                
+    ZeitenEinfuegen(Screen_App, z_array)
+    
+##    Screen_App.entry_fuz_a.insert(0,  str(z_array["Fuettereung_Anfang"]))
+##    Screen_App.entry_fuz_e.insert(0,  str(z_array["Fuetterung_Ende"]))
+##    Screen_App.entry_bel_a.insert(0,  str(z_array["Beleuchtung_Anfang"]))
+##    Screen_App.entry_bel_e.insert(0,  str(z_array["Beleuchtung_Ende"]))
+##    Screen_App.entry_blu_a.insert(0,  str(z_array["Blumenwiese_Anfang"]))
+##    Screen_App.entry_blu_e.insert(0,  str(z_array["Blumenwiese_Ende"]))
+    
+    
+    zo.close()
+
+
     
 def Fehlermeldung():
     win = Tk.Toplevel()
@@ -40,48 +87,29 @@ def Fehlermeldung():
     win.mainloop()
     win.destroy()
         
-def Uhrzeit_korrekt(my_string):
-    
-    zahlen = ["0","1","2","3","4","5","6","7","8","9"]
-    if len(my_string) <5:
-        Fehlermeldung()
-        return False
-    
-    if my_string[0] in zahlen:
-        Stunde1 = int(my_string[0])
-    else:
-        Fehlermeldung()
-        return False
-    if my_string[1] in zahlen:
-        Stunde2 = int(my_string[1])
-    else:
-        Fehlermeldung()
-        return False
-    if my_string[2] != ":":
-        Fehlermeldung()
-        return False
-    if my_string[3] in zahlen:
-        Minute1 = int(my_string[3])
-    else :
-        Fehlermeldung()
-        return False
-    if my_string[4] in zahlen:
-        Minute2 = int(my_string[4])
-    else:
-        Fehlermeldung()
-        return False
-    
 
-    if (Stunde1 > 2) or Minute1 > 5 :
-        Fehlermeldung()
-        return False
-    else:
-        return True
-        
+def RefreshZeiten(Screen_App, z_array):
+    
+    print("bin in RefreshZeiten")
+    
+    while True:
+        try:
+          z_array["Fuetterung_Anfang"] = datetime.datetime.strptime(Screen_App.entry_fuz_a.get(), "%H:%M").strftime("%H:%M")
+          z_array["Fuetterung_Ende"] = datetime.datetime.strptime(Screen_App.entry_fuz_e.get(), "%H:%M").strftime("%H:%M")
+          z_array["Beleuchtung_Anfang"] = datetime.datetime.strptime(Screen_App.entry_bel_a.get(), "%H:%M").strftime("%H:%M")
+          z_array["Beleuchtung_Ende"] = datetime.datetime.strptime(Screen_App.entry_bel_e.get(), "%H:%M").strftime("%H:%M")
+          z_array["Blumenwiese_Anfang"] = datetime.datetime.strptime(Screen_App.entry_blu_a.get(), "%H:%M").strftime("%H:%M")
+          z_array["Blumenwiese_Ende"] = datetime.datetime.strptime(Screen_App.entry_blu_e.get(), "%H:%M").strftime("%H:%M")
+          return
+        except (ValueError, TypeError):
+          Fehlermeldung()
+          return
+
+
     
 def RefreshWerte(Screen_App, _array):
     
-   
+   # wird von Kontrollfenster aufgerufen
     
     _array["TempWasserMin"] = Screen_App.xlf.entry_wmi.get()
     _array["TempWasserMax"] = Screen_App.xlf.entry_wma.get()
@@ -90,24 +118,16 @@ def RefreshWerte(Screen_App, _array):
     _array["WasserpegelMax"] = Screen_App.xlf.entry_pma.get()
     _array["PhWertMin"] = Screen_App.xlf.entry_phmi.get()
     _array["PhWertMax"] = Screen_App.xlf.entry_phma.get()
-    _array["Fuetterung"] = Screen_App.xlf.entry_Fuz.get()
-##    while True:
-##        eingabe = Screen_App.xlf.entry_Fuz.get()
-##                                 
-##        if Uhrzeit_korrekt(eingabe) :
-##            _array["Fuetterung"] = eingabe
-##            break
-####        else:
-####            
-####            Screen_App.xlf.entry_Fuz.delete(0, len(Screen_App.xlf.entry_Fuz.get()))
-            
-        
-       
-        
-    _array["Fuett.dauer"] = Screen_App.xlf.entry_Fud.get()
-
   
 
+def WriteZeiten(z_array):
+    print("ich schreibe")
+    zo = open("Zeiten.csv", "w")
+    writerz = csv.writer(zo)
+    for item in z_array.items():
+        writerz.writerow(item)        
+
+    zo.close()
     
     
 def WriteWerte(_array):
