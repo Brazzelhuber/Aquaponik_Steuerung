@@ -199,12 +199,7 @@ def change_buttons(_screen , ca):
         _screen.plf.check_btn_WQWI_an.configure(text = "WQ to WI schließen")
         _screen.plf.Anzeige_WQWI.configure(text = "WQ to WI\nist auf", bg = "lightgreen")
 
-##    if ca["LO to HP"][1] == 0:
-##        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP öffnen")
-##        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist zu", bg = "PaleVioletRed2")       
-##    if ca["LO to HP"][1] == 1:
-##        _screen.plf.check_btn_LOHP_an.configure(text = "LO to HP schließen")
-##        _screen.plf.Anzeige_LOHP.configure(text = "LO to HP\nist auf", bg = "lightgreen")
+
         
     if ca["Logeintrag"][1] == 0:
         _screen.mlf.Anzeige_Log.configure(text = "Log hat keinen\nneuen Eintrag", bg = "lightgrey")
@@ -219,26 +214,7 @@ def change_buttons(_screen , ca):
 
 
     
-    
-def Fuetterung(jetzt, my_arr, vorg, _screen):
-    return
-
-    if my_arr["Fütterung"][2] == 0:
-    
-        fh= vorg["Fuetterung"][:2]
-        fm = vorg["Fuetterung"][3:len(vorg["Fuetterung"])]
-        fue_str = vorg["Fuetterung"]
-        fue_zeit = datetime.datetime.strptime(fue_str, '%H:%M').time()
-        fue_stopp_string  = fh + ":" + str(int(fm)+int(vorg["Fuett.dauer"]))
-        fue_stopp = datetime.datetime.strptime(fue_stopp_string, '%H:%M').time()
-        
-        if jetzt.time() > fue_zeit and jetzt.time() <= fue_stopp:
-            
-           Ch.Alles_aus(_screen, my_arr)  
-           my_arr["Fütterung"][1] = 1
-        else:
-           my_arr["Fütterung"][1] = 0
-
+ 
 
 
 def Vorlauf():
@@ -289,8 +265,8 @@ def change_aktoren(my_array):
                 ["ST to VR",   25],             
                 ["ST to FT",   12],              
                 ["ST to HB",   16],              
-                ["LU to HP",   20],              
-                ["LO to HP",   21],
+                ["WQ to WI",   20],              
+                ["Beleuchtung",   21],
                 ["Fütterung",  22],
                 ["Heizung",    19]]
 ##"""                                     (1. Relais-Board)
@@ -325,7 +301,7 @@ def change_aktoren(my_array):
                     GPIO.output(a_liste[i][1],GPIO.LOW)
                 elif  my_array[key][1] == 0:
                     GPIO.output(a_liste[i][1],GPIO.HIGH)
-    
+   # Low ist an und High ist aus 
    
                     
     #------------------------------------------------------------------------------

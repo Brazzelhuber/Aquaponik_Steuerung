@@ -8,15 +8,6 @@ import threading
 import sys
 import random
 
-##zeiten =     {"Fütterung":      ["09:00","09:10"],
-##              "CHOP1":          ["00:00","06:00","12:00","18:00"],
-##              "Beleuchtung":    ["06;00","21:00"],
-##              "Blumenwiese":    ["09:30","10:30"],
-##              "Sunset":         ["00:00","00:07"]}
-##        print("blu1 = "+ str(blu1))
-##        print("blu2 = "+ str(blu2))
-##        print("t2 = " + datetime.datetime.strftime(t2, "%d/%m/%y %H:%M"))
-
 def timecontrol(stop_event, conar, zeiten, q1, q2):
     
     while not stop_event.wait(1):

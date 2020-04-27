@@ -6,13 +6,14 @@
 ########################################
 # CheckCenter prüft, ob aufgrund der
 
-# Zeitschaltung,
 
 # der Sensordaten und definierter Bedingungen
 
 # oder eines Button-Drucks am Bildschirm
 
 # etwas zu tun ist
+
+# Zeitschaltung wird in dem parallel laufenden Thread in der Funktion timecontrol.py geprüft
 
 #############################################
 
@@ -284,7 +285,7 @@ def ManualCheck(ar, manov, text, i):
     for key in Zustaende:
         
         if key != text and key != "Nichts" and  text != "Heizung" and ar[key][0] == 1 \
-           and manov == True and i <= 30:
+           and text != "Bewässerung"  and manov == True and i <= 30:
             messagebox.showwarning("Warnung",key + " ist an\n\nbitte erst ausmachen, bevor\n\n" + \
                                 text + "\n\n" + "gestartet werden kann")
             

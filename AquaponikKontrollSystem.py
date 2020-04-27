@@ -154,10 +154,9 @@ fenster.configure(background = Hintergrund)
                                                                               #
 screen_app = Kf.Kontrollpanel(fenster, Hintergrund, ca, vw, zeiten)                       #
 ###############################################################################
-# Einlesen der Vorgabewerte und Werte für Zeitschaltung:
+# Einlesen der Vorgabewerte 
 
 Vw.LeseVorgabe(screen_app, vw)
-##Vw.LeseZeiten(screen_app, zeiten)
 
 # widget und Callback für den Button "Beenden":
 
@@ -194,9 +193,9 @@ after_id = 0
 
 def loop():
     myvar = queue1.get()
-    #print(str(myvar))
+    
     zeiten = queue2.get()
-    #print(str(zeiten))
+    
     t2 = datetime.datetime.now()
     
     global wa, ca, vw, t1, after_id
@@ -233,7 +232,7 @@ def loop():
         
         Si.ist_gleich_soll(ca)                 # IST-Werte werden an SOLL-Werte angeglichen
     
-    Ak.Fuetterung(t2, ca,vw, screen_app)       # prüft ob Fütterungszeit ist
+
     
     if tdiff > datetime.timedelta(seconds = 360):    # schreibt Sensordaten nur einmal pro 6 Minute in Datei
                                                      # = 10 pro Stunde, 240 pro Tag
