@@ -90,7 +90,7 @@ def Fehlermeldung():
 
 def RefreshZeiten(Screen_App, z_array):
     
-    print("bin in RefreshZeiten")
+##    print("bin in RefreshZeiten")
     
     while True:
         try:
@@ -121,7 +121,7 @@ def RefreshWerte(Screen_App, _array):
   
 
 def WriteZeiten(z_array):
-    print("ich schreibe")
+##    print("ich schreibe")
     zo = open("Zeiten.csv", "w")
     writerz = csv.writer(zo)
     for item in z_array.items():

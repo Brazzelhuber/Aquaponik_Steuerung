@@ -85,7 +85,8 @@ def change_sensordaten(_screen, wa):
 
 def change_buttons(_screen , ca):
     # passt die Buttons an die Soll-Anforderung an:
-    
+##    print("ca[normaler CHOP-Circle] = " +str(ca["normaler CHOP-Circle"]))
+##    print("ca[Bewässerung] = " +str(ca["Bewässerung"]))
     
     if ca['normaler CHOP-Circle'][1] == 0:
         _screen.wlf.Anzeige_CCN.configure(text = 'normaler CHOP\nCircle ist aus', bg = 'PaleVioletRed2')
@@ -218,7 +219,7 @@ def change_buttons(_screen , ca):
 
 
 def Vorlauf():
-    from tkinter import messagebox
+    
     
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
@@ -249,7 +250,7 @@ def Vorlauf():
     GPIO.output(WQtoVR, GPIO.HIGH)
 
     win.destroy()
-    
+    # High = aus, Low = an
     
 def change_aktoren(my_array):
     

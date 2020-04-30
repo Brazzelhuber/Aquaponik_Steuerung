@@ -192,8 +192,9 @@ t1 = datetime.datetime.now()         # dient der Zeitsteuerung in der Schleife
 after_id = 0
 
 def loop():
+##    print("ca[Bewässerung] vor Queue= " + str(ca["Bewässerung"]))
     myvar = queue1.get()
-    
+    print("ca[Fütterung] nach Queue= " + str(ca["Fütterung"]))
     zeiten = queue2.get()
     
     t2 = datetime.datetime.now()
@@ -219,7 +220,7 @@ def loop():
     
     if ca["Screen_schreiben"][0] == 1:         # im Dauerbetrieb = 0
         Ak.change_sensordaten (screen_app, wa) # schreibt Sensordaten auf Screen
-    
+##    print("ca[Bewässerung] = " + str(ca["Bewässerung"]))
     
     if not Si.soll_gleich_ist(ca):             # es wurde durch Sensoren, Zeitschaltung oder Button-Press etwas verändert
                                                # daraus folgt, dass der Sollwert verändert wurde
